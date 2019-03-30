@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#484848</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorPrimaryLight">#737373</color>
+    <color name="secondary">#4caf50</color>
+    <color name="secondaryLight">#80e27e</color>
+    <color name="secondaryDark">#087f23</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorMain">#eeeeee</color>
+    <color name="colorYellowonBoard">#ffaf49</color>
+    <color name="colorRed">#f44336</color>
+    <color name="colorYellow">#ffeb3b</color>
+    <color name="colorGreen">#8bc34a</color>
+</resources>

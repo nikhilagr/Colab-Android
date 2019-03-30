@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "542751107238",
+    "firebase_url": "https://worktrack-1dbae.firebaseio.com",
+    "project_id": "worktrack-1dbae",
+    "storage_bucket": "worktrack-1dbae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542751107238:android:5e4a6eda90ec47cd",
+        "android_client_info": {
+          "package_name": "com.nikhildagrawal.worktrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542751107238-m9cp7d9u846v8qid4um50pja5mgghhov.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXiA_0-MqWnih7vZDRiFRBE7zVb-F_iGE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
