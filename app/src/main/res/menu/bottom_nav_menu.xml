@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/colabFragment"
+        android:icon="@drawable/ic_colab_24dp"
+        android:title="Colab" />
+
+    <item
+        android:id="@+id/notesFragment"
+        android:icon="@drawable/ic_note_black_24dp"
+        android:title="Notes" />
+
+    <item
+        android:id="@+id/checklistFragment"
+        android:icon="@drawable/ic_check_box_black_24dp"
+        android:title="ToDo" />
+
+    <item
+        android:id="@+id/reminderFragment"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="Reminders"
+        ></item>
+
+</menu>

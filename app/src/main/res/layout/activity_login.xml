@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMain"
+    android:id="@+id/constraint_layout"
     tools:context=".LoginActivity">
 
 
@@ -37,7 +38,8 @@
             android:layout_marginTop="55dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:inputType="text"
+                android:id="@+id/et_login_email"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,14 +55,16 @@
             android:layout_marginTop="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:hint="Enter Password" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_login"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
@@ -68,29 +72,32 @@
             android:text="Login" />
 
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Register"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="@color/colorAccent" />
 
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_forget_pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:text="Forget Password? "
             android:textColor="@color/colorAccent" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_resend_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="Resend Confirmation Email"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="@color/colorAccent" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

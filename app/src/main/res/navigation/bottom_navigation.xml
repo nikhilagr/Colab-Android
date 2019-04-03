@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/colabFragment">
+    <fragment
+        android:id="@+id/colabFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.ColabFragment"
+        android:label="Colab"
+        tools:layout="@layout/fragment_colab" />
+    <fragment
+        android:id="@+id/notesFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.NotesFragment"
+        android:label="Notes"
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/toAddNewNoteFragment"
+            app:destination="@id/addNewNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checklistFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.ChecklistFragment"
+        android:label="Checklist"
+        tools:layout="@layout/fragment_checklist" />
+    <fragment
+        android:id="@+id/reminderFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.ReminderFragment"
+        android:label="Reminders"
+        tools:layout="@layout/fragment_reminder" />
+
+    <fragment
+        android:id="@+id/addNewNoteFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.AddNewNoteFragment"
+        android:label="Add Reminder"
+        tools:layout="@layout/fragment_add_new_note" >
+        <action
+            android:id="@+id/action_addNewNoteFragment_to_notesFragment2"
+            app:destination="@id/notesFragment" />
+    </fragment>
+
+
+</navigation>

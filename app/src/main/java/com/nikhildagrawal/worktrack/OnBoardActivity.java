@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
+import com.nikhildagrawal.worktrack.adapters.SliderAdapter;
 
 public class OnBoardActivity extends AppCompatActivity {
 
