@@ -2,14 +2,12 @@ package com.nikhildagrawal.worktrack;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.google.android.material.button.MaterialButton;
 import com.nikhildagrawal.worktrack.adapters.SliderAdapter;
 

@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.RemindersAdapter;
 import com.nikhildagrawal.worktrack.models.Reminder;
+import com.nikhildagrawal.worktrack.viewmodels.ReminderViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +34,8 @@ public class ReminderFragment extends Fragment {
     private RecyclerView mReminderRecyclerView;
     private FloatingActionButton mFabAddReminder;
     private View mView;
-    private RecyclerView.Adapter mAdapter;
+    private RemindersAdapter mAdapter;
+    private ReminderViewModel mReminderViewModel;
 
 
     public ReminderFragment() {
@@ -51,12 +56,25 @@ public class ReminderFragment extends Fragment {
 
         mReminderRecyclerView = view.findViewById(R.id.rv_reminder);
         mFabAddReminder = view.findViewById(R.id.fab_add_reminder);
+        mReminderViewModel = ViewModelProviders.of(getActivity()).get(ReminderViewModel.class);
+
+        mReminderViewModel.getReminderList().observe(getViewLifecycleOwner(), new Observer<List<Reminder>>() {
+            @Override
+            public void onChanged(List<Reminder> reminders) {
+
+                mAdapter.setReminderList(reminders);
+            }
+        });
+
+
+        mFabAddReminder.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_reminderFragment_to_addNewReminderFragment));
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mReminderRecyclerView.setLayoutManager(layoutManager);
 
-        List<Reminder> list = getFakeReminders();
-        mAdapter = new RemindersAdapter(getActivity(),list);
+       // List<Reminder> list = getFakeReminders();
+        mAdapter = new RemindersAdapter(getActivity());
+
         mReminderRecyclerView.setAdapter(mAdapter);
 
 

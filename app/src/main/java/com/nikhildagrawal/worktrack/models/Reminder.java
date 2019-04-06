@@ -3,20 +3,13 @@ package com.nikhildagrawal.worktrack.models;
 public class Reminder {
 
     private String user_id;
+    private String reminder_id;
     private String title;
     private String desc;
     private String date;
     private String time;
-    private String priority;
 
-    public Reminder(String user_id, String title, String desc, String date, String time, String priority) {
-        this.user_id = user_id;
-        this.title = title;
-        this.desc = desc;
-        this.date = date;
-        this.time = time;
-        this.priority = priority;
-    }
+
 
     public Reminder(String title, String desc, String date, String time) {
         this.title = title;
@@ -25,8 +18,32 @@ public class Reminder {
         this.time = time;
     }
 
+    public Reminder(String user_id, String reminder_id, String title, String desc, String date, String time) {
+        this.user_id = user_id;
+        this.reminder_id = reminder_id;
+        this.title = title;
+        this.desc = desc;
+        this.date = date;
+        this.time = time;
+    }
+
+    public Reminder() {
+    }
+
     public String getUser_id() {
         return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getReminder_id() {
+        return reminder_id;
+    }
+
+    public void setReminder_id(String reminder_id) {
+        this.reminder_id = reminder_id;
     }
 
     public String getTitle() {
@@ -61,23 +78,15 @@ public class Reminder {
         this.time = time;
     }
 
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
     @Override
     public String toString() {
         return "Reminder{" +
                 "user_id='" + user_id + '\'' +
+                ", reminder_id='" + reminder_id + '\'' +
                 ", title='" + title + '\'' +
                 ", desc='" + desc + '\'' +
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +
-                ", priority='" + priority + '\'' +
                 '}';
     }
 }

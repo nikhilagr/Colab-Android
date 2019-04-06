@@ -34,10 +34,10 @@ public class PasswordResetDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_resetpassword, container, false);
-        mEmail = (EditText) view.findViewById(R.id.email_password_reset);
+        mEmail =  view.findViewById(R.id.email_password_reset);
         mContext = getActivity();
 
-        TextView confirmDialog = (TextView) view.findViewById(R.id.dialogConfirm);
+        TextView confirmDialog =  view.findViewById(R.id.dialogConfirm);
         confirmDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

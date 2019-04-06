@@ -2,38 +2,22 @@ package com.nikhildagrawal.worktrack.fragments;
 
 
 import android.os.Bundle;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.Utilties;
 import com.nikhildagrawal.worktrack.models.Note;
+import com.nikhildagrawal.worktrack.repository.NotesRepository;
 import com.nikhildagrawal.worktrack.viewmodels.NoteViewModel;
-
-import java.util.List;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import androidx.lifecycle.ViewModelProviders;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class AddNewNoteFragment extends Fragment {
 
     private TextInputEditText mETAddTitle;
@@ -73,29 +57,11 @@ public class AddNewNoteFragment extends Fragment {
 
 
                 if(!Utilties.isEmpty(title)&&!Utilties.isEmpty(desc)){
-                    mViewModel.addNewNote(new Note(title,desc));
 
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    DocumentReference ref = db.collection("notes").document();
-
-                    Note newNote = new Note(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            ref.getId(),title,desc);
-
-                    ref.set(newNote).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Log.d("AddNewNoteFragment","note inserted successfully");
-                            }else{
-                                Log.d("AddNewNoteFragment","error while inserting");
-                            }
-                        }
-                    });
-
-
+                    NotesRepository.getInstance().insertNoteInFirestore(title,desc);
                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
                     getFragmentManager().popBackStackImmediate();
+
                 }else{
 
 
@@ -105,7 +71,5 @@ public class AddNewNoteFragment extends Fragment {
 
         return view;
     }
-
-
 
 }

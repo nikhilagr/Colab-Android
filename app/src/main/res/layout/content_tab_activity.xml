@@ -17,9 +17,7 @@
         android:layout_weight="1"
         app:navGraph="@navigation/bottom_navigation"
         app:defaultNavHost="true"
-
         />
-
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"

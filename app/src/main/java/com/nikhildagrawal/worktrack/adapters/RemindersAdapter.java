@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.ReminderViewHolder> {
 
     private Context mContext;
-    private List<Reminder> list;
+    private List<Reminder> mReminderList;
 
-    public RemindersAdapter(Context context,List<Reminder> list){
+    public RemindersAdapter(Context context){
         this.mContext = context;
-        this.list = list;
+
     }
 
     @NonNull
@@ -36,16 +36,19 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     @Override
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
 
-        holder.tvTitle.setText(list.get(position).getTitle());
-        holder.tvDesc.setText(list.get(position).getDesc());
-        holder.tvDate.setText(list.get(position).getDate());
-        holder.tvTime.setText(list.get(position).getTime());
+        holder.tvTitle.setText(mReminderList.get(position).getTitle());
+        holder.tvDesc.setText(mReminderList.get(position).getDesc());
+        holder.tvDate.setText(mReminderList.get(position).getDate());
+        holder.tvTime.setText(mReminderList.get(position).getTime());
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if(mReminderList != null){
+            return mReminderList.size();
+        }
+        return 0;
     }
 
     public class ReminderViewHolder extends RecyclerView.ViewHolder{
@@ -54,6 +57,8 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         TextView tvDesc;
         TextView tvDate;
         TextView tvTime;
+
+
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -62,6 +67,11 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             tvDate = itemView.findViewById(R.id.tv_item_reminder_date);
             tvTime = itemView.findViewById(R.id.tv_item_reminder_time);
         }
+    }
+
+    public void setReminderList(List<Reminder> list){
+        mReminderList = list;
+        notifyDataSetChanged();
     }
 
 

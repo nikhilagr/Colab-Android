@@ -5,13 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.nikhildagrawal.worktrack.R;
-import com.nikhildagrawal.worktrack.fragments.NotesFragment;
 import com.nikhildagrawal.worktrack.models.Note;
-
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,10 +16,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     private Context mContext;
     private List<Note> noteList;
 
-    public NotesAdapter(Context context ,List<Note> noteList){
+    public NotesAdapter(Context context ){
             mContext = context;
-         this.noteList = noteList;
-
     }
 
     @NonNull
@@ -47,7 +41,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public int getItemCount() {
-        return noteList.size();
+
+        if(noteList!=null){
+            return noteList.size();
+        }
+
+        return 0;
+
     }
 
     public class NotesViewHolder extends RecyclerView.ViewHolder {
@@ -61,6 +61,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             tv_title = itemView.findViewById(R.id.tv_item_notes_title);
             tv_desc = itemView.findViewById(R.id.tv_item_notes_description);
         }
+    }
+
+    public void setNoteList(List<Note> list){
+        noteList = list;
+        notifyDataSetChanged();
     }
 
 

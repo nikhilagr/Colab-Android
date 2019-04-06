@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ChecklistAdapter;
+import com.nikhildagrawal.worktrack.dialogs.AddChecklistItemDialog;
 import com.nikhildagrawal.worktrack.models.Checklist;
-import java.util.ArrayList;
+import com.nikhildagrawal.worktrack.viewmodels.ChecklistViewModel;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +24,8 @@ public class ChecklistFragment extends Fragment {
 
     private RecyclerView mChecklistRecyclerView;
     private FloatingActionButton mFabAddChecklistItem;
-    private View mView;
-    private RecyclerView.Adapter mAdapter;
+    private ChecklistAdapter mAdapter;
+    ChecklistViewModel mCheckListViewModel;
 
 
     public ChecklistFragment() {
@@ -44,28 +47,37 @@ public class ChecklistFragment extends Fragment {
         mChecklistRecyclerView = view.findViewById(R.id.rv_checklist);
         mFabAddChecklistItem = view.findViewById(R.id.fab_add_checklist);
 
+        mCheckListViewModel = ViewModelProviders.of(getActivity()).get(ChecklistViewModel.class);
+        initRecyclerView();
+
+            mCheckListViewModel.getChecklists().observe(getViewLifecycleOwner(), new Observer<List<Checklist>>() {
+                @Override
+                public void onChanged(List<Checklist> checklists) {
+                    mAdapter.setmChecklist(checklists);
+                }
+            });
+
+
+
+        mFabAddChecklistItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AddChecklistItemDialog dialog = new AddChecklistItemDialog();
+                dialog.show(getFragmentManager(),"checklist_dialog");
+            }
+        });
+
+    }
+
+
+    private void initRecyclerView(){
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mChecklistRecyclerView.setLayoutManager(layoutManager);
-
-        List<Checklist> list = getFakeChecklist();
-        mAdapter = new ChecklistAdapter(getActivity(),list);
+        mAdapter = new ChecklistAdapter(getActivity());
         mChecklistRecyclerView.setAdapter(mAdapter);
 
-
     }
 
-
-    private List<Checklist> getFakeChecklist(){
-        List<Checklist> checklist = new ArrayList<>();
-
-        checklist.add(new Checklist("Incomplete","Gym"));
-        checklist.add(new Checklist("Incomplete","Study"));
-        checklist.add(new Checklist("Incomplete","Grocery"));
-        checklist.add(new Checklist("Incomplete","Play"));
-        checklist.add(new Checklist("Incomplete","Cook"));
-        checklist.add(new Checklist("Incomplete","Swim"));
-        checklist.add(new Checklist("Incomplete","Cycling"));
-        return checklist;
-
-    }
 }

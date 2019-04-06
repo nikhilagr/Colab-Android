@@ -18,6 +18,8 @@
             android:id="@+id/toAddNewNoteFragment"
             app:destination="@id/addNewNoteFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/checklistFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.ChecklistFragment"
@@ -27,17 +29,28 @@
         android:id="@+id/reminderFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.ReminderFragment"
         android:label="Reminders"
-        tools:layout="@layout/fragment_reminder" />
+        tools:layout="@layout/fragment_reminder" >
+        <action
+            android:id="@+id/action_reminderFragment_to_addNewReminderFragment"
+            app:destination="@id/addNewReminderFragment"
+            app:launchSingleTop="false" />
+    </fragment>
 
     <fragment
         android:id="@+id/addNewNoteFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.AddNewNoteFragment"
+        android:label="Add Note"
+        tools:layout="@layout/fragment_add_new_note" />
+
+    <fragment
+        android:id="@+id/addNewReminderFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.AddReminderFragment"
         android:label="Add Reminder"
-        tools:layout="@layout/fragment_add_new_note" >
-        <action
-            android:id="@+id/action_addNewNoteFragment_to_notesFragment2"
-            app:destination="@id/notesFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_add_reminder"
+        />
+
+
+
 
 
 </navigation>
