@@ -3,7 +3,7 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="registration">Registration</string>
     <string name="title_activity_tab">TabActivity</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Main</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">MainActivity</string>
