@@ -39,8 +39,6 @@ public class OnBoardActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(viewListner);
 
-
-
         mBtnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +54,6 @@ public class OnBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 Intent intent = new Intent(OnBoardActivity.this,RegisterActivity.class);
                 startActivity(intent);
 
@@ -66,16 +63,12 @@ public class OnBoardActivity extends AppCompatActivity {
     }
 
     private void addDots(int position){
-
-
         mDots = new TextView[4];
         dotsLayout.removeAllViews();
 
         for(int i=0; i < mDots.length ;i++ ){
 
             mDots[i] = new TextView(this);
-
-
             mDots[i].setText(Html.fromHtml("&#8226"));
             mDots[i].setTextSize(25);
             mDots[i].setTextColor(getResources().getColor(R.color.colorAccent));

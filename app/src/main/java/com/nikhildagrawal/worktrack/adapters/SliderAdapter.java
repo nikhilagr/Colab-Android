@@ -38,10 +38,10 @@ public class SliderAdapter extends PagerAdapter {
     };
 
     public String[] slideDescrition = {
-            "hjasbdfhjkasfdhgasjfhd kjh jkagshjdfgkljgasdf jagsljfd ljghahjsgdf",
-            "aksjhdfgjasflk jhaskjdhfkjaf lkjhasdkfjh kasf lkajhsdfkjhkjahsdf jka",
-            "jhasdfgjkagsfdjkga hjkagshjdfghasdgfg hjgakjsgdfjhasfdk ahsgdfhjg ahgsf",
-            "jhasdfgjkagsfdjkga hjkagshjdfghasdgfg hjgakjsgdfjhasfdk ahsgdfhjg ahgsf"
+            "Easy collaboration with the team anywhere anytime!",
+            "Add events, reminders for any date and time!",
+            "Create your daily TODO list!",
+            "Create and save your notes access them anywhere from the globe!"
     };
 
     public String[] slideCardColors = {

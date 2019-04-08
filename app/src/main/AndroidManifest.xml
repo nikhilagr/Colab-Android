@@ -9,9 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".TabActivity"
-            android:label="@string/title_activity_tab" />
+
+        <!--On Board Activity-->
         <activity android:name=".OnBoardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,19 +18,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--Register Activity-->
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--Login Activity-->
         <activity android:name=".LoginActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
+
+        <!--Tab Activity-->
+        <activity
+            android:name=".TabActivity"
+            android:label="@string/title_activity_tab" />
+
     </application>
 
 </manifest>

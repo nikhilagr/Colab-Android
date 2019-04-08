@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.models.Checklist;
@@ -46,12 +47,13 @@ public class ChecklistRepository {
     }
 
 
-    public List<Checklist> readChecklistFromFireStore(){
+    public void readChecklistFromFireStore(){
 
         final List<Checklist> list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Query query = db.collection("checklists").whereEqualTo("user_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        db.collection("checklists").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -74,7 +76,7 @@ public class ChecklistRepository {
                 }
             }
         });
-        return list;
+
     }
 
 

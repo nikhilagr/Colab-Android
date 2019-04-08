@@ -1,23 +1,19 @@
 package com.nikhildagrawal.worktrack.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.NotesAdapter;
+import com.nikhildagrawal.worktrack.interfaces.NoteClickListner;
 import com.nikhildagrawal.worktrack.models.Note;
 import com.nikhildagrawal.worktrack.viewmodels.NoteViewModel;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,14 +22,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements NoteClickListner {
 
     public static final String TAG = "NotesFragment";
 
     private RecyclerView mNotesRecyclerView;
     private FloatingActionButton mFabAddNotes;
     private NotesAdapter mAdapter;
-
     private NoteViewModel mNoteViewModel;
 
     public NotesFragment() {
@@ -55,7 +50,7 @@ public class NotesFragment extends Fragment {
 
 
 
-        mAdapter = new NotesAdapter(getActivity());
+        mAdapter = new NotesAdapter(getActivity(),this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mNotesRecyclerView.setLayoutManager(layoutManager);
         mNotesRecyclerView.setAdapter(mAdapter);
@@ -75,6 +70,11 @@ public class NotesFragment extends Fragment {
     }
 
 
+    @Override
+    public void onNoteClick(int position) {
+
+        Toast.makeText(getActivity(),"Clicked",Toast.LENGTH_LONG).show();
+    }
 }
 
 

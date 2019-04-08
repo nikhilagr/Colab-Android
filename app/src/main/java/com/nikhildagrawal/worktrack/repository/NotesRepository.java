@@ -5,8 +5,10 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.models.Note;
@@ -50,15 +52,16 @@ public class NotesRepository {
 
     private void readNoteFromFireStore(){
 
-        FirebaseFirestore db= FirebaseFirestore.getInstance();
-        db.collection("notes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        Query query = FirebaseFirestore.getInstance().collection("notes").whereEqualTo("user_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 if(task.isSuccessful()){
 
                     List<Note> noteList = new ArrayList<>();
-
 
                     for (QueryDocumentSnapshot document: task.getResult()) {
 
@@ -77,11 +80,9 @@ public class NotesRepository {
 
     public void insertNoteInFirestore(String title,String desc){
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference ref = db.collection("notes").document();
 
-        Note newNote = new Note(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                ref.getId(),title,desc);
+        DocumentReference ref = FirebaseFirestore.getInstance().collection("notes").document();
+        Note newNote = new Note(FirebaseAuth.getInstance().getCurrentUser().getUid(),ref.getId(),title,desc);
 
         List<Note> list = mNoteList.getValue();
         list.add(newNote);
@@ -98,6 +99,7 @@ public class NotesRepository {
             }
         });
     }
+
 }
 
 

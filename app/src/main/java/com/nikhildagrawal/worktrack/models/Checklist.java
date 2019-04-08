@@ -8,6 +8,12 @@ public class Checklist {
     private String Title;
 
 
+
+    public Checklist(){
+
+    }
+
+
     public Checklist(String user_id, String checklist_id, String status, String title) {
         this.user_id = user_id;
         this.checklist_id = checklist_id;
@@ -15,15 +21,12 @@ public class Checklist {
         Title = title;
     }
 
-    public Checklist(){
-
-    }
-
 
     public Checklist(String status, String title) {
         this.status = status;
         Title = title;
     }
+
 
     public String getUser_id() {
         return user_id;

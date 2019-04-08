@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.nikhildagrawal.worktrack.R;
+import com.nikhildagrawal.worktrack.interfaces.NoteClickListner;
 import com.nikhildagrawal.worktrack.models.Note;
 import java.util.List;
 import androidx.annotation.NonNull;
@@ -16,8 +17,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     private Context mContext;
     private List<Note> noteList;
 
-    public NotesAdapter(Context context ){
+    private NoteClickListner mListner;
+
+
+    public NotesAdapter(Context context , NoteClickListner listner){
             mContext = context;
+            mListner = listner;
     }
 
     @NonNull
@@ -26,7 +31,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_notes_list_item,parent,false);
 
-        NotesViewHolder holder = new NotesViewHolder(view);
+        NotesViewHolder holder = new NotesViewHolder(view,mListner);
 
         return holder;
     }
@@ -50,16 +55,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     }
 
-    public class NotesViewHolder extends RecyclerView.ViewHolder {
+    public class NotesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView tv_title;
         private TextView tv_desc;
 
-        public NotesViewHolder(@NonNull View itemView) {
+        public NotesViewHolder(@NonNull View itemView, NoteClickListner listner) {
 
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_item_notes_title);
             tv_desc = itemView.findViewById(R.id.tv_item_notes_description);
+            mListner = listner;
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListner.onNoteClick(getAdapterPosition());
         }
     }
 

@@ -124,18 +124,13 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "onComplete: AuthState: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                             sendVerificationEmail();
-
-
-
                             // Adding new user to firestore
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DocumentReference ref = db.collection("users").document();
-
-
                             User user = new User();
                             user.setFirtst_name(mFirstName.getText().toString());
                             user.setLast_name(mLastName.getText().toString());
-                            user.setDob("");
+                            user.setDob(mDob.getText().toString());
                             user.setEmail(mEmail.getText().toString());
                             user.setProfile_url("");
                             user.setUser_id(ref.getId());
@@ -144,7 +139,6 @@ public class RegisterActivity extends AppCompatActivity {
                             ref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-
 
                                     if(task.isSuccessful()){
                                         Toast.makeText(RegisterActivity.this,"Data inserted",Toast.LENGTH_LONG).show();

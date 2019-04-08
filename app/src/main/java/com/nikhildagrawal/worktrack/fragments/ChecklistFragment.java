@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ChecklistAdapter;
 import com.nikhildagrawal.worktrack.dialogs.AddChecklistItemDialog;
+import com.nikhildagrawal.worktrack.interfaces.CheckListItemClickListner;
 import com.nikhildagrawal.worktrack.models.Checklist;
 import com.nikhildagrawal.worktrack.viewmodels.ChecklistViewModel;
 import java.util.List;
@@ -20,7 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChecklistFragment extends Fragment {
+public class ChecklistFragment extends Fragment implements CheckListItemClickListner {
 
     private RecyclerView mChecklistRecyclerView;
     private FloatingActionButton mFabAddChecklistItem;
@@ -70,14 +73,17 @@ public class ChecklistFragment extends Fragment {
 
     }
 
-
     private void initRecyclerView(){
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mChecklistRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ChecklistAdapter(getActivity());
+        mAdapter = new ChecklistAdapter(getActivity(),this);
         mChecklistRecyclerView.setAdapter(mAdapter);
-
     }
 
+
+
+    @Override
+    public void onCheckListItemClick(int position) {
+        Toast.makeText(getActivity(),"Clicked",Toast.LENGTH_LONG).show();
+    }
 }

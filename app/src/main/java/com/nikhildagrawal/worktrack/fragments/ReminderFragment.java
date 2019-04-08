@@ -1,16 +1,15 @@
 package com.nikhildagrawal.worktrack.fragments;
-
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.RemindersAdapter;
+import com.nikhildagrawal.worktrack.interfaces.ReminderClickListner;
 import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.viewmodels.ReminderViewModel;
 
@@ -27,7 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class ReminderFragment extends Fragment {
+public class ReminderFragment extends Fragment implements ReminderClickListner {
 
 
 
@@ -72,27 +71,18 @@ public class ReminderFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mReminderRecyclerView.setLayoutManager(layoutManager);
 
-       // List<Reminder> list = getFakeReminders();
-        mAdapter = new RemindersAdapter(getActivity());
+
+        mAdapter = new RemindersAdapter(getActivity(),this);
 
         mReminderRecyclerView.setAdapter(mAdapter);
 
 
     }
 
-    private List<Reminder> getFakeReminders(){
-        List<Reminder> reminderList = new ArrayList<>();
+    @Override
+    public void onReminderClick(int position) {
 
-        reminderList.add(new Reminder("Reminder 1","Description about reminder 1","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 2","Description about reminder 2","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 3","Description about reminder 3","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 4","Description about reminder 4","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 5","Description about reminder 5","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 6","Description about reminder 6","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 7","Description about reminder 7","03/04/2019","6:00 PM"));
-        reminderList.add(new Reminder("Reminder 8","Description about reminder 8","03/04/2019","6:00 PM"));
+        Toast.makeText(getActivity(),"Cell: "+ position + "Clicked" , Toast.LENGTH_LONG).show();
 
-        return reminderList;
     }
-
 }

@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.models.Note;
@@ -59,7 +60,8 @@ public class ReminderRepository {
         final List<Reminder> list = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("reminders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Query query = db.collection("reminders").whereEqualTo("user_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
