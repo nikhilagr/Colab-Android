@@ -18,6 +18,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.utils.Constants;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -61,6 +62,7 @@ public class TabActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigation,mNavController);
         NavigationUI.setupActionBarWithNavController(this,mNavController);
         intiFCM();
+
     }
 
 
