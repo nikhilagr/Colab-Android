@@ -7,17 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.interfaces.NoteClickListner;
 import com.nikhildagrawal.worktrack.models.Note;
 import com.nikhildagrawal.worktrack.repository.NotesRepository;
-
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
@@ -56,14 +54,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 
-                dialog.setTitle("DELETE");
-                dialog.setMessage("Are you sure you want to delete note?");
+                dialog.setTitle(mContext.getString(R.string.delete));
+                dialog.setMessage(mContext.getString(R.string.delete_note_message));
 
-                dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                dialog.setPositiveButton(mContext.getString(R.string.delete), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Toast.makeText(mContext,"Call Delete here",Toast.LENGTH_SHORT).show();
+                        
                         NotesRepository.getInstance().delteNoteFromFireStore(noteList.get(position).getNote_id());
                         noteList.remove(position);
                         notifyDataSetChanged();
@@ -72,7 +70,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                     }
                 });
 
-                dialog.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton(mContext.getString(R.string.cancle), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -101,6 +99,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         private TextView tv_title;
         private TextView tv_desc;
         private ImageView btnDelete;
+
+
         public NotesViewHolder(@NonNull View itemView, NoteClickListner listner) {
 
             super(itemView);

@@ -10,35 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Add Reminder"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/et_add_reminder_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:ems="10"
-            android:hint="Add Title"
+            android:hint="@string/add_title"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_add_reminder_desc"
@@ -46,11 +33,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:ems="10"
-            android:hint="Add Description"
+            android:hint="@string/add_description"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="@+id/et_add_reminder_title"
             app:layout_constraintHorizontal_bias="0.0"
@@ -69,7 +56,7 @@
             android:drawableRight="@drawable/ic_date_range_24dp"
             android:ems="10"
             android:focusable="false"
-            android:hint="Date"
+            android:hint="@string/date"
             android:inputType="date"
             app:layout_constraintEnd_toEndOf="@+id/et_add_reminder_desc"
             app:layout_constraintStart_toStartOf="@+id/et_add_reminder_desc"
@@ -87,7 +74,7 @@
             android:drawableRight="@drawable/ic_access_time_24dp"
             android:ems="10"
             android:focusable="false"
-            android:hint="Time"
+            android:hint="@string/time"
             android:inputType="time"
             app:layout_constraintEnd_toEndOf="@+id/et_add_reminder_date"
             app:layout_constraintStart_toStartOf="@+id/et_add_reminder_date"
@@ -106,14 +93,14 @@
                 android:id="@+id/btn_add_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ADD"
+                android:text="@string/add"
            />
             <Button
                 android:layout_below="@+id/btn_add_reminder"
                 android:id="@+id/btn_save_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
+                android:text="@string/save"
                 android:visibility="gone"
                 />
 

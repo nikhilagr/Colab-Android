@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,8 +36,7 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            >
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="First Name" />
+                android:hint="@string/first_name" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -54,8 +54,7 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            >
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Last Name" />
+                android:hint="@string/last_name" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -72,8 +71,7 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            >
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -83,8 +81,8 @@
                 android:inputType="text"
                 android:focusable="false"
                 android:drawableRight="@drawable/ic_date_range_24dp"
-                android:hint="D.O.B" />
-
+                android:hint="@string/d_o_b"
+                android:drawableEnd="@drawable/ic_date_range_24dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,16 +93,14 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            >
-
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_registration_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Enter User Email" />
+                android:hint="@string/enter_user_email" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -114,8 +110,7 @@
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            >
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 
             <com.google.android.material.textfield.TextInputEditText
@@ -123,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Enter Password" />
+                android:hint="@string/enter_password" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -141,7 +136,7 @@
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirm Password" />
+                android:hint="@string/confirm_password" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Register" />
+            android:text="@string/register" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
