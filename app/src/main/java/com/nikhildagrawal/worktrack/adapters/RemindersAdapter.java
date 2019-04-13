@@ -64,7 +64,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        Toast.makeText(mContext,"Call Delete here",Toast.LENGTH_SHORT).show();
+
                         ReminderRepository.getInstance().deleteReminderFromFireStore(mReminderList.get(position).getReminder_id());
                         mReminderList.remove(position);
                         notifyDataSetChanged();

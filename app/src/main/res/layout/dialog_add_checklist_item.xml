@@ -5,12 +5,13 @@
 
     <TextView
         android:layout_margin="10dp"
-        android:text="Add Todo Item"
+        android:text="@string/add_todo_item"
         android:id="@+id/tv_dialog_checklist_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:hint="@string/add_todo_item"
         android:layout_margin="10dp"
         android:id="@+id/et_dialog_checklist_item"
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
 
         <Button
             android:layout_margin="10dp"
-            android:text="Cancle"
+            android:text="@string/cancle"
             android:id="@+id/btn_dialog_checklist_cancle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -33,7 +34,7 @@
 
         <Button
             android:layout_margin="10dp"
-            android:text="Add"
+            android:text="@string/add"
             android:id="@+id/btn_dialog_checklist_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

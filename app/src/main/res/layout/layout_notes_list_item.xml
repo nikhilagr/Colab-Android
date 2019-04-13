@@ -15,8 +15,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
 
                 <TextView
@@ -25,8 +24,7 @@
                     android:text="Notes Title"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                   />
+                    android:layout_height="wrap_content" />
 
 
 
@@ -43,7 +41,6 @@
                 android:id="@+id/tv_item_notes_description"
                 android:maxLines="1"
                 android:layout_weight="9"
-                android:text="jshdakhfasd kjahskjfhasjkfd kjhaskjdfhask kjhasjfhkas"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
             <ImageView

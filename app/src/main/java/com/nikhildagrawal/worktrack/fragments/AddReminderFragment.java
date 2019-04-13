@@ -12,7 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import com.google.android.material.snackbar.Snackbar;
-import com.nikhildagrawal.worktrack.Constants;
+import com.nikhildagrawal.worktrack.Utils.Constants;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.repository.ReminderRepository;

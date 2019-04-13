@@ -71,12 +71,10 @@ public class SliderAdapter extends PagerAdapter {
         TextView textViewTitle = view.findViewById(R.id.onboard_title);
         TextView textViewDesc = view.findViewById(R.id.onboard_description);
         MaterialCardView cardView = view.findViewById(R.id.onboard_card);
-
         imageView.setImageResource(slideImages[position]);
         textViewTitle.setText(slideTitles[position]);
         textViewDesc.setText(slideDescrition[position]);
         cardView.setCardBackgroundColor(Color.parseColor(slideCardColors[position]));
-
         container.addView(view);
         return view;
 

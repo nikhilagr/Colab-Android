@@ -8,11 +8,12 @@
     <color name="secondaryDark">#087f23</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorMain">#eeeeee</color>
-    <color name="colorYellowonBoard">#ffaf49</color>
     <color name="colorRed">#f44336</color>
     <color name="colorYellow">#ffeb3b</color>
     <color name="colorGreen">#8bc34a</color>
     <color name="colorwhite">#ffffff</color>
+    <color name="colorColabCard">#ffaf49</color>
+
 
 
 

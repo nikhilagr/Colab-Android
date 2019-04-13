@@ -11,14 +11,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.interfaces.CheckListItemClickListner;
 import com.nikhildagrawal.worktrack.models.Checklist;
 import com.nikhildagrawal.worktrack.repository.ChecklistRepository;
-import com.nikhildagrawal.worktrack.repository.NotesRepository;
-
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -57,16 +53,15 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
                 public void onClick(View v) {
 
                     AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+    
+                    dialog.setTitle(mContext.getString(R.string.delete));
+                    dialog.setMessage(mContext.getString(R.string.delete_todo_message));
 
-                    dialog.setTitle("DELETE");
-                    dialog.setMessage("Are you sure you want to delete TODO Item?");
-
-                    dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    dialog.setPositiveButton(mContext.getString(R.string.delete), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
                             Log.d(TAG,mChecklist.get(position).getChecklist_id());
-                            Toast.makeText(mContext,"Call Delete here",Toast.LENGTH_SHORT).show();
                             ChecklistRepository.getInstance().deleteChecklisFromFireStore(mChecklist.get(position).getChecklist_id());
                             mChecklist.remove(position);
                             notifyDataSetChanged();
@@ -75,7 +70,7 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
                         }
                     });
 
-                    dialog.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    dialog.setNegativeButton(mContext.getString(R.string.cancle), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -95,22 +90,21 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 
-                    if(mChecklist.get(position).getStatus().equals("Complete")){
+                    if(mChecklist.get(position).getStatus().equals(mContext.getString(R.string.status_complete))){
                         holder.checkBox.setChecked(true);
-                    }else if(mChecklist.get(position).getStatus().equals("Incomplete")){
+                    }else if(mChecklist.get(position).getStatus().equals(mContext.getString(R.string.status_incomplete))){
                         holder.checkBox.setChecked(false);
                     }
 
-
                     if(isChecked){
+
                         //Update DB set status Complete
                     }else{
+
                         //Update DB set status Incomplete
                     }
                 }
             });
-
-
 
         }
     }
