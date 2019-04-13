@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.TabActivity;
-import com.nikhildagrawal.worktrack.Utils.Utilties;
+import com.nikhildagrawal.worktrack.utils.Utilties;
 import com.nikhildagrawal.worktrack.models.Note;
 import com.nikhildagrawal.worktrack.repository.NotesRepository;
 import com.nikhildagrawal.worktrack.viewmodels.NoteViewModel;

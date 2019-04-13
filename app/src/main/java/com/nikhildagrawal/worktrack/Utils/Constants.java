@@ -1,4 +1,4 @@
-package com.nikhildagrawal.worktrack.Utils;
+package com.nikhildagrawal.worktrack.utils;
 
 public class Constants {
 
@@ -7,4 +7,5 @@ public class Constants {
     public static final String REMINDER_DESC = "desc";
     public static final String REMINDER_DATE = "date";
     public static final String REMINDER_TIME = "time";
+    public static final String USER_COLLECTION = "users";
 }
