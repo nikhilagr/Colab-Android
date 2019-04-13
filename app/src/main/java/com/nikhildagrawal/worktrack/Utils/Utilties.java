@@ -1,4 +1,4 @@
-package com.nikhildagrawal.worktrack.Utils;
+package com.nikhildagrawal.worktrack.utils;
 
 public class Utilties {
 
