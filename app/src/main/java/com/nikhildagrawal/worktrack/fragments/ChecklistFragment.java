@@ -84,6 +84,6 @@ public class ChecklistFragment extends Fragment implements CheckListItemClickLis
 
     @Override
     public void onCheckListItemClick(int position) {
-        Toast.makeText(getActivity(),"Clicked",Toast.LENGTH_LONG).show();
+
     }
 }

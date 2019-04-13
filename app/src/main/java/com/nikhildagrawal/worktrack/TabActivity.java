@@ -1,14 +1,17 @@
 package com.nikhildagrawal.worktrack;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,6 +20,8 @@ import androidx.navigation.ui.NavigationUI;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 public class TabActivity extends AppCompatActivity {
@@ -30,10 +35,9 @@ public class TabActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         Log.d(TAG,"onCreate");
         setContentView(R.layout.activity_tab);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -44,6 +48,11 @@ public class TabActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this,mNavController);
     }
 
+
+
+    public ActionBar getBar(){
+        return getSupportActionBar();
+    }
     @Override
     public boolean onSupportNavigateUp() {
 
@@ -70,11 +79,6 @@ public class TabActivity extends AppCompatActivity {
         return false;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG,"onStart");
-    }
 
     @Override
     protected void onResume() {
@@ -97,24 +101,6 @@ public class TabActivity extends AppCompatActivity {
         }else{
             Log.d("TabActivity","Successfully Authenticated:");
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG,"onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG,"onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG,"onDestroy");
     }
 
 

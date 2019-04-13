@@ -1,15 +1,22 @@
 package com.nikhildagrawal.worktrack.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.interfaces.NoteClickListner;
 import com.nikhildagrawal.worktrack.models.Note;
+import com.nikhildagrawal.worktrack.repository.NotesRepository;
+
 import java.util.List;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
@@ -37,10 +44,44 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotesViewHolder holder, final int position) {
 
         holder.tv_title.setText(noteList.get(position).getNote_title());
         holder.tv_desc.setText(noteList.get(position).getNote_desc());
+
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+
+                dialog.setTitle("DELETE");
+                dialog.setMessage("Are you sure you want to delete note?");
+
+                dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Toast.makeText(mContext,"Call Delete here",Toast.LENGTH_SHORT).show();
+                        NotesRepository.getInstance().delteNoteFromFireStore(noteList.get(position).getNote_id());
+                        noteList.remove(position);
+                        notifyDataSetChanged();
+                        dialog.dismiss();
+
+                    }
+                });
+
+                dialog.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                dialog.create().show();
+            }
+        });
 
     }
 
@@ -59,12 +100,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         private TextView tv_title;
         private TextView tv_desc;
-
+        private ImageView btnDelete;
         public NotesViewHolder(@NonNull View itemView, NoteClickListner listner) {
 
             super(itemView);
             tv_title = itemView.findViewById(R.id.tv_item_notes_title);
             tv_desc = itemView.findViewById(R.id.tv_item_notes_description);
+            btnDelete = itemView.findViewById(R.id.btn_delete_cell_notes);
             mListner = listner;
 
             itemView.setOnClickListener(this);

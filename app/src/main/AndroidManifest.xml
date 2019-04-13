@@ -33,7 +33,8 @@
         <!--Tab Activity-->
         <activity
             android:name=".TabActivity"
-            android:label="@string/title_activity_tab" />
+            android:label="@string/title_activity_tab"
+            android:windowSoftInputMode="adjustPan"/>
 
     </application>
 

@@ -118,11 +118,23 @@ public class ChecklistRepository {
         return true;
     }
 
-    private boolean deleteChecklistInFirestore(String checklist_id){
-        //TODO: Complete the function
-        return true;
-    }
 
+
+    public void deleteChecklisFromFireStore(String checkListItemId){
+
+        DocumentReference ref = FirebaseFirestore.getInstance().collection("checklists").document(checkListItemId);
+
+
+        ref.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    //TODO: Check if need to remove from local list
+
+                }
+            }
+        });
+    }
 
 
 

@@ -82,7 +82,10 @@ public class ReminderFragment extends Fragment implements ReminderClickListner {
     @Override
     public void onReminderClick(int position) {
 
-        Toast.makeText(getActivity(),"Cell: "+ position + "Clicked" , Toast.LENGTH_LONG).show();
+        Bundle bundle = new Bundle();
+        bundle.putString("from","ReminderClick");
+        bundle.putInt("position",position);
+        Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_reminderFragment_to_addNewReminderFragment,bundle);
 
     }
 }

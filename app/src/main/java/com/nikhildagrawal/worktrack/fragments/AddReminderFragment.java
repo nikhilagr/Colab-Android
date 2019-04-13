@@ -1,11 +1,8 @@
 package com.nikhildagrawal.worktrack.fragments;
 
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Build;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,27 +11,34 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-
+import com.google.android.material.snackbar.Snackbar;
+import com.nikhildagrawal.worktrack.Constants;
 import com.nikhildagrawal.worktrack.R;
-import com.nikhildagrawal.worktrack.RegisterActivity;
+import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.repository.ReminderRepository;
-
+import com.nikhildagrawal.worktrack.viewmodels.ReminderViewModel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 
 public class AddReminderFragment extends Fragment {
 
 
-    EditText etAddTitle;
-    EditText etAddDesc;
-    EditText etAddDate;
-    EditText etAddTime;
-    Button btnAddReminder;
+    EditText mTitle;
+    EditText mDescription;
+    EditText mDate;
+    EditText mTime;
+    Button mBtnAddReminder, mBtnSave;
     Calendar calendar;
+    ReminderViewModel mViewModel;
+    Integer mPosition;
 
 
     public AddReminderFragment() {
@@ -46,12 +50,75 @@ public class AddReminderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
-        etAddTitle = view.findViewById(R.id.et_add_reminder_title);
-        etAddDesc= view.findViewById(R.id.et_add_reminder_desc);
-        etAddDate = view.findViewById(R.id.et_add_reminder_date);
-        etAddTime = view.findViewById(R.id.et_add_reminder_time);
-        btnAddReminder = view.findViewById(R.id.btn_add_reminder);
+        mTitle = view.findViewById(R.id.et_add_reminder_title);
+        mDescription= view.findViewById(R.id.et_add_reminder_desc);
+        mDate = view.findViewById(R.id.et_add_reminder_date);
+        mTime = view.findViewById(R.id.et_add_reminder_time);
+        mBtnAddReminder = view.findViewById(R.id.btn_add_reminder);
+        mBtnSave = view.findViewById(R.id.btn_save_reminder);
+
+
         calendar = Calendar.getInstance();
+
+        String str = "";
+        mPosition = -1;
+
+        if(getArguments()!= null){
+            str = getArguments().getString("from");
+            mPosition = getArguments().getInt("position");
+        }
+
+        mViewModel = ViewModelProviders.of(getActivity()).get(ReminderViewModel.class);
+        final List<Reminder> reminders =  mViewModel.getReminderList().getValue();
+
+        if(str.contentEquals("ReminderClick")){
+            mBtnAddReminder.setVisibility(View.GONE);
+            mBtnSave.setVisibility(View.VISIBLE);
+            mTitle.setText(reminders.get(mPosition).getTitle());
+            mDescription.setText(reminders.get(mPosition).getDesc());
+            mDate.setText(reminders.get(mPosition).getDate());
+            mTime.setText(reminders.get(mPosition).getTime());
+        }
+
+
+        mBtnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String curTitle = mTitle.getText().toString();
+                String curDesc = mDescription.getText().toString();
+                String curDate = mDate.getText().toString();
+                String curTime = mTime.getText().toString();
+
+                Map<String,Object> map = new HashMap<>();
+
+                if(!curTitle.equals(reminders.get(mPosition).getTitle())){
+                    map.put(Constants.REMINDER_TITLE,curTitle);
+                }
+
+                if(!curDesc.equals(reminders.get(mPosition).getDesc())){
+                    map.put(Constants.REMINDER_DESC,curDesc);
+                }
+
+                if(!curDate.equals(reminders.get(mPosition).getDate())){
+                    map.put(Constants.REMINDER_DATE,curDate);
+                }
+
+                if(!curTime.equals(reminders.get(mPosition).getTime())){
+                    map.put(Constants.REMINDER_TIME,curTime);
+                }
+
+                if(map.size()!=0){
+                    ReminderRepository.getInstance().updateReminderFromFirestore(map,reminders.get(mPosition).getReminder_id());
+                    Snackbar.make(v,"Changes saved successfully",Snackbar.LENGTH_LONG).show();
+                    getFragmentManager().popBackStackImmediate();
+                }else{
+                    getFragmentManager().popBackStackImmediate();
+                }
+            }
+        });
+
+
 
 
         final DatePickerDialog.OnDateSetListener dateDi = new DatePickerDialog.OnDateSetListener() {
@@ -64,7 +131,7 @@ public class AddReminderFragment extends Fragment {
             }
         };
 
-        etAddDate.setOnClickListener(new View.OnClickListener() {
+        mDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getActivity(), dateDi, calendar
@@ -74,7 +141,7 @@ public class AddReminderFragment extends Fragment {
         });
 
 
-            etAddTime.setOnClickListener(new View.OnClickListener() {
+            mTime.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -86,7 +153,7 @@ public class AddReminderFragment extends Fragment {
                 mTimePicker = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        etAddTime.setText( selectedHour + ":" + selectedMinute);
+                        mTime.setText( selectedHour + ":" + selectedMinute);
                     }
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -95,13 +162,13 @@ public class AddReminderFragment extends Fragment {
             }
         });
 
-        btnAddReminder.setOnClickListener(new View.OnClickListener() {
+        mBtnAddReminder.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                ReminderRepository.getInstance().insertReminderInFireStore(etAddTitle.getText().toString(),etAddDesc.getText().toString()
-                        ,etAddDate.getText().toString(),etAddTime.getText().toString());
+                ReminderRepository.getInstance().insertReminderInFireStore(mTitle.getText().toString(),mDescription.getText().toString()
+                        ,mDate.getText().toString(),mTime.getText().toString());
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 getFragmentManager().popBackStackImmediate();
 
@@ -113,7 +180,7 @@ public class AddReminderFragment extends Fragment {
     private void updateLabel() {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        etAddDate.setText(sdf.format(calendar.getTime()));
+        mDate.setText(sdf.format(calendar.getTime()));
 
     }
 

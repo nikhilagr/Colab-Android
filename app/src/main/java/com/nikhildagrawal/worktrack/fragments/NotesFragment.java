@@ -73,7 +73,11 @@ public class NotesFragment extends Fragment implements NoteClickListner {
     @Override
     public void onNoteClick(int position) {
 
-        Toast.makeText(getActivity(),"Clicked",Toast.LENGTH_LONG).show();
+        //Navigation.createNavigateOnClickListener(R.id.toAddNewNoteFragment);
+        Bundle bundle = new Bundle();
+        bundle.putString("from","NoteClick");
+        bundle.putInt("position",position);
+        Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.toAddNewNoteFragment,bundle);
     }
 }
 

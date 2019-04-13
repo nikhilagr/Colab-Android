@@ -16,6 +16,7 @@ import com.nikhildagrawal.worktrack.models.Reminder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -110,5 +111,44 @@ public class ReminderRepository {
             }
         });
     }
+
+
+    public void deleteReminderFromFireStore(String reminderId){
+
+        DocumentReference ref = FirebaseFirestore.getInstance().collection("reminders").document(reminderId);
+
+
+        ref.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    //TODO: Check if need to remove from local list
+
+                }
+            }
+        });
+    }
+
+    public void updateReminderFromFirestore(Map<String,Object> map, String reminderId){
+
+        DocumentReference ref = FirebaseFirestore.getInstance().collection("reminders").document(reminderId);
+
+
+        ref.update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()){
+
+                    Log.d(TAG,"Update successful");
+                }else{
+                    Log.d(TAG,"Update unsuccessful");
+                }
+            }
+        });
+
+    }
+
+
 
 }

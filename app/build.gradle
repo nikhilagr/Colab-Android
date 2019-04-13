@@ -24,24 +24,43 @@ dependencies {
     def nav_version = "2.1.0-alpha01"
     def lifecycle_version = "2.0.0"
 
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.0-beta01'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 
+    // Firebase core
     implementation 'com.google.firebase:firebase-core:16.0.8'
+
+    // For authentication
     implementation 'com.google.firebase:firebase-auth:16.2.0'
+
+    //For firestore database
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
-    implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+
+    // For livedate and viewmodel
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
+
+    // For Firebase cloud messaging
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
+
+    // For navigation components
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    // For material design
+    implementation 'com.google.android.material:material:1.0.0'
+
+
+//    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+//    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 
 
 }
