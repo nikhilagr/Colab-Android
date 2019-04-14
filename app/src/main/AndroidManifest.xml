@@ -16,7 +16,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-s
+
         <!--On Board Activity-->
         <activity android:name=".OnBoardActivity">
             <intent-filter>

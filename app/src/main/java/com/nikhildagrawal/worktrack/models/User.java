@@ -3,6 +3,8 @@ package com.nikhildagrawal.worktrack.models;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
+import java.util.List;
+
 @IgnoreExtraProperties
 public class User {
 
@@ -12,9 +14,26 @@ public class User {
     private String dob;
     private String email;
     private String profile_url;
-    private String user_auth_id;        ;
+    private String user_auth_id;
+    private String fcm_instance_token;
+    private List<String> projects;
 
 
+    public String getFcm_instance_token() {
+        return fcm_instance_token;
+    }
+
+    public void setFcm_instance_token(String fcm_instance_token) {
+        this.fcm_instance_token = fcm_instance_token;
+    }
+
+    public List<String> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<String> projects) {
+        this.projects = projects;
+    }
 
     public User(){
 
@@ -27,6 +46,18 @@ public class User {
         this.dob = dob;
         this.email = email;
         this.profile_url = profile_url;
+    }
+
+    public User(String user_id, String firtst_name, String last_name, String dob, String email, String profile_url, String user_auth_id, String fcm_instance_token, List<String> projects) {
+        this.user_id = user_id;
+        this.firtst_name = firtst_name;
+        this.last_name = last_name;
+        this.dob = dob;
+        this.email = email;
+        this.profile_url = profile_url;
+        this.user_auth_id = user_auth_id;
+        this.fcm_instance_token = fcm_instance_token;
+        this.projects = projects;
     }
 
     public String getUser_id() {

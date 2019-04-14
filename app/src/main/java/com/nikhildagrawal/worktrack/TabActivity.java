@@ -63,6 +63,10 @@ public class TabActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this,mNavController);
         intiFCM();
 
+
+
+
+
     }
 
 
