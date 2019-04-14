@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.AddNewProjectFragment">
+
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_title"
+            android:id="@+id/et_add_project_title" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_description"
+            android:id="@+id/et_add_project_desc" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_margin="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:hint="Start date"
+                android:id="@+id/et_project_start_date"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_margin="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:hint="End date"
+                android:id="@+id/et_project_end_date"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_margin="8dp"
+                android:id="@+id/btn_add_project_members"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Members"
+                android:layout_weight="5"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_margin="8dp"
+                android:id="@+id/btn_add_prject_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Tasks"
+                android:layout_weight="5"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="10"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_weight="4"
+                android:id="@+id/members_recyclerview"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_weight="4"
+                android:id="@+id/tasks_recyclerview"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="2"
+                android:id="@+id/btn_add_project"
+                android:text="Add project"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+    
+</LinearLayout>

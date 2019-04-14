@@ -1,57 +1,31 @@
 package com.nikhildagrawal.worktrack.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.firestore.IgnoreExtraProperties;
-import com.google.firebase.firestore.ServerTimestamp;
-
-import java.util.Date;
+import java.util.List;
 
 
 @IgnoreExtraProperties
-public class Project implements Parcelable {
+public class Project  {
 
-    private String name;
-    private String description;
-    private String creator;
-    private @ServerTimestamp Date time_created;
-    private String avatar;
     private String project_id;
+    private String title;
+    private String description;
+    private String creator_id;
+    private String start_date;
+    private String end_date;
+    private List<String> members;
+    private List<String> tasks;
 
-    public Project(String name, String description, String creator, Date time_created, String avatar, String project_id) {
-        this.name = name;
-        this.description = description;
-        this.creator = creator;
-        this.time_created = time_created;
-        this.avatar = avatar;
+    public Project(String project_id, String title, String description, String creator_id, String start_date, String end_date, List<String> members, List<String> tasks) {
         this.project_id = project_id;
+        this.title = title;
+        this.description = description;
+        this.creator_id = creator_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.members = members;
+        this.tasks = tasks;
     }
-
-    public Project() {
-
-    }
-
-    protected Project(Parcel in) {
-        name = in.readString();
-        description = in.readString();
-        creator = in.readString();
-        avatar = in.readString();
-        project_id = in.readString();
-        time_created = (Date) in.readSerializable();
-    }
-
-    public static final Creator<Project> CREATOR = new Creator<Project>() {
-        @Override
-        public Project createFromParcel(Parcel in) {
-            return new Project(in);
-        }
-
-        @Override
-        public Project[] newArray(int size) {
-            return new Project[size];
-        }
-    };
 
     public String getProject_id() {
         return project_id;
@@ -61,20 +35,12 @@ public class Project implements Parcelable {
         this.project_id = project_id;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -85,35 +51,57 @@ public class Project implements Parcelable {
         this.description = description;
     }
 
-    public String getCreator() {
-        return creator;
+    public String getCreator_id() {
+        return creator_id;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setCreator_id(String creator_id) {
+        this.creator_id = creator_id;
     }
 
-    public Date getTime_created() {
-        return time_created;
+    public String getStart_date() {
+        return start_date;
     }
 
-    public void setTime_created(Date time_created) {
-        this.time_created = time_created;
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
     }
 
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
+    }
+
+    public List<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
+
+    public List<String> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<String> tasks) {
+        this.tasks = tasks;
+    }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
-        parcel.writeString(description);
-        parcel.writeString(creator);
-        parcel.writeString(avatar);
-        parcel.writeString(project_id);
-        parcel.writeSerializable(time_created);
+    public String toString() {
+        return "Project{" +
+                "project_id='" + project_id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", creator_id='" + creator_id + '\'' +
+                ", start_date='" + start_date + '\'' +
+                ", end_date='" + end_date + '\'' +
+                ", members=" + members +
+                ", tasks=" + tasks +
+                '}';
     }
 }
