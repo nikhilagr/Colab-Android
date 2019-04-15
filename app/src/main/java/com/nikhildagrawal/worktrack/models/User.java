@@ -14,7 +14,6 @@ public class User {
     private String dob;
     private String email;
     private String profile_url;
-    private String user_auth_id;
     private String fcm_instance_token;
     private List<String> projects;
 
@@ -48,24 +47,19 @@ public class User {
         this.profile_url = profile_url;
     }
 
-    public User(String user_id, String firtst_name, String last_name, String dob, String email, String profile_url, String user_auth_id, String fcm_instance_token, List<String> projects) {
+    public User(String user_id, String firtst_name, String last_name, String dob, String email, String profile_url,  String fcm_instance_token, List<String> projects) {
         this.user_id = user_id;
         this.firtst_name = firtst_name;
         this.last_name = last_name;
         this.dob = dob;
         this.email = email;
         this.profile_url = profile_url;
-        this.user_auth_id = user_auth_id;
         this.fcm_instance_token = fcm_instance_token;
         this.projects = projects;
     }
 
     public String getUser_id() {
         return user_id;
-    }
-
-    public void setUser_auth_id(String user_auth_id) {
-        this.user_auth_id = user_auth_id;
     }
 
     public void setUser_id(String user_id) {
@@ -112,9 +106,7 @@ public class User {
         this.profile_url = profile_url;
     }
 
-    public String getUser_auth_id() {
-        return user_auth_id;
-    }
+
 
     @Override
     public String toString() {

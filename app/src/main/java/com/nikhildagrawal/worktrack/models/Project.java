@@ -16,8 +16,22 @@ public class Project  {
     private List<String> members;
     private List<String> tasks;
 
+    public Project(){
+
+    }
+
     public Project(String project_id, String title, String description, String creator_id, String start_date, String end_date, List<String> members, List<String> tasks) {
         this.project_id = project_id;
+        this.title = title;
+        this.description = description;
+        this.creator_id = creator_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.members = members;
+        this.tasks = tasks;
+    }
+
+    public Project(String title, String description, String creator_id, String start_date, String end_date, List<String> members, List<String> tasks) {
         this.title = title;
         this.description = description;
         this.creator_id = creator_id;

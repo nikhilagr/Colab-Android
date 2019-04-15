@@ -15,6 +15,10 @@ public class Task {
     private List<String> assigned_to;
     private String status;
 
+    public Task(){
+
+    }
+
 
     public Task(String task_id, String project_id, String name, String desc, String start_date, String end_date, List<String> assigned_to, String status) {
         this.task_id = task_id;

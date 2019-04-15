@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 
@@ -30,11 +31,18 @@ public class ColabRepository {
 
     private static ColabRepository instance;
     private MutableLiveData<List<Project>> mList;
+    List<String> stringList;
+    Map<String, Object> map ;
+    String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    User currentUser;
+
+
 
     public ColabRepository(){
+
         mList = new MutableLiveData<>();
+        map = new HashMap<>();
+
     }
 
     public static ColabRepository getInstance(){
@@ -47,26 +55,67 @@ public class ColabRepository {
     }
 
 
-    public void insertProjectInFirestoreDb(Project project){
+    public void insertProjectInFirestoreDb(final Project project){
 
         DocumentReference ref = FirebaseFirestore.getInstance().collection("projects").document();
+        project.setProject_id(ref.getId());
+
+
+
+
+
+
+        final DocumentReference userRef =FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        final String projectId = project.getProject_id();
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    User user =task.getResult().toObject(User.class);
+
+                    stringList  = user.getProjects();
+
+                    stringList.add(projectId);
+                    map.put("projects",stringList);
+
+                    userRef.update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.d(TAG,"Successfully added project id in user");
+                            if(mList.getValue() != null){
+                                List<Project>  temp = mList.getValue();
+                                temp.add(project);
+                                mList.postValue(temp);
+                            }else{
+                                List<Project>  temp = new ArrayList<>();
+                                temp.add(project);
+                                mList.postValue(temp);
+                            }
+
+                        }
+                    });
+            }
+        });
+
+
 
         ref.set(project).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                Log.d(TAG,"New Project inserted successfully!!");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Log.d(TAG,"Failed to insert new project!!");
             }
         });
     }
 
-    public MutableLiveData<List<Project>> getProjects(){
 
-        readProjectsFromFirestoreDb(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    public LiveData<List<Project>> getProjects(){
+
+        readProjectsFromFirestoreDb(currentUserId);
         return mList;
     }
 
@@ -76,47 +125,50 @@ public class ColabRepository {
      * @return
      */
 
-    public List<Project> readProjectsFromFirestoreDb(String userId){
-
-        final List<Project> resultList = new ArrayList<>();
+    public void readProjectsFromFirestoreDb(String userId){
 
         DocumentReference ref = FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).document(userId);
+
 
         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
                 if(task.isSuccessful()){
-                  currentUser = task.getResult().toObject(User.class);
-                  List<String> projects = currentUser.getProjects();
+                    User currentUser  = task.getResult().toObject(User.class);
+                    List<String> projects = currentUser.getProjects();
 
-                    CollectionReference ref = FirebaseFirestore.getInstance().collection(Constants.PROJECT_COLLECTION);
-
+                    final List<Project> listPro = new ArrayList<>();
                     for (String projectId: projects) {
-                        ref.document(projectId);
-                        ref.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                        DocumentReference docRef = FirebaseFirestore.getInstance().collection(Constants.PROJECT_COLLECTION).document(projectId);
+
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+
                             @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                Project project = (Project) task.getResult().toObjects(Project.class);
-                                resultList.add(project);
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                Project project = task.getResult().toObject(Project.class);
+
+                                listPro.add(project);
+                                mList.postValue(listPro);
                             }
                         });
+
                     }
 
-                    //TODO: Update livedata here
-                    List<Project> projectList = mList.getValue();
-                    projectList.addAll(resultList);
-                    mList.postValue(projectList);
 
-                }else{
-                    Log.d(TAG, "Retriving user failed");
                 }
+                else{
+
+                    //mList.postValue(null);
+
+                }
+
             }
         });
 
-        return resultList;
     }
-
 
     /**
      * To update project info based on project id.

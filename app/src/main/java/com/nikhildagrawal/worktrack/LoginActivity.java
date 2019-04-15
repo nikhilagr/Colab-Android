@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
 
+                            Snackbar.make(mView,"Please Register.",Snackbar.LENGTH_LONG).show();
                         }
                     });
 
@@ -134,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this,TabActivity.class);
                         startActivity(intent);
                         finish();
-                        Snackbar.make(mView,"Signed in as "+user.getEmail(),Snackbar.LENGTH_SHORT).show();
+
                     }else{
                         Toast.makeText(LoginActivity.this,"Check your inbox for verification link!!",Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();

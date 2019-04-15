@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nikhildagrawal.worktrack.models.User;
@@ -31,6 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -127,8 +129,18 @@ public class RegisterActivity extends AppCompatActivity {
 
                             sendVerificationEmail();
                             // Adding new user to firestore
+
+                            FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+                            if(fUser!=null){
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(mFirstName.getText().toString()).build();
+                                fUser.updateProfile(profileUpdates);
+                            }
+
+                            String userAuthId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            DocumentReference ref = db.collection("users").document();
+                            DocumentReference ref = db.collection("users").document(userAuthId);
                             User user = new User();
                             user.setFirtst_name(mFirstName.getText().toString());
                             user.setLast_name(mLastName.getText().toString());
@@ -136,16 +148,17 @@ public class RegisterActivity extends AppCompatActivity {
                             user.setEmail(mEmail.getText().toString());
                             user.setProfile_url("");
                             user.setUser_id(ref.getId());
-                            user.setUser_auth_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            user.setProjects(new ArrayList<String>());
+
 
                             ref.set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
                                     if(task.isSuccessful()){
-                                        Toast.makeText(RegisterActivity.this,"Data inserted",Toast.LENGTH_LONG).show();
+                                        Log.d(TAG,"User data inserted successfully");
                                     }else{
-                                        Toast.makeText(RegisterActivity.this,"Issue in data insertion",Toast.LENGTH_LONG).show();
+                                        Log.d(TAG,"Problem in inserting user");
                                     }
                                 }
                             });
@@ -189,7 +202,7 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
 
                     if(task.isSuccessful()){
-                        Toast.makeText(RegisterActivity.this,"Verification Email sent",Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"Verification Email Sent!!");
                     }else{
                         Toast.makeText(RegisterActivity.this,"Problem Occured! ",Toast.LENGTH_SHORT).show();
                     }

@@ -181,7 +181,6 @@ public class AddReminderFragment extends Fragment {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         mDate.setText(sdf.format(calendar.getTime()));
-
     }
 
 

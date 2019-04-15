@@ -70,10 +70,7 @@ public class ReminderFragment extends Fragment implements ReminderClickListner {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mReminderRecyclerView.setLayoutManager(layoutManager);
-
-
         mAdapter = new RemindersAdapter(getActivity(),this);
-
         mReminderRecyclerView.setAdapter(mAdapter);
 
 
