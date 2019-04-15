@@ -17,6 +17,7 @@ public class ReminderViewModel extends ViewModel {
     }
 
     public LiveData<List<Reminder>> getReminderList(){
+
         return mRepo.getReminderList();
     }
 }

@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,6 +33,7 @@ import androidx.navigation.ui.NavigationUI;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class TabActivity extends AppCompatActivity {
     private NavController mNavController;
     private String currentUserId = "";
     private List<String> userLists = new ArrayList<>();
+    View mView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,9 @@ public class TabActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         NavigationUI.setupWithNavController(navigation,mNavController);
         NavigationUI.setupActionBarWithNavController(this,mNavController);
+        mView = getWindow().getDecorView().findViewById(android.R.id.content);
+        Snackbar.make(mView,"Signed in as "+FirebaseAuth.getInstance().getCurrentUser().getEmail(),Snackbar.LENGTH_SHORT).show();
         intiFCM();
-
-
-
-
 
     }
 
@@ -86,7 +87,7 @@ public class TabActivity extends AppCompatActivity {
     private void addFcmTokenToUserCollection(final String token){
 
 
-        Query query = FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).whereEqualTo("user_auth_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query query = FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).whereEqualTo("user_id",FirebaseAuth.getInstance().getCurrentUser().getUid());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -107,7 +108,6 @@ public class TabActivity extends AppCompatActivity {
                             }else{
                                 Log.d(TAG,"Unable to Update FCM TOKEN");
                             }
-
                         }
                     });
 

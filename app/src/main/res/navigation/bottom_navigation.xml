@@ -8,7 +8,11 @@
         android:id="@+id/colabFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.ColabFragment"
         android:label="Colab"
-        tools:layout="@layout/fragment_colab" />
+        tools:layout="@layout/fragment_colab" >
+        <action
+            android:id="@+id/action_colabFragment_to_addNewProjectFragment"
+            app:destination="@id/addNewProjectFragment" />
+    </fragment>
     <fragment
         android:id="@+id/notesFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.NotesFragment"
@@ -67,8 +71,22 @@
         tools:layout="@layout/fragment_add_reminder"
         />
 
+    <fragment
+        android:id="@+id/addNewProjectFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.AddNewProjectFragment"
+        android:label="Add Project"
+        tools:layout="@layout/fragment_add_new_project"
+        >
+        <action
+            android:id="@+id/action_addNewProjectFragment_to_addNewTaskFragment"
+            app:destination="@id/addNewTaskFragment" />
+    </fragment>
 
-
-
+    <fragment
+        android:id="@+id/addNewTaskFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.AddNewTaskFragment"
+        android:label="Add Task"
+        tools:layout="@layout/fragment_add_new_task"
+        />
 
 </navigation>
