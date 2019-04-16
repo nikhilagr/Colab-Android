@@ -80,6 +80,9 @@
         <action
             android:id="@+id/action_addNewProjectFragment_to_addNewTaskFragment"
             app:destination="@id/addNewTaskFragment" />
+        <action
+            android:id="@+id/action_addNewProjectFragment_to_addMembersFragment"
+            app:destination="@id/addMembersFragment" />
     </fragment>
 
     <fragment
@@ -87,6 +90,13 @@
         android:name="com.nikhildagrawal.worktrack.fragments.AddNewTaskFragment"
         android:label="Add Task"
         tools:layout="@layout/fragment_add_new_task"
+        />
+
+    <fragment
+        android:id="@+id/addMembersFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.AddMembersFragment"
+        android:label="Add Members"
+        tools:layout="@layout/fragment_add_members"
         />
 
 </navigation>
