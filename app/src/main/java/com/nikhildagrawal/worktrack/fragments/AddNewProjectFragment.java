@@ -146,6 +146,12 @@ public class AddNewProjectFragment extends Fragment {
             }
         });
 
+        mButtonAddMemebers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addMembersFragment);
+            }
+        });
 
         return mView;
     }
