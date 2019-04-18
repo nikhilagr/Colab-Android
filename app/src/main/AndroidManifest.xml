@@ -46,11 +46,10 @@
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
             android:windowSoftInputMode="adjustPan"/>
-
-
+        <receiver android:name=".Utils.ReminderNotificationReceiver"/>
 
     </application>
 
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
 </manifest>

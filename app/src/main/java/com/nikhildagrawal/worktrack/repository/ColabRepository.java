@@ -135,8 +135,8 @@ public class ColabRepository {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     User currentUser  = task.getResult().toObject(User.class);
-                    List<String> projects = currentUser.getProjects();
-
+//                    List<String> projects = currentUser.getProjects();
+                    List<String> projects = new ArrayList<>();
                     final List<Project> listPro = new ArrayList<>();
                     for (String projectId: projects) {
 

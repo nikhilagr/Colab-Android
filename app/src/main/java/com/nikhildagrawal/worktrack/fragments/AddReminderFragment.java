@@ -1,8 +1,16 @@
 package com.nikhildagrawal.worktrack.fragments;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +19,26 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+
 import com.google.android.material.snackbar.Snackbar;
+import com.nikhildagrawal.worktrack.Utils.ReminderNotificationReceiver;
 import com.nikhildagrawal.worktrack.utils.Constants;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.repository.ReminderRepository;
 import com.nikhildagrawal.worktrack.viewmodels.ReminderViewModel;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -40,7 +54,10 @@ public class AddReminderFragment extends Fragment {
     Calendar calendar;
     ReminderViewModel mViewModel;
     Integer mPosition;
+    private Calendar mCalendar;
     public static long startTime;
+    public static String reminderTitle;
+    public static String reminderDescription;
 
 
     public AddReminderFragment() {
@@ -59,10 +76,15 @@ public class AddReminderFragment extends Fragment {
         mBtnAddReminder = view.findViewById(R.id.btn_add_reminder);
         mBtnSave = view.findViewById(R.id.btn_save_reminder);
 
+
         calendar = Calendar.getInstance();
+        mCalendar = Calendar.getInstance();
 
         String str = "";
         mPosition = -1;
+
+
+        createNotificationChannel();
 
         if(getArguments()!= null){
             str = getArguments().getString("from");
@@ -142,7 +164,7 @@ public class AddReminderFragment extends Fragment {
         });
 
 
-            mTime.setOnClickListener(new View.OnClickListener() {
+        mTime.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -168,6 +190,40 @@ public class AddReminderFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+//                final String CHANNEL_ID = "REMINDER_CHANNEL_ID";
+//                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+//                        .setSmallIcon(R.drawable.ic_add_alert_black_24dp)
+//                        .setContentTitle("My notification")
+//                        .setContentText("Much longer text that cannot fit one line...")
+//                        .setStyle(new NotificationCompat.BigTextStyle()
+//                                .bigText("Much longer text that cannot fit one line..."))
+//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+//                int id=(int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
+//                // notificationId is a unique int for each notification that you must define
+//                notificationManager.notify(id, builder.build());
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy hh:mm");
+                reminderTitle = mTitle.getText().toString();
+                reminderDescription = mDescription.getText().toString();
+                String dateInString = mDate.getText().toString() + " " + mTime.getText().toString();
+                try {
+                    Date date = sdf.parse(dateInString);
+                    startTime = date.getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                int id= (int) System.currentTimeMillis();
+                AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                Intent myIntent = new Intent( getContext() , ReminderNotificationReceiver.class);
+                myIntent.putExtra("title", mTitle.getText().toString());
+                myIntent.putExtra("description", mDescription.getText().toString());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),id,myIntent,0);
+
+//                manager.setExact(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
+                manager.set(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
+
                 ReminderRepository.getInstance().insertReminderInFireStore(mTitle.getText().toString(),mDescription.getText().toString()
                         ,mDate.getText().toString(),mTime.getText().toString());
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -184,7 +240,17 @@ public class AddReminderFragment extends Fragment {
         mDate.setText(sdf.format(calendar.getTime()));
     }
 
-
-
+    private void createNotificationChannel() {
+        final String CHANNEL_ID = "REMINDER_CHANNEL_ID";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.reminder_channel_name);
+            String description = getString(R.string.reminder_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
 }
