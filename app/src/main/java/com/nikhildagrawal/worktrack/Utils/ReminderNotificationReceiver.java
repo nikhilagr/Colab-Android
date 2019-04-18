@@ -20,12 +20,11 @@ public class ReminderNotificationReceiver extends BroadcastReceiver {
         final String CHANNEL_ID = "REMINDER_CHANNEL_ID";
         NotificationCompat.Builder builder = new NotificationCompat.Builder( context , CHANNEL_ID);
 
-   Log.d("RECEIVER", intent.getExtras().getString("title"));
         builder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_add_alert_black_24dp)
-                .setContentTitle(AddReminderFragment.reminderTitle)
-                .setContentText(AddReminderFragment.reminderDescription)
+                .setContentTitle(intent.getExtras().getString("reminder_title"))
+                .setContentText(intent.getExtras().getString("reminder_description"))
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
                 .setContentInfo("Info");
 

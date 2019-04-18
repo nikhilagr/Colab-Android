@@ -46,18 +46,16 @@ import androidx.lifecycle.ViewModelProviders;
 public class AddReminderFragment extends Fragment {
 
 
-    EditText mTitle;
-    EditText mDescription;
-    EditText mDate;
-    EditText mTime;
-    Button mBtnAddReminder, mBtnSave;
-    Calendar calendar;
-    ReminderViewModel mViewModel;
-    Integer mPosition;
+    private EditText mTitle;
+    private EditText mDescription;
+    private EditText mDate;
+    private EditText mTime;
+    private Button mBtnAddReminder, mBtnSave;
+    private Calendar calendar;
+    private ReminderViewModel mViewModel;
+    private Integer mPosition;
     private Calendar mCalendar;
-    public static long startTime;
-    public static String reminderTitle;
-    public static String reminderDescription;
+    private long startTime;
 
 
     public AddReminderFragment() {
@@ -190,22 +188,7 @@ public class AddReminderFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                final String CHANNEL_ID = "REMINDER_CHANNEL_ID";
-//                NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
-//                        .setSmallIcon(R.drawable.ic_add_alert_black_24dp)
-//                        .setContentTitle("My notification")
-//                        .setContentText("Much longer text that cannot fit one line...")
-//                        .setStyle(new NotificationCompat.BigTextStyle()
-//                                .bigText("Much longer text that cannot fit one line..."))
-//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
-//                int id=(int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE);
-//                // notificationId is a unique int for each notification that you must define
-//                notificationManager.notify(id, builder.build());
-
                 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy hh:mm");
-                reminderTitle = mTitle.getText().toString();
-                reminderDescription = mDescription.getText().toString();
                 String dateInString = mDate.getText().toString() + " " + mTime.getText().toString();
                 try {
                     Date date = sdf.parse(dateInString);
@@ -217,11 +200,10 @@ public class AddReminderFragment extends Fragment {
                 int id= (int) System.currentTimeMillis();
                 AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                 Intent myIntent = new Intent( getContext() , ReminderNotificationReceiver.class);
-                myIntent.putExtra("title", mTitle.getText().toString());
-                myIntent.putExtra("description", mDescription.getText().toString());
+                myIntent.putExtra("reminder_title", mTitle.getText().toString());
+                myIntent.putExtra("reminder_description", mDescription.getText().toString());
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),id,myIntent,0);
 
-//                manager.setExact(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
                 manager.set(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
 
                 ReminderRepository.getInstance().insertReminderInFireStore(mTitle.getText().toString(),mDescription.getText().toString()
