@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.models.Checklist;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -136,6 +137,18 @@ public class ChecklistRepository {
         });
     }
 
+
+    public void updateChecklistInFireStore(String checklistItemId, String status){
+
+        DocumentReference ref = FirebaseFirestore.getInstance().collection("checklists").document(checklistItemId);
+
+        ref.update("status",status).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+    }
 
 
 

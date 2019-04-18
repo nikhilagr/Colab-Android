@@ -47,6 +47,8 @@
             android:label="@string/title_activity_tab"
             android:windowSoftInputMode="adjustPan"/>
 
+
+
     </application>
 
 

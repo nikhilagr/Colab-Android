@@ -6,14 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.Contact;
 
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
@@ -22,9 +25,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     List<Contact> contactList;
 
 
-    public ContactsAdapter(Context context, List<Contact> contactList){
+
+
+    public ContactsAdapter(Context context){
         mContext = context;
-        this.contactList = contactList;
     }
 
     @NonNull
@@ -36,9 +40,22 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContactsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position) {
 
         holder.mName.setText(contactList.get(position).getName());
+
+        holder.mCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    contactList.get(position).setSelected(true);
+
+                }else{
+                    contactList.get(position).setSelected(false);
+                }
+            }
+        });
 
 
     }
@@ -67,5 +84,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
             mName = itemView.findViewById(R.id.contact_list_tv_name);
             mCheckbox = itemView.findViewById(R.id.select_contact);
         }
+    }
+
+    public void setContactList(List<Contact> list){
+        contactList = list;
+        notifyDataSetChanged();
     }
 }

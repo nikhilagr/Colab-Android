@@ -1,7 +1,5 @@
 package com.nikhildagrawal.worktrack.fragments;
 
-
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -9,21 +7,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ContactsAdapter;
 import com.nikhildagrawal.worktrack.models.Contact;
+import com.nikhildagrawal.worktrack.models.User;
+import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +39,7 @@ public class AddMembersFragment extends Fragment {
 
     RecyclerView mMembersRecyclerview;
     ContactsAdapter mAdapter;
+    ContactViewModel mViewModel;
 
 
 
@@ -51,21 +55,31 @@ public class AddMembersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_members, container, false);
 
         mMembersRecyclerview = view.findViewById(R.id.rcv_members);
+        mViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
+        
+        mAdapter = new ContactsAdapter(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mMembersRecyclerview.setLayoutManager(layoutManager);
+        mMembersRecyclerview.setAdapter(mAdapter);
+        addContacts();
 
-        List<Contact> list = addContacts();
+        mViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
+            @Override
+            public void onChanged(List<Contact> contacts) {
 
-       // mAdapter = new ContactsAdapter(getActivity(),list);
-
-
+                mAdapter.setContactList(contacts);
+            }
+        });
 
 
         return view;
     }
 
-    public List<Contact> addContacts(){
+    public void addContacts(){
 
-       final List<Contact> contactList = new ArrayList<>();
+
         try {
+
 
             Cursor phones = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, null, null, null);
 
@@ -74,10 +88,12 @@ public class AddMembersFragment extends Fragment {
                 String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 final String email = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
 
-                final Contact contact = new Contact(name,email,phoneNumber);
+                final Contact contact = new Contact(name,email,phoneNumber,false);
                 Log.d("HEYYYYYYYY::" , contact.toString());
 
                 Query query = FirebaseFirestore.getInstance().collection("users").whereEqualTo("email",email);
+
+
 
                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -86,12 +102,20 @@ public class AddMembersFragment extends Fragment {
                         QuerySnapshot snap = task.getResult();
                         if(snap.isEmpty()){
 
-                            Log.d("Email::" ,email+ "Not registered");
+                            Log.d("Email::" ,email+ " Not registered");
 
                         }else{
                             Log.d("Email::***********" ,email+ "  registered");
-                            contactList.add(contact);
-                            mAdapter.notifyDataSetChanged();
+                           
+                                 List<DocumentSnapshot> docs = snap.getDocuments();
+                            for (DocumentSnapshot sn: docs) {
+                                   User user  = sn.toObject(User.class);
+
+                                   user.getUser_id();
+                                   contact.setAuth_id(user.getUser_id());
+                                    mViewModel.addContactToLiveData(contact);
+                            }
+
                         }
 
                     }
@@ -100,20 +124,12 @@ public class AddMembersFragment extends Fragment {
 
             }
             phones.close();
-
-            mAdapter = new ContactsAdapter(getActivity(),contactList);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            mMembersRecyclerview.setLayoutManager(layoutManager);
-            mMembersRecyclerview.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
-
         }
         catch (Exception e){
             e.printStackTrace();
             Log.d("exception::" ,e.getLocalizedMessage());
         }
 
-        return contactList;
     }
 
 

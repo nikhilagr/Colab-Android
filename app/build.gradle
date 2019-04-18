@@ -30,6 +30,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.0-beta01'
     implementation 'androidx.viewpager:viewpager:1.0.0'
+    implementation "com.android.support:support-compat:28.0.0"
 
 
     testImplementation 'junit:junit:4.12'

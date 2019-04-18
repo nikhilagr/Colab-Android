@@ -4,19 +4,30 @@ package com.nikhildagrawal.worktrack.fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.nikhildagrawal.worktrack.R;
+import com.nikhildagrawal.worktrack.adapters.MembersAdapter;
+import com.nikhildagrawal.worktrack.adapters.TasksAdapter;
+import com.nikhildagrawal.worktrack.models.Contact;
 import com.nikhildagrawal.worktrack.models.Project;
-import com.nikhildagrawal.worktrack.models.Task;
+import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.ColabRepository;
 import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
+import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,10 +37,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,13 +61,19 @@ public class AddNewProjectFragment extends Fragment {
     private TextInputEditText mETStartDate;
     private TextInputEditText mETEndDate;
     private View mView;
+    private TextView tvMessageMembersList;
     Calendar calendar;
-    private ColabRepository mColabRepository;
+    RecyclerView  mMembersrecyclerview;
+    RecyclerView mTasksRecyclerview;
+    MembersAdapter mMembersAdapter;
+    TasksAdapter mTasksAdpater;
 
+    private ColabRepository mColabRepository;
     private ColabViewModel mColabViewModel;
-    private List<Project> projectList;
-    private List<Task> taskList;
     private String currentUserId;
+    Project mProject;
+    private ContactViewModel contactViewModel;
+    private List<User> membersList;
 
 
     public AddNewProjectFragment() {
@@ -75,10 +95,64 @@ public class AddNewProjectFragment extends Fragment {
         mETDesc = mView.findViewById(R.id.et_add_project_desc);
         mETStartDate = mView.findViewById(R.id.et_add_project_start_date);
         mETEndDate = mView.findViewById(R.id.et_add_project_end_date);
+        membersList = new ArrayList<>();
         mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
+        contactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
+
         mColabRepository = ColabRepository.getInstance();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mProject = new Project();
 
+        mTasksRecyclerview = mView.findViewById(R.id.tasks_recyclerview);
+
+        mMembersrecyclerview = mView.findViewById(R.id.members_recyclerview);
+
+        LinearLayoutManager layoutManager =new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mMembersrecyclerview.setLayoutManager(layoutManager);
+
+        tvMessageMembersList = mView.findViewById(R.id.empty_task_list_message);
+
+
+        mMembersAdapter = new MembersAdapter(getActivity());
+
+        mMembersrecyclerview.setAdapter(mMembersAdapter);
+
+
+        contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
+            @Override
+            public void onChanged(List<Contact> contacts) {
+                Log.d("CONTACT LIST UPDATING", contacts.toString());
+                for (Contact contact: contacts) {
+
+                    if(contact.isSelected()){
+                        List<String> members = mProject.getMembers();
+
+                        if(members == null){
+                            members = new ArrayList<>();
+                        }
+                        members.add(contact.getAuth_id());
+
+                        DocumentReference ref = FirebaseFirestore.getInstance().collection("users").document(contact.getAuth_id());
+                        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                if(task.isSuccessful()){
+                                    User user = task.getResult().toObject(User.class);
+                                    mMembersAdapter.updateUserInMembersAdpater(user);
+                                    tvMessageMembersList.setVisibility(View.GONE);
+                                  //  mMembersAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+                }
+
+
+            mMembersAdapter.setUserList(membersList);
+            }
+
+        });
 
         final DatePickerDialog.OnDateSetListener dateDi = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -149,9 +223,22 @@ public class AddNewProjectFragment extends Fragment {
         mButtonAddMemebers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addMembersFragment);
             }
         });
+
+
+        mColabViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
+            @Override
+            public void onChanged(List<Project> projects) {
+
+
+
+            }
+        });
+
+
 
         return mView;
     }

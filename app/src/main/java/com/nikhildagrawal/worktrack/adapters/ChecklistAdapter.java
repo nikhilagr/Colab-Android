@@ -17,6 +17,7 @@ import com.nikhildagrawal.worktrack.models.Checklist;
 import com.nikhildagrawal.worktrack.repository.ChecklistRepository;
 import java.util.List;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,8 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
     private List<Checklist> mChecklist;
     CheckListItemClickListner mListner;
     private static final String TAG = "ChecklistAdapter";
+
+
 
     public ChecklistAdapter(Context context, CheckListItemClickListner listner) {
         this.mContext = context;
@@ -83,26 +86,35 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
 
 
 
+            holder.checkBox.setChecked(mChecklist.get(position).getStatus().equals("Complete"));
 
+//            if(mChecklist.get(position).getStatus().equals(mContext.getString(R.string.status_complete))){
+//                holder.checkBox.setChecked(true);
+//            }else if(mChecklist.get(position).getStatus().equals(mContext.getString(R.string.status_incomplete))){
+//                holder.checkBox.setChecked(true);
+//            }
 
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 
-                    if(mChecklist.get(position).getStatus().equals(mContext.getString(R.string.status_complete))){
-                        holder.checkBox.setChecked(true);
-                    }else if(mChecklist.get(position).getStatus().equals(mContext.getString(R.string.status_incomplete))){
-                        holder.checkBox.setChecked(false);
-                    }
+
 
                     if(isChecked){
 
                         //Update DB set status Complete
-                    }else{
 
+                        mChecklist.get(position).setStatus("Complete");
+                        ChecklistRepository.getInstance().updateChecklistInFireStore(mChecklist.get(position).getChecklist_id(),"Complete");
+                    }else{
+                        holder.checkBox.setChecked(false);
+                        mChecklist.get(position).setStatus("Incomplete");
                         //Update DB set status Incomplete
+                        ChecklistRepository.getInstance().updateChecklistInFireStore(mChecklist.get(position).getChecklist_id(),"Incomplete");
                     }
+
+
                 }
             });
 
