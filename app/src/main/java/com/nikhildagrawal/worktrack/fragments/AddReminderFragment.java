@@ -17,6 +17,7 @@ import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.repository.ReminderRepository;
 import com.nikhildagrawal.worktrack.viewmodels.ReminderViewModel;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class AddReminderFragment extends Fragment {
     Calendar calendar;
     ReminderViewModel mViewModel;
     Integer mPosition;
+    public static long startTime;
 
 
     public AddReminderFragment() {
@@ -56,7 +58,6 @@ public class AddReminderFragment extends Fragment {
         mTime = view.findViewById(R.id.et_add_reminder_time);
         mBtnAddReminder = view.findViewById(R.id.btn_add_reminder);
         mBtnSave = view.findViewById(R.id.btn_save_reminder);
-
 
         calendar = Calendar.getInstance();
 
@@ -182,6 +183,8 @@ public class AddReminderFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         mDate.setText(sdf.format(calendar.getTime()));
     }
+
+
 
 
 }

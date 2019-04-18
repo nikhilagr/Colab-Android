@@ -38,6 +38,11 @@ public class User {
 
     }
 
+    public User(String firtst_name, String last_name) {
+        this.firtst_name = firtst_name;
+        this.last_name = last_name;
+    }
+
     public User(String user_id, String firtst_name, String last_name, String dob, String email, String profile_url) {
         this.user_id = user_id;
         this.firtst_name = firtst_name;

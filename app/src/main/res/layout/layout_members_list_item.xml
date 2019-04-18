@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="70dp"
+    android:layout_marginLeft="10dp"
     android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="70dp"
         android:layout_height="match_parent"
         android:elevation="5dp"
-        app:cardCornerRadius="5dp"
+        app:cardCornerRadius="2dp"
         app:cardBackgroundColor="@color/colorPrimary"
         >
 
@@ -23,7 +24,7 @@
 
             <TextView
                 android:textAlignment="center"
-                android:textColor="@color/colorwhite"
+                android:textColor="@color/colorRed"
                 android:text="Nikhil"
                 android:id="@+id/first_name"
                 android:layout_width="match_parent"
@@ -31,7 +32,7 @@
 
             <TextView
                 android:textAlignment="center"
-                android:textColor="@color/colorwhite"
+                android:textColor="@color/colorRed"
                 android:text="Agrawal"
                 android:id="@+id/last_name"
                 android:layout_width="match_parent"
