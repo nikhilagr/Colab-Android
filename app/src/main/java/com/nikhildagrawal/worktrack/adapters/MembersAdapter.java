@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.User;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;

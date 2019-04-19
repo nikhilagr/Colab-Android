@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
+import android.widget.LinearLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ChecklistAdapter;
@@ -29,6 +28,7 @@ public class ChecklistFragment extends Fragment implements CheckListItemClickLis
     private FloatingActionButton mFabAddChecklistItem;
     private ChecklistAdapter mAdapter;
     ChecklistViewModel mCheckListViewModel;
+    private LinearLayout mNoChecklistLayout;
 
 
     public ChecklistFragment() {
@@ -49,6 +49,7 @@ public class ChecklistFragment extends Fragment implements CheckListItemClickLis
 
         mChecklistRecyclerView = view.findViewById(R.id.rv_checklist);
         mFabAddChecklistItem = view.findViewById(R.id.fab_add_checklist);
+        mNoChecklistLayout = view.findViewById(R.id.no_checklist_layout);
 
         mCheckListViewModel = ViewModelProviders.of(getActivity()).get(ChecklistViewModel.class);
         initRecyclerView();
@@ -56,6 +57,13 @@ public class ChecklistFragment extends Fragment implements CheckListItemClickLis
             mCheckListViewModel.getChecklists().observe(getViewLifecycleOwner(), new Observer<List<Checklist>>() {
                 @Override
                 public void onChanged(List<Checklist> checklists) {
+
+                    if(checklists.isEmpty()){
+                        mNoChecklistLayout.setVisibility(View.VISIBLE);
+                    }else{
+                        mNoChecklistLayout.setVisibility(View.GONE);
+                    }
+
                     mAdapter.setmChecklist(checklists);
                 }
             });

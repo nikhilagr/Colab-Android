@@ -21,6 +21,12 @@ public class ContactViewModel extends ViewModel {
         return mList;
     }
 
+    public List<Contact> getUnmutableList(){
+        List<Contact> list = new ArrayList<>();
+        list = mList.getValue();
+        return list;
+    }
+
     public void addContactToLiveData(Contact contact){
 
         List<Contact> list = mList.getValue();

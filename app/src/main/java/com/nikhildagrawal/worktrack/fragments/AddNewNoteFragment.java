@@ -33,7 +33,6 @@ public class AddNewNoteFragment extends Fragment {
     private TextInputEditText mETAddDesc;
     private MaterialButton btnAdd, btnSave;
     private int position;
-
     private NoteViewModel mViewModel;
 
     public AddNewNoteFragment() {

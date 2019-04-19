@@ -55,18 +55,9 @@ public class ColabRepository {
     }
 
 
-    public void insertProjectInFirestoreDb(final Project project){
-
-        DocumentReference ref = FirebaseFirestore.getInstance().collection("projects").document();
-        project.setProject_id(ref.getId());
-
-
-
-
-
+    public void insertProjectInFirestoreDb(final Project project, DocumentReference ref){
 
         final DocumentReference userRef =FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
         final String projectId = project.getProject_id();
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -264,5 +255,50 @@ public class ColabRepository {
     }
 
 
+    public void addProjectToLiveData(Project project){
+
+        List<Project> list = mList.getValue();
+
+        if(list != null){
+            list.add(project);
+        }else{
+            list = new ArrayList<>();
+            list.add(project);
+        }
+
+        mList.setValue(list);
+    }
+
+    public void deleteProjectToLiveData(Project project){
+
+        List<Project> list = mList.getValue();
+
+        if(list != null){
+            list.remove(project);
+        }else{
+          return;
+        }
+        mList.setValue(list);
+    }
+
+    public void updateProjectInLiveData(Project project){
+        List<Project> list = mList.getValue();
+        if(list != null){
+
+            for (Project pro :
+                    list) {
+
+                if(pro.getProject_id().equals(project.getProject_id())){
+                    list.remove(pro);
+                    list.add(project);
+                }
+
+            }
+        }else{
+            return;
+        }
+        mList.setValue(list);
+
+    }
 
 }

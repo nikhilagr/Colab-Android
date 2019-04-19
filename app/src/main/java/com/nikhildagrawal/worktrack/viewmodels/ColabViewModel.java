@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModel;
 
 public class ColabViewModel extends ViewModel {
 
+
+
     private ColabRepository mRepo;
 
     public ColabViewModel(){
@@ -21,6 +23,20 @@ public class ColabViewModel extends ViewModel {
     public LiveData<List<Project>> getProjects(){
        return mRepo.getProjects();
     }
+
+    public void addProjectToLiveData(Project pro){
+        mRepo.addProjectToLiveData(pro);
+    }
+
+    public void deleteProjectToLiveData(Project pro){
+        mRepo.deleteProjectToLiveData(pro);
+    }
+
+    public void updateProjectInLiveData(Project pro){
+        mRepo.updateProjectInLiveData(pro);
+    }
+
+
 
 
 

@@ -10,22 +10,34 @@
      android:layout_height="match_parent"
      android:orientation="vertical">
 
-     <com.google.android.material.textfield.TextInputEditText
+     <com.google.android.material.textfield.TextInputLayout
          android:layout_margin="16dp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="Add Title ">
+
+     <com.google.android.material.textfield.TextInputEditText
          android:id="@+id/et_add_title"
-         android:hint="@string/add_title"
          android:inputType="text"
          android:layout_width="match_parent"
          android:layout_height="wrap_content" />
 
+     </com.google.android.material.textfield.TextInputLayout>
 
-     <com.google.android.material.textfield.TextInputEditText
+
+     <com.google.android.material.textfield.TextInputLayout
          android:layout_margin="16dp"
-         android:id="@+id/et_add_desc"
-         android:hint="@string/add_description"
-         android:inputType="textMultiLine"
          android:layout_width="match_parent"
-         android:layout_height="wrap_content" />
+         android:layout_height="wrap_content"
+         android:hint="Add Description ">
+
+         <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/et_add_desc"
+             android:inputType="textMultiLine"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />
+
+     </com.google.android.material.textfield.TextInputLayout>
 
 
          <RelativeLayout
