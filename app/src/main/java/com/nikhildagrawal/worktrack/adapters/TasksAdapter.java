@@ -52,6 +52,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
         return taskList.size();
     }
 
+
+
     public class TasksViewHolder extends RecyclerView.ViewHolder {
 
         TextView mTitle;

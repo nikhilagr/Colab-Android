@@ -168,8 +168,8 @@ public class RegisterActivity extends AppCompatActivity {
                             //redirect the user to the login screen
                             redirectLoginScreen();
                         }else{
-                            Toast.makeText(RegisterActivity.this, "Unable to Register",
-                                    Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(RegisterActivity.this, "Unable to Register",
+                                 //   Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

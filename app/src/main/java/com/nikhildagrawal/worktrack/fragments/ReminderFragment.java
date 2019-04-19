@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,6 +36,7 @@ public class ReminderFragment extends Fragment implements ReminderClickListner {
     private View mView;
     private RemindersAdapter mAdapter;
     private ReminderViewModel mReminderViewModel;
+    private LinearLayout mNoReminderLayout;
 
 
     public ReminderFragment() {
@@ -56,10 +58,18 @@ public class ReminderFragment extends Fragment implements ReminderClickListner {
         mReminderRecyclerView = view.findViewById(R.id.rv_reminder);
         mFabAddReminder = view.findViewById(R.id.fab_add_reminder);
         mReminderViewModel = ViewModelProviders.of(getActivity()).get(ReminderViewModel.class);
+        mNoReminderLayout = view.findViewById(R.id.no_reminder_layout);
 
         mReminderViewModel.getReminderList().observe(getViewLifecycleOwner(), new Observer<List<Reminder>>() {
             @Override
             public void onChanged(List<Reminder> reminders) {
+
+
+                if(reminders.isEmpty()){
+                    mNoReminderLayout.setVisibility(View.VISIBLE);
+                }else{
+                    mNoReminderLayout.setVisibility(View.GONE);
+                }
 
                 mAdapter.setReminderList(reminders);
             }

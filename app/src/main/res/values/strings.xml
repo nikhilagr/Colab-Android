@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WorkTrack</string>
+    <string name="app_name">Colab</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="registration">Registration</string>
     <string name="title_activity_tab">TabActivity</string>

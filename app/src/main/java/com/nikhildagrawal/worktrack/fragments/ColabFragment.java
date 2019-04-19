@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nikhildagrawal.worktrack.R;
@@ -39,6 +40,7 @@ public class ColabFragment extends Fragment {
     private FloatingActionButton mFabAddProject;
     ColabViewModel mViewModel;
     private List<Project> projectList;
+    private LinearLayout mNoProjectLayout;
 
 
     public ColabFragment() {
@@ -56,6 +58,7 @@ public class ColabFragment extends Fragment {
         mView  = inflater.inflate(R.layout.fragment_colab, container, false);
 
         mRecyclerView = mView.findViewById(R.id.rv_colab);
+        mNoProjectLayout = mView.findViewById(R.id.no_colab_layout);
 
 
         mViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
@@ -63,6 +66,12 @@ public class ColabFragment extends Fragment {
         mViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {
+
+                if(projects.isEmpty()){
+                    mNoProjectLayout.setVisibility(View.VISIBLE);
+                }else{
+                    mNoProjectLayout.setVisibility(View.GONE);
+                }
 
                 mAdapter.setProjectList(projects);
             }

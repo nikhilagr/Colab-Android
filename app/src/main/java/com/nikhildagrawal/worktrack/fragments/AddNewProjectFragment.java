@@ -32,11 +32,8 @@ import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -67,6 +64,7 @@ public class AddNewProjectFragment extends Fragment {
     RecyclerView mTasksRecyclerview;
     MembersAdapter mMembersAdapter;
     TasksAdapter mTasksAdpater;
+    private DocumentReference reference;
 
     private ColabRepository mColabRepository;
     private ColabViewModel mColabViewModel;
@@ -74,7 +72,7 @@ public class AddNewProjectFragment extends Fragment {
     Project mProject;
     private ContactViewModel contactViewModel;
     private List<User> membersList;
-
+    private static String projectId;
 
     public AddNewProjectFragment() {
         // Required empty public constructor
@@ -112,12 +110,17 @@ public class AddNewProjectFragment extends Fragment {
 
         tvMessageMembersList = mView.findViewById(R.id.empty_task_list_message);
 
+        if(projectId == null){
+            reference = FirebaseFirestore.getInstance().collection("projects").document();
+
+        }else{
+            reference = FirebaseFirestore.getInstance().collection("projects").document(projectId);
+        }
+
 
         mMembersAdapter = new MembersAdapter(getActivity());
 
         mMembersrecyclerview.setAdapter(mMembersAdapter);
-
-
         contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
             @Override
             public void onChanged(List<Contact> contacts) {
@@ -196,7 +199,11 @@ public class AddNewProjectFragment extends Fragment {
         mButtonAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addNewTaskFragment);
+
+
+                Bundle bundle = new Bundle();
+                bundle.putString("projectId",reference.getId());
+                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addNewTaskFragment,bundle);
             }
         });
 
@@ -213,8 +220,8 @@ public class AddNewProjectFragment extends Fragment {
                 List<String> stringListTaskIds = new ArrayList<>();
                 List<String> stringListMemberIds = new ArrayList<>();
                 stringListMemberIds.add(currentUserId);
-                Project pro = new Project(title,desc,creatorId,startDate,endDate,stringListMemberIds,stringListTaskIds);
-                mColabRepository.insertProjectInFirestoreDb(pro);
+                Project pro = new Project(reference.getId(),title,desc,creatorId,startDate,endDate,stringListMemberIds,stringListTaskIds);
+                mColabRepository.insertProjectInFirestoreDb(pro,reference);
                 getFragmentManager().popBackStackImmediate();
 
             }
@@ -224,7 +231,16 @@ public class AddNewProjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addMembersFragment);
+                Project pro = new Project();
+                pro.setProject_id(reference.getId());
+                pro.setTitle(mETTitle.getText().toString());
+                pro.setDescription(mETDesc.getText().toString());
+
+                mColabViewModel.addProjectToLiveData(pro);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("projectId",reference.getId());
+                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addMembersFragment,bundle);
             }
         });
 
@@ -233,7 +249,7 @@ public class AddNewProjectFragment extends Fragment {
             @Override
             public void onChanged(List<Project> projects) {
 
-
+                Log.d(TAG,projects.toString());
 
             }
         });

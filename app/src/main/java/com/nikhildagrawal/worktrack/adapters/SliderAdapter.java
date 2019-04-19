@@ -27,7 +27,7 @@ public class SliderAdapter extends PagerAdapter {
     }
 
     public int[] slideImages = {
-            R.drawable.checklist,R.drawable.imagework,R.drawable.checklist,R.drawable.imagework
+            R.drawable.projectonboard,R.drawable.reminderonboard,R.drawable.checklist,R.drawable.notesonboard
     };
 
     public String[] slideTitles = {
@@ -46,7 +46,7 @@ public class SliderAdapter extends PagerAdapter {
 
     public String[] slideCardColors = {
 
-            "#ffaf49","#8bc34a","#c62828","#7b1fa2"
+            "#8bc34a","#7b1fa2","#c62828","#00897b"
     };
 
 

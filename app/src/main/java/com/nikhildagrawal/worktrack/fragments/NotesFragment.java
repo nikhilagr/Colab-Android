@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +31,7 @@ public class NotesFragment extends Fragment implements NoteClickListner {
     private FloatingActionButton mFabAddNotes;
     private NotesAdapter mAdapter;
     private NoteViewModel mNoteViewModel;
+    private LinearLayout mNoNoteLayout;
 
     public NotesFragment() {
 
@@ -47,6 +49,8 @@ public class NotesFragment extends Fragment implements NoteClickListner {
         mNotesRecyclerView = view.findViewById(R.id.rv_notes);
         mFabAddNotes = view.findViewById(R.id.fab_add_notes);
         mNoteViewModel = ViewModelProviders.of(getActivity()).get(NoteViewModel.class);
+        mNoNoteLayout = view.findViewById(R.id.no_note_layout);
+
 
 
 
@@ -60,6 +64,12 @@ public class NotesFragment extends Fragment implements NoteClickListner {
         mNoteViewModel.getNotes().observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> noteList) {
+
+                if(noteList.isEmpty()){
+                    mNoNoteLayout.setVisibility(View.VISIBLE);
+                }else{
+                    mNoNoteLayout.setVisibility(View.GONE);
+                }
 
                 mAdapter.setNoteList(noteList);
             }
@@ -78,6 +88,12 @@ public class NotesFragment extends Fragment implements NoteClickListner {
         bundle.putString("from","NoteClick");
         bundle.putInt("position",position);
         Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.toAddNewNoteFragment,bundle);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 }
 
