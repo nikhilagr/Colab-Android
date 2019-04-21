@@ -22,9 +22,17 @@ public class ContactViewModel extends ViewModel {
     }
 
     public List<Contact> getUnmutableList(){
-        List<Contact> list = new ArrayList<>();
-        list = mList.getValue();
-        return list;
+
+        List<Contact> list = mList.getValue();
+        List<Contact> nlist = new ArrayList<>();
+        if(list!=null){
+
+            for (Contact con : list) {
+                nlist.add(con);
+            }
+        }
+
+        return nlist;
     }
 
     public void addContactToLiveData(Contact contact){
@@ -62,5 +70,8 @@ public class ContactViewModel extends ViewModel {
         }
     }
 
+    public void removeData(){
+        mList.setValue(null);
+    }
 
 }

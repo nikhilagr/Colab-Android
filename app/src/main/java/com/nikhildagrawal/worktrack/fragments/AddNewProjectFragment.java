@@ -3,12 +3,14 @@ package com.nikhildagrawal.worktrack.fragments;
 
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +30,7 @@ import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.ColabRepository;
 import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
 import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
+import com.nikhildagrawal.worktrack.viewmodels.TaskViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,8 +53,8 @@ public class AddNewProjectFragment extends Fragment {
 
 
     private static final String TAG = "AddNewProjectFragment";
-    private MaterialButton mButtonAddMemebers;
-    private MaterialButton mButtonAddTask;
+    private ImageButton mButtonAddMemebers;
+    private ImageButton mButtonAddTask;
     private MaterialButton mButtonAddProject;
     private TextInputEditText mETTitle;
     private TextInputEditText mETDesc;
@@ -59,20 +62,28 @@ public class AddNewProjectFragment extends Fragment {
     private TextInputEditText mETEndDate;
     private View mView;
     private TextView tvMessageMembersList;
-    Calendar calendar;
-    RecyclerView  mMembersrecyclerview;
-    RecyclerView mTasksRecyclerview;
-    MembersAdapter mMembersAdapter;
-    TasksAdapter mTasksAdpater;
+    private TextView tvMessageTaskList;
+    private Calendar calendar;
+
+    private RecyclerView  mMembersrecyclerview;
+    private RecyclerView mTasksRecyclerview;
+
+    private MembersAdapter mMembersAdapter;
+    private TasksAdapter mTasksAdpater;
     private DocumentReference reference;
 
     private ColabRepository mColabRepository;
     private ColabViewModel mColabViewModel;
+    private TaskViewModel mTaskViewModel;
+
+
     private String currentUserId;
     Project mProject;
     private ContactViewModel contactViewModel;
     private List<User> membersList;
     private static String projectId;
+    List<String> members;
+    List<String> tasksList;
 
     public AddNewProjectFragment() {
         // Required empty public constructor
@@ -86,6 +97,7 @@ public class AddNewProjectFragment extends Fragment {
 
         mView = inflater.inflate(R.layout.fragment_add_new_project, container, false);
         calendar = Calendar.getInstance();
+
         mButtonAddMemebers = mView.findViewById(R.id.btn_add_project_members);
         mButtonAddTask = mView.findViewById(R.id.btn_add_project_tasks);
         mButtonAddProject = mView.findViewById(R.id.btn_add_project);
@@ -93,69 +105,123 @@ public class AddNewProjectFragment extends Fragment {
         mETDesc = mView.findViewById(R.id.et_add_project_desc);
         mETStartDate = mView.findViewById(R.id.et_add_project_start_date);
         mETEndDate = mView.findViewById(R.id.et_add_project_end_date);
-        membersList = new ArrayList<>();
-        mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
-        contactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
-
-        mColabRepository = ColabRepository.getInstance();
-        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mProject = new Project();
-
         mTasksRecyclerview = mView.findViewById(R.id.tasks_recyclerview);
+        tvMessageMembersList = mView.findViewById(R.id.empty_mem_list_message);
+        tvMessageTaskList = mView.findViewById(R.id.empty_tas_list_message);
+        mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
 
-        mMembersrecyclerview = mView.findViewById(R.id.members_recyclerview);
-
-        LinearLayoutManager layoutManager =new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mMembersrecyclerview.setLayoutManager(layoutManager);
-
-        tvMessageMembersList = mView.findViewById(R.id.empty_task_list_message);
+        final SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+        projectId = pref.getString("projectId",null);
 
         if(projectId == null){
             reference = FirebaseFirestore.getInstance().collection("projects").document();
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("projectId", reference.getId()); // Storing string
+            editor.commit();
+
 
         }else{
             reference = FirebaseFirestore.getInstance().collection("projects").document(projectId);
         }
 
 
-        mMembersAdapter = new MembersAdapter(getActivity());
+        membersList = new ArrayList<>();
+        mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
+        contactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
+        mColabRepository = ColabRepository.getInstance();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        mMembersrecyclerview.setAdapter(mMembersAdapter);
-        contactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
+
+        mColabViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
             @Override
-            public void onChanged(List<Contact> contacts) {
-                Log.d("CONTACT LIST UPDATING", contacts.toString());
-                for (Contact contact: contacts) {
+            public void onChanged(List<Project> projects) {
+                Log.d("%%%% Project Data %%",projects.toString());
 
-                    if(contact.isSelected()){
-                        List<String> members = mProject.getMembers();
+            }
+        });
 
-                        if(members == null){
-                            members = new ArrayList<>();
-                        }
-                        members.add(contact.getAuth_id());
 
-                        DocumentReference ref = FirebaseFirestore.getInstance().collection("users").document(contact.getAuth_id());
-                        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        mMembersrecyclerview = mView.findViewById(R.id.members_recyclerview);
+        LinearLayoutManager layoutManager =new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mMembersrecyclerview.setLayoutManager(layoutManager);
+        mMembersAdapter = new MembersAdapter(getActivity());
+        mMembersrecyclerview.setAdapter(mMembersAdapter);
 
-                                if(task.isSuccessful()){
-                                    User user = task.getResult().toObject(User.class);
-                                    mMembersAdapter.updateUserInMembersAdpater(user);
-                                    tvMessageMembersList.setVisibility(View.GONE);
-                                  //  mMembersAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
-                    }
+
+        LinearLayoutManager layoutMana = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        mTasksRecyclerview.setLayoutManager(layoutMana);
+        mTasksAdpater = new TasksAdapter(getActivity());
+        mTasksRecyclerview.setAdapter(mTasksAdpater);
+
+
+
+        mTaskViewModel.getTasks(projectId).observe(getViewLifecycleOwner(), new Observer<List<com.nikhildagrawal.worktrack.models.Task>>() {
+            @Override
+            public void onChanged(List<com.nikhildagrawal.worktrack.models.Task> tasks) {
+                tasksList = new ArrayList<>();
+
+                if(!tasks.isEmpty()){
+
+                    tvMessageTaskList.setVisibility(View.GONE);
+
+                }else{
+                    tvMessageTaskList.setVisibility(View.VISIBLE);
                 }
+                    mTasksAdpater.setTaskList(tasks);
 
-
-            mMembersAdapter.setUserList(membersList);
+                for (com.nikhildagrawal.worktrack.models.Task tas: tasks) {
+                    tasksList.add(tas.getTask_id());
+                }
             }
 
         });
+
+
+        DocumentReference ref1 = FirebaseFirestore.getInstance().collection("users").document(currentUserId);
+
+        ref1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                User user = task.getResult().toObject(User.class);
+                mMembersAdapter.updateUserInMembersAdpater(user);
+            }
+        });
+
+        members = new ArrayList<>();
+        // To fill members recycler view using data from contactviewmodel.
+        List<Contact> contacts = contactViewModel.getContactList().getValue();
+
+        if(contacts != null){
+            for (Contact contact : contacts) {
+
+                if(contact.isSelected()){
+
+                    if(members == null){
+                        members = new ArrayList<>();
+                    }
+                    members.add(contact.getAuth_id());
+
+                    DocumentReference ref = FirebaseFirestore.getInstance().collection("users").document(contact.getAuth_id());
+                    ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+
+                            if(task.isSuccessful()){
+                                User user = task.getResult().toObject(User.class);
+                                mMembersAdapter.updateUserInMembersAdpater(user);
+                            }
+                        }
+                    });
+                    mMembersAdapter.setUserList(membersList);
+
+                }
+
+            }
+
+        }
+
 
         final DatePickerDialog.OnDateSetListener dateDi = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -196,10 +262,22 @@ public class AddNewProjectFragment extends Fragment {
             }
         });
 
-        mButtonAddTask.setOnClickListener(new View.OnClickListener() {
+
+
+
+        mButtonAddMemebers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Bundle bundle = new Bundle();
+                bundle.putString("projectId",reference.getId());
+                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addMembersFragment,bundle);
+            }
+        });
+
+        mButtonAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("projectId",reference.getId());
@@ -217,44 +295,32 @@ public class AddNewProjectFragment extends Fragment {
                 String startDate = mETStartDate.getText().toString();
                 String endDate = mETEndDate.getText().toString();
                 String creatorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                List<String> stringListTaskIds = new ArrayList<>();
-                List<String> stringListMemberIds = new ArrayList<>();
+                List<String> stringListTaskIds = tasksList;
+
+
+                List<String> stringListMemberIds;
+                if(members!=null){
+                    stringListMemberIds = members;
+                }else{
+                    stringListMemberIds = new ArrayList<>();
+                }
                 stringListMemberIds.add(currentUserId);
-                Project pro = new Project(reference.getId(),title,desc,creatorId,startDate,endDate,stringListMemberIds,stringListTaskIds);
+
+
+                Project pro = new Project(reference.getId(),title,desc,creatorId,startDate,endDate,members,stringListTaskIds);
                 mColabRepository.insertProjectInFirestoreDb(pro,reference);
+
+                // remove data from shared preference.
+                SharedPreferences.Editor editor = pref.edit();
+                editor.remove("projectId");
+                editor.commit();
+
+                contactViewModel.removeData();
+
                 getFragmentManager().popBackStackImmediate();
 
             }
         });
-
-        mButtonAddMemebers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Project pro = new Project();
-                pro.setProject_id(reference.getId());
-                pro.setTitle(mETTitle.getText().toString());
-                pro.setDescription(mETDesc.getText().toString());
-
-                mColabViewModel.addProjectToLiveData(pro);
-
-                Bundle bundle = new Bundle();
-                bundle.putString("projectId",reference.getId());
-                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_addNewProjectFragment_to_addMembersFragment,bundle);
-            }
-        });
-
-
-        mColabViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
-            @Override
-            public void onChanged(List<Project> projects) {
-
-                Log.d(TAG,projects.toString());
-
-            }
-        });
-
-
 
         return mView;
     }

@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ContactsAdapter;
+import com.nikhildagrawal.worktrack.adapters.TasksAdapter;
 import com.nikhildagrawal.worktrack.models.Contact;
 import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.models.User;
@@ -40,15 +42,16 @@ public class AddMembersFragment extends Fragment {
 
 
 
-    RecyclerView mMembersRecyclerview;
-    ContactsAdapter mAdapter;
-    ContactViewModel mViewModel;
-    ColabViewModel mColabViewModel;
-    List<Project> currentprojectList;
-    String projectId;
-    Project mCurrentProject;
-    List<Project> projectList;
+    private RecyclerView mMembersRecyclerview;
 
+
+    private ContactsAdapter mContactsAdapter;
+    private ContactViewModel mVContactViewModel;
+    private String projectId;
+    private Project mCurrentProject;
+    private List<Project> projectList;
+    private List<Project> currentprojectList;
+    List<Contact> contactList;
 
     public AddMembersFragment() {
         // Required empty public constructor
@@ -68,39 +71,22 @@ public class AddMembersFragment extends Fragment {
             projectId = getArguments().getString("projectId");
         }
         mMembersRecyclerview = view.findViewById(R.id.rcv_members);
-        mViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
+        mVContactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
         
-        mAdapter = new ContactsAdapter(getActivity());
+        mContactsAdapter = new ContactsAdapter(getActivity());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mMembersRecyclerview.setLayoutManager(layoutManager);
-        mMembersRecyclerview.setAdapter(mAdapter);
-        mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
-
-        projectList = mColabViewModel.getProjects().getValue();
-        for (Project pro: projectList) {
-
-            if (pro.getProject_id().equals(projectId)) {
-                mCurrentProject = pro;
-            }
-        }
-
-        mColabViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
-            @Override
-            public void onChanged(List<Project> projectList) {
-
-            }
-        });
+        mMembersRecyclerview.setAdapter(mContactsAdapter);
+        contactList = new ArrayList<>();
 
 
 
         addContacts();
 
-        mViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
+        mVContactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
             @Override
             public void onChanged(List<Contact> contacts) {
-
-                mAdapter.setContactList(contacts);
-
+                mContactsAdapter.setContactList(contacts);
             }
 
 
@@ -122,12 +108,13 @@ public class AddMembersFragment extends Fragment {
                 String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 final String email = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS));
 
+                if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
+                    continue;
+                }
                 final Contact contact = new Contact(name,email,phoneNumber,false);
-                Log.d("HEYYYYYYYY::" , contact.toString());
+
 
                 Query query = FirebaseFirestore.getInstance().collection("users").whereEqualTo("email",email);
-
-
 
                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -135,31 +122,25 @@ public class AddMembersFragment extends Fragment {
 
                         QuerySnapshot snap = task.getResult();
                         if(snap.isEmpty()){
-
-                            Log.d("Email::" ,email+ " Not registered");
-
+                            // It means User is not registered
                         }else{
-                            Log.d("Email::***********" ,email+ "  registered");
-                           
-                                 List<DocumentSnapshot> docs = snap.getDocuments();
+                           //User is registered
+                            List<DocumentSnapshot> docs = snap.getDocuments();
                             for (DocumentSnapshot sn: docs) {
                                    User user  = sn.toObject(User.class);
-
                                    user.getUser_id();
                                    contact.setAuth_id(user.getUser_id());
-                                    mViewModel.addContactToLiveData(contact);
-
+                                   mVContactViewModel.addContactToLiveData(contact);
                             }
-
                         }
-
                     }
                 });
-
-
             }
+
+
             phones.close();
         }
+
         catch (Exception e){
             e.printStackTrace();
             Log.d("exception::" ,e.getLocalizedMessage());
@@ -171,31 +152,6 @@ public class AddMembersFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        List<Contact> list = mViewModel.getContactList().getValue();
 
-        for (Contact con :
-                list){
-
-            if(con.isSelected()){
-                List<String> members = mCurrentProject.getMembers();
-                if(members == null){
-                    members = new ArrayList<>();
-                }
-                members.add(con.getAuth_id());
-                mCurrentProject.setMembers(members);
-                Log.d("ObSERving +-----", mCurrentProject.toString());
-
-            }else{
-                if(mCurrentProject != null && mCurrentProject.getMembers() != null){
-                    List<String> members = mCurrentProject.getMembers();
-                    members.remove(con.getAuth_id());
-                    mCurrentProject.setMembers(members);
-                }
-
-            }
-
-        }
-
-        mColabViewModel.updateProjectInLiveData(mCurrentProject);
     }
 }

@@ -36,6 +36,10 @@ public class ColabViewModel extends ViewModel {
         mRepo.updateProjectInLiveData(pro);
     }
 
+    public void addMemberToProject(String member,String projId){
+        mRepo.addMemberToProject(member,projId);
+    }
+
 
 
 

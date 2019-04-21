@@ -2,16 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="70dp"
-    android:layout_marginLeft="10dp"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
+        android:layout_gravity="center"
         android:layout_width="70dp"
-        android:layout_height="match_parent"
-        android:elevation="5dp"
-        app:cardCornerRadius="2dp"
+        android:layout_height="70dp"
+        android:elevation="8dp"
+        app:cardCornerRadius="35dp"
         app:cardBackgroundColor="@color/colorPrimary"
+
         >
 
         <LinearLayout
@@ -25,22 +27,29 @@
             <TextView
                 android:textAlignment="center"
                 android:textColor="@color/colorRed"
-                android:text="Nikhil"
-                android:id="@+id/first_name"
+                android:textSize="25sp"
+                android:text="NA"
+                android:id="@+id/display_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:textAlignment="center"
-                android:textColor="@color/colorRed"
-                android:text="Agrawal"
-                android:id="@+id/last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-
     </com.google.android.material.card.MaterialCardView>
 
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:text="kdsgj;klajgl"
+        android:id="@+id/first_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:text="kdsgj;klajgl kfdklg"
+        android:id="@+id/last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

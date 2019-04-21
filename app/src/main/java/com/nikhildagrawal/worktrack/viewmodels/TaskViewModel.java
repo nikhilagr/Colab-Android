@@ -20,4 +20,8 @@ public class TaskViewModel extends ViewModel {
 
         return  mRepo.getTasks(projectId);
     }
+
+    public void addTask(Task task){
+        mRepo.addTask(task);
+    }
 }

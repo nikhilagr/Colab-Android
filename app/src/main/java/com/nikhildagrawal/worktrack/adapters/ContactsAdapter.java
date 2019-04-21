@@ -44,6 +44,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
         holder.mName.setText(contactList.get(position).getName());
 
+        holder.mCheckbox.setChecked(contactList.get(position).isSelected());
+
         holder.mCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -75,12 +77,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
         CheckBox mCheckbox;
         TextView mName;
-        Button mBtnInvite;
+
 
         public ContactsViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mBtnInvite = itemView.findViewById(R.id.contact_list_button_invite);
+
             mName = itemView.findViewById(R.id.contact_list_tv_name);
             mCheckbox = itemView.findViewById(R.id.select_contact);
         }
