@@ -110,6 +110,9 @@ public class ColabRepository {
         return mList;
     }
 
+
+
+
     /**
      * To read projects for a logged in user.
      * @param userId
@@ -284,21 +287,57 @@ public class ColabRepository {
     public void updateProjectInLiveData(Project project){
         List<Project> list = mList.getValue();
         if(list != null){
+            List<Project> tempList = list;
 
-            for (Project pro :
-                    list) {
+            for (Project pro : list) {
 
                 if(pro.getProject_id().equals(project.getProject_id())){
                     list.remove(pro);
+                }
+
+            }
+            for (Project pro : tempList) {
+
+                if(pro.getProject_id().equals(project.getProject_id())){
                     list.add(project);
+
                 }
 
             }
         }else{
             return;
         }
+
         mList.setValue(list);
 
+    }
+
+    public void addMemberToProject(String member, String projectId){
+
+        List<Project> list = mList.getValue();
+
+        if(list != null){
+            List<Project> tempList = list;
+
+            for (Project pro : list) {
+
+                if(pro.getProject_id().equals(projectId)){
+                    if(pro.getMembers() == null){
+                        List<String> members = new ArrayList<>();
+                        members.add(member);
+                        pro.setMembers(members);
+                    }else{
+                        List<String> members = pro.getMembers();
+                        members.add(member);
+                        pro.setMembers(members);
+                    }
+                }
+            }
+        }else{
+            return;
+        }
+
+        mList.setValue(list);
     }
 
 }

@@ -7,7 +7,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.nikhildagrawal.worktrack.R;
+import com.nikhildagrawal.worktrack.models.Assignee;
 import com.nikhildagrawal.worktrack.models.Contact;
+import com.nikhildagrawal.worktrack.models.User;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AssigneeAdapter extends RecyclerView.Adapter<AssigneeAdapter.AssigneeViewHolder> {
 
-    List<Contact> assigneeList;
+    List<Assignee> assigneeList;
     Context mContext;
 
     public AssigneeAdapter(Context context){
@@ -79,7 +81,7 @@ public class AssigneeAdapter extends RecyclerView.Adapter<AssigneeAdapter.Assign
 
     }
 
-    public void setAssigneeList(List<Contact> list){
+    public void setAssigneeList(List<Assignee> list){
         assigneeList = list;
         notifyDataSetChanged();
     }

@@ -46,7 +46,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
     @Override
     public int getItemCount() {
 
-        if(taskList.isEmpty()){
+        if(taskList == null){
             return 0;
         }
         return taskList.size();
@@ -65,5 +65,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
         }
     }
 
+
+    public void setTaskList(List<Task> list){
+        taskList = list;
+        notifyDataSetChanged();
+    }
 
 }

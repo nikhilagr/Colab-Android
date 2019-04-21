@@ -2,9 +2,10 @@
 
 
     <ScrollView
-        android:fillViewport="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.AddNewProjectFragment">
@@ -16,22 +17,40 @@
             android:orientation="vertical">
 
 
-
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_margin="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_title"
-                android:id="@+id/et_add_project_title" />
+                android:hint="@string/add_title">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_margin="16dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_add_project_title" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_description"
-                android:id="@+id/et_add_project_desc" />
+                android:hint="@string/add_description">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_add_project_desc" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <LinearLayout
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -61,108 +80,117 @@
 
             <LinearLayout
                 android:weightSum="10"
-                android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_margin="8dp"
-                    android:id="@+id/btn_add_project_members"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add Members"
-                    android:layout_weight="5"/>
+                <TextView
+                    android:text="Members: "
+                    android:layout_weight="9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_margin="8dp"
-                    android:id="@+id/btn_add_project_tasks"
-                    android:layout_width="wrap_content"
+                <ImageButton
+                    android:id="@+id/btn_add_project_members"
+                    app:srcCompat="@drawable/ic_person_add_color_accent_24dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Add Tasks"
-                    android:layout_weight="5"/>
+                    android:background="@null"
+
+                    />
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:background="@color/colorwhite"
+                android:layout_width="match_parent"
+                android:layout_height="135dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/members_recyclerview"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+
+                <TextView
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/empty_mem_list_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Currently no members in project."
+                    android:textColor="@color/colorAccent" />
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:weightSum="10"
-                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Tasks: "
+                    android:layout_weight="9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <ImageButton
+                    android:id="@+id/btn_add_project_tasks"
+                    app:srcCompat="@drawable/ic_add_task_color_accent_24dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    />
+
+            </LinearLayout>
 
 
-                <LinearLayout
-                    android:background="@color/colorRed"
-                    android:layout_weight="4"
+            <RelativeLayout
+                android:background="@color/colorwhite"
+                android:layout_width="match_parent"
+                android:layout_height="120dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tasks_recyclerview"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="match_parent"/>
 
 
-                    <RelativeLayout
-                        android:background="@color/colorwhite"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/members_recyclerview"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
-
-
-                        <TextView
-
-                            android:gravity="center"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:id="@+id/empty_task_list_message"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Currently no members in project."
-                            android:textColor="@color/colorAccent" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="4"
+                <TextView
+                    android:gravity="center"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/empty_tas_list_message"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="wrap_content"
+                    android:text="Currently no tasks in project."
+                    android:textColor="@color/colorAccent" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/tasks_recyclerview"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
-
-                        <TextView
-                            android:visibility="gone"
-                            android:gravity="center"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentRight="true"
-                            android:id="@+id/empty_members_list_message"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Currently no tasks in project."
-                            android:textColor="@color/colorAccent" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
+            </RelativeLayout>
 
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.button.MaterialButton
                         android:layout_gravity="center"
@@ -175,7 +203,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+
 
 
     </ScrollView>

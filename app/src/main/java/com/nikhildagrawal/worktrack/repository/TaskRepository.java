@@ -8,10 +8,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nikhildagrawal.worktrack.models.Note;
 import com.nikhildagrawal.worktrack.models.Task;
 import com.nikhildagrawal.worktrack.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,9 +46,9 @@ public class TaskRepository {
         return mList;
     }
 
-    public void insertTaskInFirestoreDb(Task task){
+    public void insertTaskInFirestoreDb(Task task, String taskId){
 
-        DocumentReference ref = FirebaseFirestore.getInstance().collection(Constants.TASK_COLLECTION).document();
+        DocumentReference ref = FirebaseFirestore.getInstance().collection(Constants.TASK_COLLECTION).document(taskId);
 
         ref.set(task).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -111,13 +114,33 @@ public class TaskRepository {
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
 
                 if(task.isSuccessful()){
-                    List<Task> tasks = task.getResult().toObjects(Task.class);
-                    mList.postValue(tasks);
+
+                    List<Task> taskList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+
+                        Task task1 = document.toObject(Task.class);
+                        taskList.add(task1);
+                    }
+
+                    mList.setValue(taskList);
                 }
             }
         });
     }
 
+    public void addTask(Task task){
+
+        List<Task> list = mList.getValue();
+
+        if(list!=null){
+            list.add(task);
+        }else{
+            list = new ArrayList<>();
+            list.add(task);
+        }
+
+        mList.setValue(list);
+    }
 
 
 }

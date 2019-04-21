@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.User;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -22,7 +24,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
 
     public MembersAdapter(Context context){
         mContext = context;
-        //userList = list;
+        userList = new ArrayList<>();
     }
 
 
@@ -38,6 +40,9 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
     @Override
     public void onBindViewHolder(@NonNull MembersViewHolder holder, int position) {
 
+
+        String displayTitle = userList.get(position).getFirtst_name().substring(0,1).concat(userList.get(position).getLast_name().substring(0,1));
+        holder.mDisplayTitle.setText(displayTitle);
 
         holder.mFName.setText(userList.get(position).getFirtst_name());
         holder.mLName.setText(userList.get(position).getLast_name());
@@ -56,20 +61,24 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
 
     public class MembersViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mFName,mLName;
+        TextView mDisplayTitle,mFName,mLName;
         public MembersViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mDisplayTitle = itemView.findViewById(R.id.display_title);
             mFName = itemView.findViewById(R.id.first_name);
             mLName = itemView.findViewById(R.id.last_name);
         }
     }
 
-
-
     public void updateUserInMembersAdpater(User user){
 
-        userList.add(user);
+        if(!userList.contains(user)){
+            userList.add(user);
+        }
+
         notifyDataSetChanged();
+
     }
 
     public void setUserList(List<User> list){

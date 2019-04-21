@@ -46,7 +46,11 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
             holder.mTitle.setText(projectList.get(position).getTitle());
             holder.mDesc.setText(projectList.get(position).getDescription());
             holder.mDeadline.setText(projectList.get(position).getEnd_date());
-            holder.mTotalMembers.setText(String.valueOf(projectList.get(position).getMembers().size()) );
+
+            if(projectList.get(position).getMembers()!=null){
+                holder.mTotalMembers.setText(String.valueOf(projectList.get(position).getMembers().size()) );
+            }
+
 
             holder.mOptionsMenuImage.setOnClickListener(new View.OnClickListener() {
                 @Override
