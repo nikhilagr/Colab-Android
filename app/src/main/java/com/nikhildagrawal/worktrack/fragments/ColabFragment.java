@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ColabAdapter;
 import com.nikhildagrawal.worktrack.models.Project;
@@ -39,8 +40,8 @@ public class ColabFragment extends Fragment {
     private View mView;
     private FloatingActionButton mFabAddProject;
     ColabViewModel mViewModel;
-    private List<Project> projectList;
     private LinearLayout mNoProjectLayout;
+    String currentUserId;
 
 
     public ColabFragment() {
@@ -51,7 +52,7 @@ public class ColabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        
         Log.d(TAG,"onCreateView");
 
 
@@ -59,11 +60,15 @@ public class ColabFragment extends Fragment {
 
         mRecyclerView = mView.findViewById(R.id.rv_colab);
         mNoProjectLayout = mView.findViewById(R.id.no_colab_layout);
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ColabAdapter(getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
 
-        mViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
+        mViewModel.getProjects(currentUserId).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {
 
@@ -85,11 +90,6 @@ public class ColabFragment extends Fragment {
             }
         });
 
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ColabAdapter(getActivity());
-        mRecyclerView.setAdapter(mAdapter);
 
         return mView;
     }

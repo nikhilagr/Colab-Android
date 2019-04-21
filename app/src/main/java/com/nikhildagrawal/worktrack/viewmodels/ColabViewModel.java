@@ -20,8 +20,8 @@ public class ColabViewModel extends ViewModel {
 
     }
 
-    public LiveData<List<Project>> getProjects(){
-       return mRepo.getProjects();
+    public LiveData<List<Project>> getProjects(String userId){
+       return mRepo.getProjects(userId);
     }
 
     public void addProjectToLiveData(Project pro){

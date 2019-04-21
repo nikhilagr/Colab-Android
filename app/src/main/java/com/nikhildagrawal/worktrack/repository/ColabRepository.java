@@ -104,9 +104,9 @@ public class ColabRepository {
     }
 
 
-    public LiveData<List<Project>> getProjects(){
+    public LiveData<List<Project>> getProjects(String userId){
 
-        readProjectsFromFirestoreDb(currentUserId);
+        readProjectsFromFirestoreDb(userId);
         return mList;
     }
 
@@ -128,9 +128,13 @@ public class ColabRepository {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
-                    User currentUser  = task.getResult().toObject(User.class);
-//                    List<String> projects = currentUser.getProjects();
+
                     List<String> projects = new ArrayList<>();
+
+                    User user = task.getResult().toObject(User.class);
+
+                    projects = user.getProjects();
+
                     final List<Project> listPro = new ArrayList<>();
                     for (String projectId: projects) {
 
@@ -145,22 +149,22 @@ public class ColabRepository {
                                 Project project = task.getResult().toObject(Project.class);
 
                                 listPro.add(project);
-                                mList.postValue(listPro);
+                                mList.setValue(listPro);
+
                             }
                         });
-
                     }
 
 
                 }
                 else{
 
-                    //mList.postValue(null);
-
                 }
-
             }
         });
+
+
+
 
     }
 
