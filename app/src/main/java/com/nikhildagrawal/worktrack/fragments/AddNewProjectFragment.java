@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -67,23 +68,19 @@ public class AddNewProjectFragment extends Fragment {
 
     private RecyclerView  mMembersrecyclerview;
     private RecyclerView mTasksRecyclerview;
-
     private MembersAdapter mMembersAdapter;
     private TasksAdapter mTasksAdpater;
     private DocumentReference reference;
-
     private ColabRepository mColabRepository;
     private ColabViewModel mColabViewModel;
     private TaskViewModel mTaskViewModel;
-
-
     private String currentUserId;
-    Project mProject;
     private ContactViewModel contactViewModel;
     private List<User> membersList;
     private static String projectId;
     List<String> members;
     List<String> tasksList;
+    SharedPreferences pref;
 
     public AddNewProjectFragment() {
         // Required empty public constructor
@@ -93,11 +90,10 @@ public class AddNewProjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         mView = inflater.inflate(R.layout.fragment_add_new_project, container, false);
         calendar = Calendar.getInstance();
-
         mButtonAddMemebers = mView.findViewById(R.id.btn_add_project_members);
         mButtonAddTask = mView.findViewById(R.id.btn_add_project_tasks);
         mButtonAddProject = mView.findViewById(R.id.btn_add_project);
@@ -108,9 +104,20 @@ public class AddNewProjectFragment extends Fragment {
         mTasksRecyclerview = mView.findViewById(R.id.tasks_recyclerview);
         tvMessageMembersList = mView.findViewById(R.id.empty_mem_list_message);
         tvMessageTaskList = mView.findViewById(R.id.empty_tas_list_message);
-        mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
 
-        final SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
+
+
+        mTaskViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
+        mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
+        contactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
+
+
+        mColabRepository = ColabRepository.getInstance();
+        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        // Store reference in preference for add mode of projects
+        pref = getActivity().getApplicationContext().getSharedPreferences("MyPref", 0);
         projectId = pref.getString("projectId",null);
 
         if(projectId == null){
@@ -123,23 +130,6 @@ public class AddNewProjectFragment extends Fragment {
         }else{
             reference = FirebaseFirestore.getInstance().collection("projects").document(projectId);
         }
-
-
-        membersList = new ArrayList<>();
-        mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
-        contactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
-        mColabRepository = ColabRepository.getInstance();
-        currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-
-        mColabViewModel.getProjects().observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
-            @Override
-            public void onChanged(List<Project> projects) {
-                Log.d("%%%% Project Data %%",projects.toString());
-
-            }
-        });
-
 
         mMembersrecyclerview = mView.findViewById(R.id.members_recyclerview);
         LinearLayoutManager layoutManager =new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -161,7 +151,6 @@ public class AddNewProjectFragment extends Fragment {
                 tasksList = new ArrayList<>();
 
                 if(!tasks.isEmpty()){
-
                     tvMessageTaskList.setVisibility(View.GONE);
 
                 }else{
@@ -188,7 +177,9 @@ public class AddNewProjectFragment extends Fragment {
             }
         });
 
-        members = new ArrayList<>();
+        members = new ArrayList<>(); // List to store ids of members
+        membersList = new ArrayList<>(); // List for members adapter
+
         // To fill members recycler view using data from contactviewmodel.
         List<Contact> contacts = contactViewModel.getContactList().getValue();
 
@@ -207,7 +198,6 @@ public class AddNewProjectFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-
                             if(task.isSuccessful()){
                                 User user = task.getResult().toObject(User.class);
                                 mMembersAdapter.updateUserInMembersAdpater(user);
@@ -215,39 +205,14 @@ public class AddNewProjectFragment extends Fragment {
                         }
                     });
                     mMembersAdapter.setUserList(membersList);
-
                 }
-
             }
-
         }
-
-
-        final DatePickerDialog.OnDateSetListener dateDi = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR , year);
-                calendar.set(Calendar.MONTH , month);
-                calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
-                updateLabelStart();
-            }
-        };
-
-        final DatePickerDialog.OnDateSetListener dateDi2 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR , year);
-                calendar.set(Calendar.MONTH , month);
-                calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
-                updateLabelEnd();
-            }
-        };
-
 
         mETStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getActivity(), dateDi, calendar
+                new DatePickerDialog(getActivity(), setDataPicker(mETStartDate), calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -256,7 +221,7 @@ public class AddNewProjectFragment extends Fragment {
         mETEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getActivity(), dateDi2, calendar
+                new DatePickerDialog(getActivity(), setDataPicker(mETEndDate), calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -290,13 +255,16 @@ public class AddNewProjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+
                 String title = mETTitle.getText().toString();
                 String desc = mETDesc.getText().toString();
                 String startDate = mETStartDate.getText().toString();
                 String endDate = mETEndDate.getText().toString();
                 String creatorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                List<String> stringListTaskIds = tasksList;
 
+
+                List<String> stringListTaskIds = tasksList;
 
                 List<String> stringListMemberIds;
                 if(members!=null){
@@ -304,20 +272,18 @@ public class AddNewProjectFragment extends Fragment {
                 }else{
                     stringListMemberIds = new ArrayList<>();
                 }
-                stringListMemberIds.add(currentUserId);
 
+                if(!title.equals("")){
+                    stringListMemberIds.add(currentUserId);
+                    Project pro = new Project(reference.getId(),title,desc,creatorId,startDate,endDate,members,stringListTaskIds);
+                    // Insert data in db
+                    mColabRepository.insertProjectInFirestoreDb(pro,reference);
+                    contactViewModel.removeData();
+                    getFragmentManager().popBackStackImmediate();
+                }else{
+                    Snackbar.make(mView,"Title is mandatory",Snackbar.LENGTH_SHORT).show();
+                }
 
-                Project pro = new Project(reference.getId(),title,desc,creatorId,startDate,endDate,members,stringListTaskIds);
-                mColabRepository.insertProjectInFirestoreDb(pro,reference);
-
-                // remove data from shared preference.
-                SharedPreferences.Editor editor = pref.edit();
-                editor.remove("projectId");
-                editor.commit();
-
-                contactViewModel.removeData();
-
-                getFragmentManager().popBackStackImmediate();
 
             }
         });
@@ -325,16 +291,34 @@ public class AddNewProjectFragment extends Fragment {
         return mView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-    private void updateLabelStart() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        mETStartDate.setText(sdf.format(calendar.getTime()));
+        // remove data from shared preference.
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("projectId");
+        editor.commit();
+
     }
 
-    private void updateLabelEnd() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        mETEndDate.setText(sdf.format(calendar.getTime()));
+    private DatePickerDialog.OnDateSetListener setDataPicker(final TextInputEditText mET){
+
+        final DatePickerDialog.OnDateSetListener dateDi = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR , year);
+                calendar.set(Calendar.MONTH , month);
+                calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
+
+                String myFormat = "MM/dd/yy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                mET.setText(sdf.format(calendar.getTime()));
+            }
+        };
+
+        return dateDi;
     }
+
+
 }

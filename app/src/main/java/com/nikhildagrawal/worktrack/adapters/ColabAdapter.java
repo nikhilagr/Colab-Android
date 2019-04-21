@@ -42,7 +42,9 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
     @Override
     public void onBindViewHolder(@NonNull ColabViewHolder holder, final int position) {
 
-        if(holder!=null && projectList!=null){
+        if(holder!=null && projectList!=null && projectList.get(position)!=null){
+
+
             holder.mTitle.setText(projectList.get(position).getTitle());
             holder.mDesc.setText(projectList.get(position).getDescription());
             holder.mDeadline.setText(projectList.get(position).getEnd_date());
