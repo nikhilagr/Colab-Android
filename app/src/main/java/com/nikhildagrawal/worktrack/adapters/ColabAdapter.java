@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nikhildagrawal.worktrack.R;
+import com.nikhildagrawal.worktrack.interfaces.ProjectClickListner;
 import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.repository.ColabRepository;
@@ -25,8 +26,11 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
     List<Project> projectList;
     Context mContext;
 
-    public ColabAdapter(Context context){
+    private ProjectClickListner mListener;
+
+    public ColabAdapter(Context context, ProjectClickListner listner){
         mContext = context;
+        mListener = listner;
     }
 
 
@@ -35,7 +39,7 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
     public ColabViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_colab_list_item,parent,false);
-        ColabViewHolder holder = new ColabViewHolder(view);
+        ColabViewHolder holder = new ColabViewHolder(view,mListener);
         return holder;
     }
 
@@ -80,13 +84,14 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
        return 0 ;
     }
 
-    public class ColabViewHolder extends RecyclerView.ViewHolder {
+    public class ColabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView mTitle,mDesc,mDeadline,mTotalMembers;
         ImageView mOptionsMenuImage;
+        View view;
 
 
-        public ColabViewHolder(@NonNull View itemView) {
+        public ColabViewHolder(@NonNull View itemView, ProjectClickListner listner) {
             super(itemView);
 
             mTitle = itemView.findViewById(R.id.colab_list_item_title);
@@ -94,7 +99,15 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
             mDeadline = itemView.findViewById(R.id.colab_list_item_end_date);
             mTotalMembers = itemView.findViewById(R.id.colab_list_item_total_members);
             mOptionsMenuImage = itemView.findViewById(R.id.colab_list_item_menu_image);
+            mListener = listner;
+          //  view = itemView.findViewById(R.id.myview);
+            itemView.setOnClickListener(this);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onProjectClick(getAdapterPosition());
         }
     }
 

@@ -65,7 +65,6 @@ public class ColabRepository {
                     User user =task.getResult().toObject(User.class);
 
                     stringList  = user.getProjects();
-
                     stringList.add(projectId);
                     map.put("projects",stringList);
 

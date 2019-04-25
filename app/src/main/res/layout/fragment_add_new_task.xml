@@ -1,126 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_marginBottom="?attr/actionBarSize"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.AddNewTaskFragment">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_margin="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/add_title"
-            android:id="@+id/et_add_task_title" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/add_description"
-            android:id="@+id/et_add_task_desc" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_margin="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="10">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_margin="4dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:hint="Start date"
-                android:focusable="false"
-                android:id="@+id/et_task_start_date"/>
-
-
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_margin="4dp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:focusable="false"
-                android:hint="End date"
-                android:id="@+id/et_task_end_date"/>
-
-        </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        >
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_title"
+        android:id="@+id/et_add_task_title" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_description"
+        android:id="@+id/et_add_task_desc" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:weightSum="10">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="16dp"
-            android:layout_weight="1"
-            android:text="Assign task to: "
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_margin="4dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:hint="Start date"
+            android:focusable="false"
+            android:id="@+id/et_task_start_date"/>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/assign_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/empty_task_list_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:text="Add Members so you can assign the tasks to them."
-                    android:textColor="@color/colorAccent" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add_task"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Add Task" />
-
-        </LinearLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_margin="4dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:focusable="false"
+            android:hint="End date"
+            android:id="@+id/et_task_end_date"/>
 
     </LinearLayout>
 
 
-</LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Assign task to: "
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/assign_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/empty_task_list_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="Add Members so you can assign the tasks to them."
+            android:textColor="@color/colorAccent" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_gravity="center"
+        android:id="@+id/btn_add_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Add Task" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_gravity="center"
+            android:id="@+id/btn_save_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Save Task" />
+
+    </LinearLayout>
+
+
+</ScrollView>

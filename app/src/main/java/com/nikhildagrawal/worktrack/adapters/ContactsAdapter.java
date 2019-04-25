@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
+public class    ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder> {
 
     Context mContext;
     List<Contact> contactList;
@@ -43,6 +43,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     public void onBindViewHolder(@NonNull final ContactsViewHolder holder, final int position) {
 
         holder.mName.setText(contactList.get(position).getName());
+
+        Character label = contactList.get(position).getName().charAt(0);
+
+        holder.mLabel.setText(label.toString());
 
         holder.mCheckbox.setChecked(contactList.get(position).isSelected());
 
@@ -77,6 +81,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
         CheckBox mCheckbox;
         TextView mName;
+        TextView mLabel;
 
 
         public ContactsViewHolder(@NonNull View itemView) {
@@ -85,6 +90,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
 
             mName = itemView.findViewById(R.id.contact_list_tv_name);
             mCheckbox = itemView.findViewById(R.id.select_contact);
+            mLabel = itemView.findViewById(R.id.contact_name_label);
         }
     }
 
