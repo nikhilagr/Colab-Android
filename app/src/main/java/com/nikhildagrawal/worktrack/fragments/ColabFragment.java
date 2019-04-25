@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ColabAdapter;
+import com.nikhildagrawal.worktrack.interfaces.ProjectClickListner;
 import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
 
@@ -31,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColabFragment extends Fragment {
+public class ColabFragment extends Fragment implements ProjectClickListner {
 
     public static final String TAG = "ColabFragment";
 
@@ -39,9 +40,9 @@ public class ColabFragment extends Fragment {
     private ColabAdapter mAdapter;
     private View mView;
     private FloatingActionButton mFabAddProject;
-    ColabViewModel mViewModel;
+    private ColabViewModel mViewModel;
     private LinearLayout mNoProjectLayout;
-    String currentUserId;
+    private String currentUserId;
 
 
     public ColabFragment() {
@@ -52,22 +53,24 @@ public class ColabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        
+
         Log.d(TAG,"onCreateView");
 
 
         mView  = inflater.inflate(R.layout.fragment_colab, container, false);
 
+        mFabAddProject =  mView.findViewById(R.id.fab_add_project);
         mRecyclerView = mView.findViewById(R.id.rv_colab);
         mNoProjectLayout = mView.findViewById(R.id.no_colab_layout);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ColabAdapter(getActivity());
-        mRecyclerView.setAdapter(mAdapter);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         mViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
 
+
+        setupRecyclerView();
+
+        /**
+         * Show projects based on user who is logged in.
+         */
         mViewModel.getProjects(currentUserId).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {
@@ -82,16 +85,27 @@ public class ColabFragment extends Fragment {
             }
         });
 
-        mFabAddProject =  mView.findViewById(R.id.fab_add_project);
+
         mFabAddProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_colabFragment_to_addNewProjectFragment);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("from colab","Add");
+                Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_colabFragment_to_addNewProjectFragment,bundle);
             }
         });
 
 
+
         return mView;
+    }
+
+    private void setupRecyclerView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ColabAdapter(getActivity(),this);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -101,4 +115,13 @@ public class ColabFragment extends Fragment {
     }
 
 
+    @Override
+    public void onProjectClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putString("from colab","Add Edit mode");
+        bundle.putInt("position",position);
+        Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.action_colabFragment_to_addNewProjectFragment,bundle);
+
+
+    }
 }

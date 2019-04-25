@@ -46,7 +46,7 @@
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
             android:windowSoftInputMode="adjustPan"/>
-        <receiver android:name=".Utils.ReminderNotificationReceiver"/>
+        <receiver android:name=".utils.ReminderNotificationReceiver"/>
 
     </application>
 

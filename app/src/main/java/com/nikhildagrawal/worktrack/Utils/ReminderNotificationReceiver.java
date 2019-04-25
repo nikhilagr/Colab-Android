@@ -1,4 +1,4 @@
-package com.nikhildagrawal.worktrack.Utils;
+package com.nikhildagrawal.worktrack.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;

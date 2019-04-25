@@ -188,14 +188,26 @@
             </RelativeLayout>
 
                 <LinearLayout
+                    android:orientation="vertical"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.button.MaterialButton
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
                         android:layout_gravity="center"
                         android:id="@+id/btn_add_project"
                         android:text="Add project"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_marginTop="10dp"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:id="@+id/btn_save_project"
+                        android:text="Save project"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 

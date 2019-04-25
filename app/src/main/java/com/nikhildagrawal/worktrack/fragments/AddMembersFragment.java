@@ -52,6 +52,7 @@ public class AddMembersFragment extends Fragment {
     private List<Project> projectList;
     private List<Project> currentprojectList;
     List<Contact> contactList;
+    private String mode;
 
     public AddMembersFragment() {
         // Required empty public constructor
@@ -69,23 +70,23 @@ public class AddMembersFragment extends Fragment {
 
         if(getArguments()!=null){
             projectId = getArguments().getString("projectId");
+            mode = getArguments().getString("mode");
         }
         mMembersRecyclerview = view.findViewById(R.id.rcv_members);
         mVContactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
-        
         mContactsAdapter = new ContactsAdapter(getActivity());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mMembersRecyclerview.setLayoutManager(layoutManager);
         mMembersRecyclerview.setAdapter(mContactsAdapter);
         contactList = new ArrayList<>();
 
-
-
         addContacts();
 
         mVContactViewModel.getContactList().observe(getViewLifecycleOwner(), new Observer<List<Contact>>() {
             @Override
             public void onChanged(List<Contact> contacts) {
+
+
                 mContactsAdapter.setContactList(contacts);
             }
 
@@ -111,7 +112,7 @@ public class AddMembersFragment extends Fragment {
                 if(email.equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())){
                     continue;
                 }
-                final Contact contact = new Contact(name,email,phoneNumber,false);
+
 
 
                 Query query = FirebaseFirestore.getInstance().collection("users").whereEqualTo("email",email);
@@ -128,8 +129,9 @@ public class AddMembersFragment extends Fragment {
                             List<DocumentSnapshot> docs = snap.getDocuments();
                             for (DocumentSnapshot sn: docs) {
                                    User user  = sn.toObject(User.class);
+
                                    user.getUser_id();
-                                   contact.setAuth_id(user.getUser_id());
+                                   Contact contact = new Contact(user.getFirtst_name() + " "+ user.getLast_name(),user.getEmail(),"",false,user.getUser_id());
                                    mVContactViewModel.addContactToLiveData(contact);
                             }
                         }

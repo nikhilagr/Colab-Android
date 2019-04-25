@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 
+    android:weightSum="10"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
@@ -8,35 +9,67 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="5dp"
-        android:layout_margin="2dp"
-        android:elevation="5dp"
+        android:layout_margin="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            app:cardBackgroundColor="#8e24aa"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:cardCornerRadius="20dp"
+            >
+
+            <TextView
+                android:textColor="@color/colorwhite"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:id="@+id/contact_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N"/>
+        </androidx.cardview.widget.CardView>
+
         <LinearLayout
+            android:layout_gravity="center"
             android:weightSum="10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/select_contact"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
 
             <TextView
+                android:layout_marginLeft="56dp"
                 android:text="Nikhil"
+                android:textSize="18sp"
                 android:id="@+id/contact_list_tv_name"
                 android:layout_weight="9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
-
+            <CheckBox
+                android:layout_marginRight="16dp"
+                android:id="@+id/select_contact"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
 
+
+
+
+
     </androidx.cardview.widget.CardView>
+
+
+
 
 
     <!--<Button-->

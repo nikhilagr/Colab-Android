@@ -79,7 +79,9 @@ public class Contact {
     public String toString() {
         return "Contact{" +
                 "name='" + name + '\'' +
+                ", email='" + email + '\'' +
                 ", selected=" + selected +
+                ", auth_id='" + auth_id + '\'' +
                 '}';
     }
 }

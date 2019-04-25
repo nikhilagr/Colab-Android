@@ -70,7 +70,14 @@ public class ContactViewModel extends ViewModel {
         }
     }
 
+    public void addContactList(List<Contact> list){
+
+        mList.setValue(list);
+    }
+
+
     public void removeData(){
+
         mList.setValue(null);
     }
 
