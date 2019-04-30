@@ -123,8 +123,6 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
         position = pref.getInt("pos",-1);
         contactsProcessed = pref.getBoolean("contactProcessed", false);
 
-
-
         checkMode();
 
         setupAddMode();

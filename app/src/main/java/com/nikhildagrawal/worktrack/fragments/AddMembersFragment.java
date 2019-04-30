@@ -40,27 +40,15 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class AddMembersFragment extends Fragment {
 
-
-
     private RecyclerView mMembersRecyclerview;
-
-
     private ContactsAdapter mContactsAdapter;
     private ContactViewModel mVContactViewModel;
-    private String projectId;
-    private Project mCurrentProject;
-    private List<Project> projectList;
-    private List<Project> currentprojectList;
     List<Contact> contactList;
-    private String mode;
+
 
     public AddMembersFragment() {
         // Required empty public constructor
     }
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,10 +56,6 @@ public class AddMembersFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_add_members, container, false);
 
-        if(getArguments()!=null){
-            projectId = getArguments().getString("projectId");
-            mode = getArguments().getString("mode");
-        }
         mMembersRecyclerview = view.findViewById(R.id.rcv_members);
         mVContactViewModel = ViewModelProviders.of(getActivity()).get(ContactViewModel.class);
         mContactsAdapter = new ContactsAdapter(getActivity());
@@ -156,4 +140,5 @@ public class AddMembersFragment extends Fragment {
 
 
     }
+
 }

@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="16dp"
-            app:cardBackgroundColor="#8e24aa"
+            app:cardBackgroundColor="@color/colorchip"
             android:layout_width="40dp"
             android:layout_height="40dp"
             app:cardCornerRadius="20dp"

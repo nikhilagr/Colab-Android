@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_navigation"
     app:startDestination="@id/colabFragment">
+
+
     <fragment
         android:id="@+id/colabFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.ColabFragment"
@@ -12,6 +14,9 @@
         <action
             android:id="@+id/action_colabFragment_to_addNewProjectFragment"
             app:destination="@id/addNewProjectFragment" />
+        <action
+            android:id="@+id/toProjectDetails"
+            app:destination="@+id/projectDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/notesFragment"
@@ -37,6 +42,7 @@
         android:name="com.nikhildagrawal.worktrack.fragments.ChecklistFragment"
         android:label="Checklist"
         tools:layout="@layout/fragment_checklist" />
+
     <fragment
         android:id="@+id/reminderFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.ReminderFragment"
@@ -92,11 +98,20 @@
         tools:layout="@layout/fragment_add_new_task"
         />
 
+
     <fragment
         android:id="@+id/addMembersFragment"
         android:name="com.nikhildagrawal.worktrack.fragments.AddMembersFragment"
         android:label="Add Members"
         tools:layout="@layout/fragment_add_members"
         />
+
+
+    <fragment
+        android:id="@+id/projectDetailsFragment"
+        android:name="com.nikhildagrawal.worktrack.fragments.ProjectDetailsFragment"
+        android:label="Project Details"
+        tools:layout="@layout/fragment_project_details" />
+
 
 </navigation>

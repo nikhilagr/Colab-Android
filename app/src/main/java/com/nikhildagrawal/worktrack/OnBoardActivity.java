@@ -71,12 +71,12 @@ public class OnBoardActivity extends AppCompatActivity {
             mDots[i] = new TextView(this);
             mDots[i].setText(Html.fromHtml("&#8226"));
             mDots[i].setTextSize(25);
-            mDots[i].setTextColor(getResources().getColor(R.color.colorAccent));
+            mDots[i].setTextColor(getResources().getColor(R.color.colorwhite));
             dotsLayout.addView(mDots[i]);
 
         }
             if(mDots.length > 0){
-                mDots[position].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                mDots[position].setTextColor(getResources().getColor(R.color.colordots));
             }
 
     }

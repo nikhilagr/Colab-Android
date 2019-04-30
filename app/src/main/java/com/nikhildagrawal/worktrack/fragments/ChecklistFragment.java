@@ -34,8 +34,6 @@ public class ChecklistFragment extends Fragment implements CheckListItemClickLis
     public ChecklistFragment() {
         // Required empty public constructor
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,8 +85,6 @@ public class ChecklistFragment extends Fragment implements CheckListItemClickLis
         mAdapter = new ChecklistAdapter(getActivity(),this);
         mChecklistRecyclerView.setAdapter(mAdapter);
     }
-
-
 
     @Override
     public void onCheckListItemClick(int position) {

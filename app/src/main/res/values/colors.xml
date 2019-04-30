@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#484848</color>
-    <color name="colorPrimaryDark">#212121</color>
-    <color name="colorPrimaryLight">#737373</color>
+
+    <color name="colorPrimary">#5e72ee</color>
+    <color name="colorPrimaryDark">#5e72ee</color>
+    <color name="colorPrimaryLight">#bef67a</color>
     <color name="secondary">#4caf50</color>
     <color name="secondaryLight">#80e27e</color>
     <color name="secondaryDark">#087f23</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="colorMain">#eeeeee</color>
+    <color name="colorAccent">#5e72ee</color>
     <color name="colorRed">#f44336</color>
     <color name="colorYellow">#ffeb3b</color>
     <color name="colorGreen">#8bc34a</color>
     <color name="colorwhite">#ffffff</color>
+    <color name="colordots">#c7c7c7</color>
     <color name="colorColabCard">#ffaf49</color>
-
-
-
+    <color name="colorchip">#4b5abe</color>
+    <color name="colorheading">#414fa6</color>
 
 </resources>
