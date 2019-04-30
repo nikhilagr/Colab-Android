@@ -13,82 +13,114 @@
         android:layout_margin="1dp"
         app:cardCornerRadius="2dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/gift"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:id="@+id/logo_item_reminder_list"
+           />
 
 
-            <TextView
-                android:layout_margin="8dp"
-                android:id="@+id/tv_item_reminder_title"
-                android:text="@string/notes_title"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_margin="8dp"
-                android:id="@+id/tv_item_reminder_description"
-                android:text="@string/sample_desc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <LinearLayout
-                    android:layout_weight="4.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_marginLeft="8dp"
-                        android:text="Date : "
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/tv_item_reminder_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
+                android:orientation="vertical">
 
 
-                </LinearLayout>
+                <TextView
+                    android:layout_margin="8dp"
+                    android:id="@+id/tv_item_reminder_title"
+                    android:text="@string/notes_title"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-                <LinearLayout
-                    android:layout_weight="4.5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
+                <!--<TextView-->
+                    <!--android:layout_margin="8dp"-->
+                    <!--android:id="@+id/tv_item_reminder_description"-->
+                    <!--android:text="@string/sample_desc"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
 
-                    <TextView
-                        android:layout_marginLeft="8dp"
-                        android:text="Time : "
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/tv_item_reminder_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
-
-                </LinearLayout>
-
-
-
-                <ImageView
-                    android:layout_weight="1"
-                    android:id="@+id/btn_delete_cell_reminder"
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_delete_accent_24dp"/>
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:layout_weight="4.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/ic_date_range_24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:text="4325489"
+                            android:id="@+id/tv_item_reminder_date"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="4.5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/ic_schedule_accent_24dp"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_gravity="center"
+                            android:id="@+id/tv_item_reminder_time"
+                            android:text="5:00 pm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </LinearLayout>
+
+
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:id="@+id/btn_delete_cell_reminder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_delete_accent_24dp"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </LinearLayout>
+
 
     </com.google.android.material.card.MaterialCardView>
 

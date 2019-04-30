@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ColabAdapter;
+import com.nikhildagrawal.worktrack.interfaces.EditProjectClickListner;
 import com.nikhildagrawal.worktrack.interfaces.ProjectClickListner;
 import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
@@ -32,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ColabFragment extends Fragment implements ProjectClickListner {
+public class ColabFragment extends Fragment implements ProjectClickListner, EditProjectClickListner {
 
     public static final String TAG = "ColabFragment";
 
@@ -104,7 +105,7 @@ public class ColabFragment extends Fragment implements ProjectClickListner {
     private void setupRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ColabAdapter(getActivity(),this);
+        mAdapter = new ColabAdapter(getActivity(),this,this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -124,4 +125,13 @@ public class ColabFragment extends Fragment implements ProjectClickListner {
 
 
     }
+
+    @Override
+    public void onEditProjectClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("position",position);
+        Navigation.findNavController(getActivity(),R.id.fragment).navigate(R.id.toProjectDetails,bundle);
+
+    }
+
 }

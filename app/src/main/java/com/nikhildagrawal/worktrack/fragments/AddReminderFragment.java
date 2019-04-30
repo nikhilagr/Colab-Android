@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.nikhildagrawal.worktrack.Utils.ReminderNotificationReceiver;
+import com.nikhildagrawal.worktrack.utils.ReminderNotificationReceiver;
 import com.nikhildagrawal.worktrack.utils.Constants;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.Reminder;

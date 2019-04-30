@@ -46,7 +46,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, final int position) {
 
         holder.tvTitle.setText(mReminderList.get(position).getTitle());
-        holder.tvDesc.setText(mReminderList.get(position).getDesc());
+        //holder.tvDesc.setText(mReminderList.get(position).getDesc());
         holder.tvDate.setText(mReminderList.get(position).getDate());
         holder.tvTime.setText(mReminderList.get(position).getTime());
 
@@ -98,7 +98,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     public class ReminderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView tvTitle;
-        TextView tvDesc;
+       // TextView tvDesc;
         TextView tvDate;
         TextView tvTime;
         ImageView btnDelete;
@@ -109,7 +109,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.tv_item_reminder_title);
-            tvDesc = itemView.findViewById(R.id.tv_item_reminder_description);
+            //tvDesc = itemView.findViewById(R.id.tv_item_reminder_description);
             tvDate = itemView.findViewById(R.id.tv_item_reminder_date);
             tvTime = itemView.findViewById(R.id.tv_item_reminder_time);
             btnDelete = itemView.findViewById(R.id.btn_delete_cell_reminder);

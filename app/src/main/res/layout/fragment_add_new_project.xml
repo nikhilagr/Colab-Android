@@ -89,6 +89,8 @@
 
                 <TextView
                     android:text="Members: "
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
                     android:layout_weight="9"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -143,6 +145,8 @@
 
                 <TextView
                     android:text="Tasks: "
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
                     android:layout_weight="9"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
