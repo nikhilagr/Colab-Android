@@ -42,6 +42,7 @@ import java.util.Map;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 
 public class AddReminderFragment extends Fragment implements OnItemSelectedListener {
@@ -114,6 +115,7 @@ public class AddReminderFragment extends Fragment implements OnItemSelectedListe
 
         if(str.contentEquals("ReminderClick")){
             int spinnerPosition = dataAdapter.getPosition(reminders.get(mPosition).getDesc());
+            mSpinnerSelection = reminders.get(mPosition).getDesc();
             mBtnAddReminder.setVisibility(View.GONE);
             mBtnSave.setVisibility(View.VISIBLE);
             mTitle.setText(reminders.get(mPosition).getTitle());
@@ -269,7 +271,11 @@ public class AddReminderFragment extends Fragment implements OnItemSelectedListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        mSpinnerSelection  = parent.getItemAtPosition(position).toString();
+        if(position > 0){
+            mSpinnerSelection  = parent.getItemAtPosition(position).toString();
+        }else{
+            Toast.makeText(getContext(), "Select the Reminder Type", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

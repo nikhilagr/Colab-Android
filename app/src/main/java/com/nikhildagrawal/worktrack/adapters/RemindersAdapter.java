@@ -2,6 +2,7 @@ package com.nikhildagrawal.worktrack.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,6 +85,25 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             }
         });
 
+        switch (mReminderList.get(position).getDesc()){
+            case "Travel": holder.mLogo.setImageResource(R.drawable.suitcase);
+                            break;
+            case "Health": holder.mLogo.setImageResource(R.drawable.stethoscope);
+                            break;
+            case "Car": holder.mLogo.setImageResource(R.drawable.sportcar);
+                            break;
+            case "Education": holder.mLogo.setImageResource(R.drawable.barchart);
+                            break;
+            case "Food": holder.mLogo.setImageResource(R.drawable.pizza);
+                            break;
+            case "Get Together": holder.mLogo.setImageResource(R.drawable.gift);
+                            break;
+            case "Finance": holder.mLogo.setImageResource(R.drawable.bank);
+                            break;
+                default: holder.mLogo.setImageResource(R.drawable.alarm);
+                            break;
+        }
+
 
     }
 
@@ -101,7 +121,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
        // TextView tvDesc;
         TextView tvDate;
         TextView tvTime;
-        ImageView btnDelete;
+        ImageView btnDelete,mLogo;
         ReminderClickListner reminderClickListner;
 
 
@@ -113,6 +133,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             tvDate = itemView.findViewById(R.id.tv_item_reminder_date);
             tvTime = itemView.findViewById(R.id.tv_item_reminder_time);
             btnDelete = itemView.findViewById(R.id.btn_delete_cell_reminder);
+            mLogo = itemView.findViewById(R.id.logo_item_reminder_list);
 
 
             reminderClickListner = clickListner;
