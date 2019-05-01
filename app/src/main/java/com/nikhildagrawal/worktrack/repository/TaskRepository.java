@@ -143,5 +143,11 @@ public class TaskRepository {
     }
 
 
+    public void clearList(){
+        List<Task> list = mList.getValue();
+        list.clear();
+
+        mList.setValue(list);
+    }
 
 }
