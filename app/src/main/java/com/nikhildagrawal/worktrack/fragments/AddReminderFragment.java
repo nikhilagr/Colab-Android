@@ -14,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -29,6 +32,7 @@ import com.nikhildagrawal.worktrack.viewmodels.ReminderViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,13 +41,14 @@ import java.util.Locale;
 import java.util.Map;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 
-public class AddReminderFragment extends Fragment {
+public class AddReminderFragment extends Fragment implements OnItemSelectedListener {
 
 
     private EditText mTitle;
-    private EditText mDescription;
+    private Spinner mDescription;
     private EditText mDate;
     private EditText mTime;
     private Button mBtnAddReminder, mBtnSave;
@@ -52,6 +57,8 @@ public class AddReminderFragment extends Fragment {
     private Integer mPosition;
     private Calendar mCalendar;
     private long startTime;
+    private String mSpinnerSelection;
+    private ArrayAdapter<String> dataAdapter;
 
 
     public AddReminderFragment() {
@@ -63,11 +70,29 @@ public class AddReminderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_reminder, container, false);
         mTitle = view.findViewById(R.id.et_add_reminder_title);
-        mDescription= view.findViewById(R.id.et_add_reminder_desc);
         mDate = view.findViewById(R.id.et_add_reminder_date);
         mTime = view.findViewById(R.id.et_add_reminder_time);
         mBtnAddReminder = view.findViewById(R.id.btn_add_reminder);
         mBtnSave = view.findViewById(R.id.btn_save_reminder);
+
+        mDescription = view.findViewById(R.id.et_add_reminder_desc);
+
+        mDescription.setOnItemSelectedListener(this);
+
+        List<String> categories = new ArrayList<String>();
+        categories.add("e.g. Travel");
+        categories.add("Travel");
+        categories.add("Health");
+        categories.add("Car");
+        categories.add("Education");
+        categories.add("Food");
+        categories.add("Get Together");
+        categories.add("Finance");
+
+        dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, categories);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mDescription.setAdapter(dataAdapter);
+
 
 
         calendar = Calendar.getInstance();
@@ -88,10 +113,11 @@ public class AddReminderFragment extends Fragment {
         final List<Reminder> reminders =  mViewModel.getReminderList().getValue();
 
         if(str.contentEquals("ReminderClick")){
+            int spinnerPosition = dataAdapter.getPosition(reminders.get(mPosition).getDesc());
             mBtnAddReminder.setVisibility(View.GONE);
             mBtnSave.setVisibility(View.VISIBLE);
             mTitle.setText(reminders.get(mPosition).getTitle());
-            mDescription.setText(reminders.get(mPosition).getDesc());
+            mDescription.setSelection(spinnerPosition);
             mDate.setText(reminders.get(mPosition).getDate());
             mTime.setText(reminders.get(mPosition).getTime());
         }
@@ -102,7 +128,7 @@ public class AddReminderFragment extends Fragment {
             public void onClick(View v) {
 
                 String curTitle = mTitle.getText().toString();
-                String curDesc = mDescription.getText().toString();
+                String curDesc = mSpinnerSelection;
                 String curDate = mDate.getText().toString();
                 String curTime = mTime.getText().toString();
 
@@ -126,11 +152,15 @@ public class AddReminderFragment extends Fragment {
 
                 if(map.size()!=0){
                     ReminderRepository.getInstance().updateReminderFromFirestore(map,reminders.get(mPosition).getReminder_id());
+                    setNotificationForReminder(getActivity());
                     Snackbar.make(v,"Changes saved successfully",Snackbar.LENGTH_LONG).show();
                     getFragmentManager().popBackStackImmediate();
                 }else{
+                    setNotificationForReminder(getActivity());
                     getFragmentManager().popBackStackImmediate();
                 }
+
+
             }
         });
 
@@ -183,25 +213,9 @@ public class AddReminderFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy hh:mm");
-                String dateInString = mDate.getText().toString() + " " + mTime.getText().toString();
-                try {
-                    Date date = sdf.parse(dateInString);
-                    startTime = date.getTime();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                setNotificationForReminder(getActivity());
 
-                int id= (int) System.currentTimeMillis();
-                AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                Intent myIntent = new Intent( getContext() , ReminderNotificationReceiver.class);
-                myIntent.putExtra("reminder_title", mTitle.getText().toString());
-                myIntent.putExtra("reminder_description", mDescription.getText().toString());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),id,myIntent,0);
-
-                manager.set(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
-
-                ReminderRepository.getInstance().insertReminderInFireStore(mTitle.getText().toString(),mDescription.getText().toString()
+                ReminderRepository.getInstance().insertReminderInFireStore(mTitle.getText().toString(),mSpinnerSelection
                         ,mDate.getText().toString(),mTime.getText().toString());
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 getFragmentManager().popBackStackImmediate();
@@ -209,6 +223,29 @@ public class AddReminderFragment extends Fragment {
             }
         });
         return view;
+    }
+
+
+
+
+    private void setNotificationForReminder(Context context) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy hh:mm");
+        String dateInString = mDate.getText().toString() + " " + mTime.getText().toString();
+        try {
+            Date date = sdf.parse(dateInString);
+            startTime = date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int id= (int) System.currentTimeMillis();
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent myIntent = new Intent( getContext() , ReminderNotificationReceiver.class);
+        myIntent.putExtra("reminder_title", mTitle.getText().toString());
+//        myIntent.putExtra("reminder_description", mDescription.getText().toString());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),id,myIntent,0);
+
+        manager.set(AlarmManager.RTC_WAKEUP, startTime, pendingIntent);
     }
 
     private void updateLabel() {
@@ -230,4 +267,13 @@ public class AddReminderFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        mSpinnerSelection  = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <Spinner
             android:id="@+id/et_add_reminder_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
