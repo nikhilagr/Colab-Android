@@ -525,7 +525,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                 calendar.set(Calendar.MONTH , month);
                 calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
 
-                String myFormat = "MM-dd-yyyy"; //In which you need put here
+                String myFormat = "EEE, MMM d, yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 mET.setText(sdf.format(calendar.getTime()));
             }
@@ -619,7 +619,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
         editor.remove("position");
         editor.remove("contactProcessed");
         editor.commit();
-
+        mTaskViewModel.clearTask();
         mTasksAdpater.clearTaskList();
 
     }

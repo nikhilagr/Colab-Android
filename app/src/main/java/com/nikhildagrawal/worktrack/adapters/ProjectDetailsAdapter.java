@@ -2,6 +2,7 @@ package com.nikhildagrawal.worktrack.adapters;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.models.Task;
+import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.TaskRepository;
+import com.nikhildagrawal.worktrack.utils.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +41,6 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
 
 
     public ProjectDetailsAdapter(Context context){
-
         mContext = context;
     }
 
@@ -52,6 +57,13 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
 
     }
 
+
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull final ProjectViewHolder holder, final int position) {
 
@@ -61,10 +73,32 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
 
             //TODO: grab name and create chip dynamically
 
-//            Chip ch = new Chip(mContext);
-//            ch.setText("Sample");
-//            ch.setChipBackgroundColorResource(R.color.colorchip);
-//            holder.mChipLayout.addView(ch);
+            for (String assignee : assigneeList) {
+
+                DocumentReference ref = FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).document(assignee);
+
+                ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
+
+                        User user = task.getResult().toObject(User.class);
+                        Chip ch = new Chip(mContext);
+                        ch.setText(user.getFirtst_name());
+                        ch.setTextColor(mContext.getResources().getColor(R.color.colorwhite));
+                        ch.setChipBackgroundColorResource(R.color.colorchip);
+                        holder.mChipLayout.addView(ch);
+                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ch.getLayoutParams();
+                        params.setMarginEnd(10);
+
+
+                    }
+                });
+
+            }
+
+
+
+
             holder.mTitle.setText(mList.get(position).getName());
             holder.mEndDate.setText(mList.get(position).getEnd_date());
             holder.mStatus.setText(mList.get(position).getStatus());
@@ -114,6 +148,8 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
 
     }
 
+
+
     private boolean isAssignee(String uid, List<String> assigneeList) {
 
         for(String id: assigneeList){
@@ -140,6 +176,8 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
         TextView mTitle,mEndDate,mStatus,mMessage;
         SeekBar mSeekBar;
         LinearLayout mChipLayout;
+        ChipGroup mChipGroup;
+
         public ProjectViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -149,6 +187,7 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
             mSeekBar = itemView.findViewById(R.id.proj_detail_seekbar);
             mMessage = itemView.findViewById(R.id.progress_message);
             mChipLayout = itemView.findViewById(R.id.member_chip_layout);
+       //     mChipGroup = itemView.findViewById(R.id.chipGrp);
 
         }
     }

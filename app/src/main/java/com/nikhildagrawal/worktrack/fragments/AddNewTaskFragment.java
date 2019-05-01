@@ -3,11 +3,9 @@ package com.nikhildagrawal.worktrack.fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,21 +13,17 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.AssigneeAdapter;
 import com.nikhildagrawal.worktrack.models.Assignee;
 import com.nikhildagrawal.worktrack.models.Contact;
-import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.models.Task;
 import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.TaskRepository;
 import com.nikhildagrawal.worktrack.viewmodels.AssigneeViewModel;
-import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
 import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
 import com.nikhildagrawal.worktrack.viewmodels.TaskViewModel;
 
@@ -314,7 +308,7 @@ public class AddNewTaskFragment extends Fragment {
                 calendar.set(Calendar.MONTH , month);
                 calendar.set(Calendar.DAY_OF_MONTH , dayOfMonth);
 
-                String myFormat = "MM-dd-yyyy"; //In which you need put here
+                String myFormat = "EEE, MMM d, yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 mET.setText(sdf.format(calendar.getTime()));
             }

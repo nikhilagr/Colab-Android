@@ -77,31 +77,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip"
-                    app:chipBackgroundColor="@color/colorchip"
-                    android:textColor="@color/colorwhite"
-                    android:text="Nikhil"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--<com.google.android.material.chip.ChipGroup-->
+                    <!--android:id="@+id/chipGrp"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip1"
-                    android:layout_marginLeft="8dp"
-                    app:chipBackgroundColor="@color/colorchip"
-                    android:textColor="@color/colorwhite"
-                    android:text="Tarang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
-                <com.google.android.material.chip.Chip
-                    android:layout_marginLeft="8dp"
-                    android:id="@+id/chip2"
-                    app:chipBackgroundColor="@color/colorchip"
-                    android:textColor="@color/colorwhite"
-                    android:text="Jay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--</com.google.android.material.chip.ChipGroup>-->
+
+                <!--<com.google.android.material.chip.Chip-->
+                    <!--android:id="@+id/chip"-->
+                    <!--app:chipBackgroundColor="@color/colorchip"-->
+                    <!--android:textColor="@color/colorwhite"-->
+                    <!--android:text="Nikhil"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+                <!--<com.google.android.material.chip.Chip-->
+                    <!--android:id="@+id/chip1"-->
+                    <!--android:layout_marginLeft="8dp"-->
+                    <!--app:chipBackgroundColor="@color/colorchip"-->
+                    <!--android:textColor="@color/colorwhite"-->
+                    <!--android:text="Tarang"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+                <!--<com.google.android.material.chip.Chip-->
+                    <!--android:layout_marginLeft="8dp"-->
+                    <!--android:id="@+id/chip2"-->
+                    <!--app:chipBackgroundColor="@color/colorchip"-->
+                    <!--android:textColor="@color/colorwhite"-->
+                    <!--android:text="Jay"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
 
             </LinearLayout>
 

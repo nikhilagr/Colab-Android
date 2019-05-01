@@ -83,6 +83,9 @@ public class ProjectDetailsFragment extends Fragment {
 
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mViewModel.clearTask();
+    }
 }
