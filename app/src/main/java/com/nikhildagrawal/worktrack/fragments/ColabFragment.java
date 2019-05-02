@@ -1,7 +1,6 @@
 package com.nikhildagrawal.worktrack.fragments;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -41,7 +39,7 @@ public class ColabFragment extends Fragment implements ProjectClickListner, Edit
     private ColabAdapter mAdapter;
     private View mView;
     private FloatingActionButton mFabAddProject;
-    private ColabViewModel mViewModel;
+    private ColabViewModel mColabViewModel;
     private LinearLayout mNoProjectLayout;
     private String currentUserId;
 
@@ -64,28 +62,40 @@ public class ColabFragment extends Fragment implements ProjectClickListner, Edit
         mRecyclerView = mView.findViewById(R.id.rv_colab);
         mNoProjectLayout = mView.findViewById(R.id.no_colab_layout);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
+        mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
 
 
-        setupRecyclerView();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
+
+
+
 
         /**
          * Show projects based on user who is logged in.
          */
-        mViewModel.getProjects(currentUserId).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
+        mColabViewModel.getProjects(currentUserId).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {
 
-                if(projects.isEmpty()){
-                    mNoProjectLayout.setVisibility(View.VISIBLE);
-                }else{
-                    mNoProjectLayout.setVisibility(View.GONE);
-                }
+                    if(projects == null){
+                        mNoProjectLayout.setVisibility(View.VISIBLE);
+                        mAdapter.setProjectList(null);
+                    }else{
+                        mNoProjectLayout.setVisibility(View.GONE);
+                    }
 
-                mAdapter.setProjectList(projects);
+                    mAdapter.setProjectList(projects);
+
+
+
             }
         });
 
+
+        mAdapter = new ColabAdapter(getActivity(),this,this);
+        mRecyclerView.setAdapter(mAdapter);
 
         mFabAddProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,12 +112,6 @@ public class ColabFragment extends Fragment implements ProjectClickListner, Edit
         return mView;
     }
 
-    private void setupRecyclerView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ColabAdapter(getActivity(),this,this);
-        mRecyclerView.setAdapter(mAdapter);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

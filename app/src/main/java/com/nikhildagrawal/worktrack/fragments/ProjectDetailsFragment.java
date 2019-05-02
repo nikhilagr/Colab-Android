@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.nikhildagrawal.worktrack.R;
@@ -30,6 +31,7 @@ public class ProjectDetailsFragment extends Fragment {
     private TaskViewModel mViewModel;
     private Integer position;
     private ColabViewModel mColabViewModel;
+    private LinearLayout mNoProjectLayout;
 
 
 
@@ -49,6 +51,9 @@ public class ProjectDetailsFragment extends Fragment {
         mRecyclerView = mView.findViewById(R.id.rcv_proj_details);
         mViewModel = ViewModelProviders.of(getActivity()).get(TaskViewModel.class);
         mColabViewModel = ViewModelProviders.of(getActivity()).get(ColabViewModel.class);
+        mNoProjectLayout = mView.findViewById(R.id.no_tasks_in_project_layout);
+
+
 
         setupTasksRecyclerView();
 
@@ -59,16 +64,27 @@ public class ProjectDetailsFragment extends Fragment {
 
         List<Project> pros = mColabViewModel.getProjects(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue();
 
-        String projectId = pros.get(position).getProject_id();
+        if(pros!=null && pros.get(position)!=null){
+            String projectId = pros.get(position).getProject_id();
+            mViewModel.getTasks(projectId).observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+                @Override
+                public void onChanged(List<Task> tasks) {
+
+                    if(tasks.isEmpty()){
+                        mNoProjectLayout.setVisibility(View.VISIBLE);
+                    }else{
+                        mNoProjectLayout.setVisibility(View.GONE);
+                    }
+
+                    mAdapter.setTasksList(tasks);
+                }
+            });
+        }
 
 
 
-        mViewModel.getTasks(projectId).observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                mAdapter.setTasksList(tasks);
-            }
-        });
+
+
 
 
         return mView;

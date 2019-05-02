@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-    <ScrollView
+<ScrollView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:layout_width="match_parent"
@@ -10,219 +9,240 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.AddNewProjectFragment">
 
-        <LinearLayout
+    <LinearLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:hint="@string/add_title">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_margin="16dp"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_title">
+                android:id="@+id/et_add_project_title" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/et_add_project_title" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_description">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_description">
+                android:id="@+id/et_add_project_desc" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/et_add_project_desc" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
 
-            <LinearLayout
-                android:layout_marginTop="16dp"
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_margin="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:hint="Start date"
+                android:focusable="false"
+                android:id="@+id/et_add_project_start_date"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_margin="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:hint="End date"
+                android:focusable="false"
+                android:id="@+id/et_add_project_end_date"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Members: "
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:layout_weight="9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/btn_add_project_members"
+                app:srcCompat="@drawable/ic_person_add_color_accent_24dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+
+                />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:background="@color/colorwhite"
+            android:layout_width="match_parent"
+            android:layout_height="135dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/members_recyclerview"
                 android:orientation="horizontal"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+            <TextView
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/empty_mem_list_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="10">
+                android:text="Currently no members in project."
+                android:textColor="@color/colorAccent" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_margin="4dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:hint="Start date"
-                    android:focusable="false"
-                    android:id="@+id/et_add_project_start_date"/>
+        </RelativeLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_margin="4dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:hint="End date"
-                    android:focusable="false"
-                    android:id="@+id/et_add_project_end_date"/>
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            </LinearLayout>
+            <TextView
+                android:text="Tasks: "
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:layout_weight="9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/btn_add_project_tasks"
+                app:srcCompat="@drawable/ic_add_task_color_accent_24dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:background="@color/colorwhite"
+            android:layout_width="match_parent"
+            android:layout_height="120dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tasks_recyclerview"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+
+            <TextView
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/empty_tas_list_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Currently no tasks in project."
+                android:textColor="@color/colorAccent" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/btn_add_project"
+                android:text="Add project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:weightSum="10"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/button_layout"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:text="Members: "
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="15sp"
-                    android:layout_weight="9"
-                    android:layout_width="0dp"
+                <com.google.android.material.button.MaterialButton
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_save_project"
+                    android:text="Save project"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
-                    android:id="@+id/btn_add_project_members"
-                    app:srcCompat="@drawable/ic_person_add_color_accent_24dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-
-                    />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:background="@color/colorwhite"
-                android:layout_width="match_parent"
-                android:layout_height="135dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/members_recyclerview"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:visibility="gone"
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/empty_mem_list_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Currently no members in project."
-                    android:textColor="@color/colorAccent" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:weightSum="10"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="Tasks: "
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="15sp"
-                    android:layout_weight="9"
-                    android:layout_width="0dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_delete_project"
+                    android:text="Delete project"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageButton
-                    android:id="@+id/btn_add_project_tasks"
-                    app:srcCompat="@drawable/ic_add_task_color_accent_24dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    />
 
             </LinearLayout>
 
 
-            <RelativeLayout
-                android:background="@color/colorwhite"
-                android:layout_width="match_parent"
-                android:layout_height="120dp">
+        </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tasks_recyclerview"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-
-
-                <TextView
-                    android:gravity="center"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/empty_tas_list_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Currently no tasks in project."
-                    android:textColor="@color/colorAccent" />
-
-
-            </RelativeLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_marginTop="10dp"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
-                        android:id="@+id/btn_add_project"
-                        android:text="Add project"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_marginTop="10dp"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
-                        android:id="@+id/btn_save_project"
-                        android:text="Save project"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+    </LinearLayout>
 
 
 
 
-    </ScrollView>
+</ScrollView>
 
 
 

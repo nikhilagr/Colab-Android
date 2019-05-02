@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -25,6 +33,7 @@ import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.TaskRepository;
 import com.nikhildagrawal.worktrack.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,17 +43,21 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static java.lang.Integer.parseInt;
+
 public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAdapter.ProjectViewHolder> {
 
     Context mContext;
     List<Task> mList;
+    PieData data;
+    PieDataSet dataSet;
 
 
     public ProjectDetailsAdapter(Context context){
         mContext = context;
     }
 
-
+     ArrayList NoOfEmp;
 
 
     @NonNull
@@ -96,19 +109,45 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
 
             }
 
+            NoOfEmp = new ArrayList();
+            int perCom = Integer.parseInt(mList.get(position).getStatus());
+            int perUnComp = 100 - perCom;
+            NoOfEmp.add(new PieEntry(perCom, 0));
+            NoOfEmp.add(new PieEntry(perUnComp, 1));
+            dataSet = new PieDataSet(NoOfEmp, "% completed");
+            dataSet.setDrawValues(false);
+            data = new PieData(dataSet);
+            holder.mPieChart.setData(data);
 
+            Log.d("****sdjfhj***",String.valueOf(dataSet.getEntryCount()));
+
+            final int[] MY_COLORS = {
+                    Color.rgb(89,222,120),
+                    Color.rgb(224,224,224)
+            };
+
+            final ArrayList<Integer> colors = new ArrayList<>();
+
+            for(int c: MY_COLORS) colors.add(c);
+
+            dataSet.setColors(colors);
+            holder.mPieChart.getDescription().setEnabled(false);
+            holder.mPieChart.setDrawEntryLabels(false);
+            holder.mPieChart.setCenterTextSize(20);
+            holder.mPieChart.setCenterText(mList.get(position).getStatus()+ "%");
+            holder.mPieChart.animateXY(500, 500);
+            holder.mPieChart.setHardwareAccelerationEnabled(false);
 
 
             holder.mTitle.setText(mList.get(position).getName());
             holder.mEndDate.setText(mList.get(position).getEnd_date());
-            holder.mStatus.setText(mList.get(position).getStatus());
-            holder.mSeekBar.setProgress(Integer.valueOf(mList.get(position).getStatus()));
+
+            holder.mSeekBar.setProgress(parseInt(mList.get(position).getStatus()));
 
 
 
             if(isAssignee(FirebaseAuth.getInstance().getCurrentUser().getUid(),assigneeList)){
 
-                //holder.mSeekBar.setActivated(true);
                 holder.mSeekBar.setEnabled(true);
                 holder.mMessage.setVisibility(View.VISIBLE);
 
@@ -121,8 +160,19 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                    holder.mStatus.setText(String.valueOf(progress));
+                    holder.mPieChart.setCenterText(progress +"%");
 
+                    int perCom = progress;
+                    int perUnComp = 100 - perCom;
+
+                    data.getDataSet().removeFirst();
+                    data.getDataSet().removeFirst();
+
+                    data.getDataSet().addEntry(new PieEntry(perCom,0));
+                    data.getDataSet().addEntry(new PieEntry(perUnComp,1));
+
+                    data.notifyDataChanged();
+                    holder.mPieChart.setData(data);
 
                 }
 
@@ -139,7 +189,9 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
                     //TODO: Update Status of particular task
 
                     Map<String,Object> map = new HashMap<>();
-                    map.put("status",holder.mStatus.getText().toString());
+                    String text = holder.mPieChart.getCenterText().toString();
+
+                    map.put("status", text.substring(0,text.length()-1));
 
                     TaskRepository.getInstance().updateTaskInFirestoreDb(map,mList.get(position).getTask_id());
                 }
@@ -177,17 +229,17 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
         SeekBar mSeekBar;
         LinearLayout mChipLayout;
         ChipGroup mChipGroup;
+        PieChart mPieChart;
 
         public ProjectViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mTitle = itemView.findViewById(R.id.proj_detail_task_title);
             mEndDate = itemView.findViewById(R.id.proj_detail_due_date);
-            mStatus = itemView.findViewById(R.id.proj_detail_status_percent);
             mSeekBar = itemView.findViewById(R.id.proj_detail_seekbar);
             mMessage = itemView.findViewById(R.id.progress_message);
             mChipLayout = itemView.findViewById(R.id.member_chip_layout);
-       //     mChipGroup = itemView.findViewById(R.id.chipGrp);
+            mPieChart = itemView.findViewById(R.id.pieChart);
 
         }
     }

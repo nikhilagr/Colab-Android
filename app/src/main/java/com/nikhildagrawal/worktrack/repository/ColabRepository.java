@@ -250,6 +250,20 @@ public class ColabRepository {
         //delete project from project collection.
         DocumentReference proRef = FirebaseFirestore.getInstance().collection(Constants.PROJECT_COLLECTION).document(projectId);
 
+        List<Project> proList = mList.getValue();
+
+        for (Project pro: proList) {
+
+            if(pro!=null){
+
+                if(pro.getProject_id().equals(projectId)){
+                    proList.remove(pro);
+                }
+            }
+        }
+
+        mList.setValue(proList);
+
         proRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -275,16 +289,25 @@ public class ColabRepository {
         mList.setValue(list);
     }
 
-    public void deleteProjectToLiveData(Project project){
+    public void deleteProjectToLiveData(String projectID){
 
         List<Project> list = mList.getValue();
+        List<Project> newList = new ArrayList<>();
 
         if(list != null){
-            list.remove(project);
+
+            for (Project pro: list) {
+                if(pro!=null){
+                    if(!pro.getProject_id().equals(projectID)){
+                       newList.add(pro);
+                }
+
+                }
+            }
         }else{
           return;
         }
-        mList.setValue(list);
+        mList.setValue(newList);
     }
 
     public void updateProjectInLiveData(Project project){
@@ -338,6 +361,17 @@ public class ColabRepository {
             }
         }else{
             return;
+        }
+
+        mList.setValue(list);
+    }
+
+    public void clearProject(){
+
+        List<Project> list = mList.getValue();
+
+        if(list!=null && list.size()>0){
+            list.clear();
         }
 
         mList.setValue(list);

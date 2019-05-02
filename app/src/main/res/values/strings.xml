@@ -48,5 +48,7 @@
     <string name="delete_note_message">Are you sure you want to delete note?</string>
     <string name="reminder_channel_name">reminder_channel_name</string>
     <string name="reminder_channel_description">This channel handles reminder notifications</string>
+    <string name="notification_title">title</string>
+    <string name="notification_message">message</string>
 
 </resources>

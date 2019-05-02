@@ -5,11 +5,13 @@ package com.nikhildagrawal.worktrack.fragments;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,10 +24,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nikhildagrawal.worktrack.R;
+import com.nikhildagrawal.worktrack.adapters.ColabAdapter;
 import com.nikhildagrawal.worktrack.adapters.MembersAdapter;
 import com.nikhildagrawal.worktrack.adapters.TasksAdapter;
+import com.nikhildagrawal.worktrack.interfaces.FCM;
 import com.nikhildagrawal.worktrack.interfaces.TaskClickListner;
 import com.nikhildagrawal.worktrack.models.Contact;
+import com.nikhildagrawal.worktrack.models.FirebaseCloudMessage;
+import com.nikhildagrawal.worktrack.models.NotificationData;
 import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.ColabRepository;
@@ -33,6 +39,7 @@ import com.nikhildagrawal.worktrack.utils.Constants;
 import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
 import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
 import com.nikhildagrawal.worktrack.viewmodels.TaskViewModel;
+import okhttp3.ResponseBody;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +56,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,6 +88,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
     private static String projectId;
     private List<String> members;
     private List<String> tasksList;
+    private List<String> memberTokenIds;
     private SharedPreferences pref;
     private String inMode;
     private Integer position;
@@ -84,11 +98,14 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
     private ImageButton mButtonAddTask;
     private MaterialButton mButtonAddProject;
     private MaterialButton mButtonSaveProject;
+    private MaterialButton mButtonDeleteProject;
     private TaskViewModel mTaskViewModel;
     private RecyclerView mTasksRecyclerview;
     private RecyclerView mMembersRecyclerview;
     private ColabViewModel mColabViewModel;
     private  boolean contactsProcessed;
+    private String currentUserName;
+    private LinearLayout buttonLayout;
 
     public AddNewProjectFragment() {
         // Required empty public constructor
@@ -122,6 +139,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
         inMode = pref.getString("Mode",null);
         position = pref.getInt("pos",-1);
         contactsProcessed = pref.getBoolean("contactProcessed", false);
+        memberTokenIds = new ArrayList<>();
 
         checkMode();
 
@@ -130,7 +148,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
 
         if(inMode.equals("Edit")){
 
-            mButtonSaveProject.setVisibility(View.VISIBLE);
+            buttonLayout.setVisibility(View.VISIBLE);
             mButtonAddProject.setVisibility(View.GONE);
 
             projectId = pref.getString(projectId,null);
@@ -183,6 +201,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                                 User user = task.getResult().toObject(User.class);
 
                                 members.add(user.getUser_id());
+                                memberTokenIds.add(user.getFcm_instance_token());
                                 mMembersAdapter.updateUserInMembersAdpater(user);
                                 Contact contact = new Contact(user.getFirtst_name()+" "+user.getLast_name(),user.getEmail(),
                                         "",true,user.getUser_id());
@@ -226,6 +245,8 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 User user = task.getResult().toObject(User.class);
+
+                currentUserName = user.getFirtst_name()+ " " +user.getLast_name();
                 mMembersAdapter.updateUserInMembersAdpater(user);
             }
         });
@@ -302,6 +323,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                     }
                     members.add(contact.getAuth_id());
 
+
                     DocumentReference ref = FirebaseFirestore.getInstance().collection("users").document(contact.getAuth_id());
 
                     ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -310,6 +332,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
 
                             if(task.isSuccessful()){
                                 User user = task.getResult().toObject(User.class);
+                                memberTokenIds.add(user.getFcm_instance_token());
                                 mMembersAdapter.updateUserInMembersAdpater(user);
                             }
                         }
@@ -331,7 +354,6 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                 String endDate = mETEndDate.getText().toString();
                 String creatorId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 List<String> stringListTaskIds = tasksList;
-
 
                 if(!title.equals("")){
 
@@ -357,6 +379,12 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
 
                     // Insert project in projects collection
                     mColabRepository.insertProjectInFirestoreDb(pro,reference);
+
+
+                    //TODO: Pass TokenIDS, title, message
+
+                    notifyMembers(memberTokenIds,"Added To New Project","You have been added to new project: "+mETTitle.getText().toString() + " by "+currentUserName);
+
                     getFragmentManager().popBackStackImmediate();
                 }
                 else{
@@ -403,7 +431,6 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                     }else{
 
                         //TODO: update the user remove current project id from projects array of the user (COMPLETED)
-
                         updateProjectInUserDb(oldMember,projectId,2); // Id 2 to remove proj
                     }
                 }
@@ -414,7 +441,6 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                         continue;
                     }else{
                         //TODO:Add current project to project list (COMPLETED)
-
                         updateProjectInUserDb(newMember,projectId,1); // Id 1 to add proj
 
                     }
@@ -426,6 +452,37 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                 getFragmentManager().popBackStackImmediate();
         }
         });
+//
+//        mButtonDeleteProject.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                mColabViewModel.clearProject();
+//                final ColabAdapter adapter = new ColabAdapter(getActivity(),null,null);
+//                adapter.removeProjectFromColabAdapter();
+//
+//
+//                mColabViewModel.getProjects(currentUserId).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
+//                    @Override
+//                    public void onChanged(List<Project> projectList) {
+//
+//                        for (Project pro: projectList) {
+//
+//                            if(pro.getProject_id().equals(projectId)){
+//                                int position = projectList.indexOf(pro);
+//                                adapter.notifyItemRemoved(position);
+//                            }
+//                        }
+//                    }
+//                });
+//
+//                mColabRepository.deleteProjectFromFirestoreDb(projectId);
+//
+//
+//                getFragmentManager().popBackStackImmediate();
+//
+//            }
+//        });
 
         return mView;
     }
@@ -434,6 +491,48 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
 
 
 
+    private void notifyMembers(List<String> tokens,String title, String message){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.FCM_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FCM fcmAPI = retrofit.create(FCM.class);
+
+        // attach the headers
+        HashMap<String, String> headers = new HashMap<>();
+
+        headers.put("Content-Type","application/json");
+        headers.put("Authorization","key=" + Constants.SERVER_KEY);
+
+        for(String token: tokens){
+            Log.d(TAG,"NOTIFY USERS: Sending to token: "+ token);
+
+            NotificationData data = new NotificationData();
+            data.setTitle(title);
+            data.setMessage(message);
+
+            FirebaseCloudMessage firebaseCloudMessage = new FirebaseCloudMessage();
+            firebaseCloudMessage.setTo(token);
+            firebaseCloudMessage.setData(data);
+
+            Call<ResponseBody> call = fcmAPI.send(headers,firebaseCloudMessage);
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Log.d(TAG, "ON Response: "+response.toString());
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d(TAG, "ON Failure: "+t.getMessage());
+                }
+            });
+        }
+
+    }
     private void initUiComponents() {
         calendar = Calendar.getInstance();
         mButtonAddMemebers = mView.findViewById(R.id.btn_add_project_members);
@@ -448,6 +547,9 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
         mMembersRecyclerview = mView.findViewById(R.id.members_recyclerview);
         TextView tvMessageMembersList = mView.findViewById(R.id.empty_mem_list_message);
         tvMessageTaskList = mView.findViewById(R.id.empty_tas_list_message);
+        buttonLayout = mView.findViewById(R.id.button_layout);
+        mButtonDeleteProject = mView.findViewById(R.id.btn_delete_project);
+
     }
 
 
@@ -497,7 +599,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
         // Store reference in preference for add mode of projects
         if(inMode.equals("Add")){
             mButtonAddProject.setVisibility(View.VISIBLE);
-            mButtonSaveProject.setVisibility(View.GONE);
+            buttonLayout.setVisibility(View.GONE);
 
             projectId = pref.getString("projectId",null);
 
@@ -621,8 +723,13 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
         editor.commit();
         mTaskViewModel.clearTask();
         mTasksAdpater.clearTaskList();
+        mColabViewModel.clearProject();
+
+
 
     }
+
+
 
 }
 

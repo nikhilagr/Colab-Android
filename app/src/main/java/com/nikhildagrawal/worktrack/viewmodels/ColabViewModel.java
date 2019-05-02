@@ -28,8 +28,8 @@ public class ColabViewModel extends ViewModel {
         mRepo.addProjectToLiveData(pro);
     }
 
-    public void deleteProjectToLiveData(Project pro){
-        mRepo.deleteProjectToLiveData(pro);
+    public void deleteProjectToLiveData(String projectId){
+        mRepo.deleteProjectToLiveData(projectId);
     }
 
     public void updateProjectInLiveData(Project pro){
@@ -38,6 +38,10 @@ public class ColabViewModel extends ViewModel {
 
     public void addMemberToProject(String member,String projId){
         mRepo.addMemberToProject(member,projId);
+    }
+
+    public void clearProject(){
+        mRepo.clearProject();
     }
 
 

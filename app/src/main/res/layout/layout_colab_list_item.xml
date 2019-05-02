@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-
+    android:id="@+id/layout_cell_colab"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,7 +11,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:cardElevation="4dp"
+        app:cardElevation="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,6 +22,10 @@
 
                 <!--Linear Layout for title and imageview-->
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_marginTop="8dp"
@@ -35,6 +39,18 @@
                         android:layout_weight="9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/image_edit"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:src="@drawable/ic_mode_edit_24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
 
 
 
@@ -104,6 +120,7 @@
 
 
             <ImageView
+                    android:id="@+id/colab_list_item_project_dp"
                     android:layout_marginTop="4dp"
                     android:src="@drawable/projmanagement2"
                     android:scaleType="fitXY"
@@ -129,6 +146,7 @@
 
 
             <LinearLayout
+                android:visibility="gone"
                 android:gravity="right"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

@@ -28,6 +28,7 @@ public class TaskViewModel extends ViewModel {
 
     public void clearTask(){
         mRepo.clearList();
+
     }
 
 

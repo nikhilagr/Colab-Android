@@ -14,5 +14,6 @@ public class Constants {
     public static final String REMINDER_COLLECTION = "reminders";
     public static final String CHECKLIST_COLLECTION = "checklists";
     public static final String SERVER_KEY = "AAAAfl58qKY:APA91bFELv5ti9CEkJDMtTfI72bg_8_3AYA9ARGo-JYBDmxHcgcMf6wDsmA8ZTgChNF0RAMF_LtTJRpYHXEkNVd0MGRNeZdTwF5jNpHRnXomH7JQIgSjxiSbVTi30_sAeSyZjfv5mp4j";
+    public static final String FCM_BASE_URL = "https://fcm.googleapis.com/fcm/";
 
 }

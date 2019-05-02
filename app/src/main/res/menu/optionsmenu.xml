@@ -6,6 +6,4 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="Signout" />
 
-
-
 </menu>
