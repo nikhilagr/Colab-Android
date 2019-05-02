@@ -12,9 +12,14 @@ import android.widget.Toast;
 
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.interfaces.ReminderClickListner;
+import com.nikhildagrawal.worktrack.models.Checklist;
 import com.nikhildagrawal.worktrack.models.Reminder;
 import com.nikhildagrawal.worktrack.repository.ReminderRepository;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -85,7 +90,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             }
         });
 
-        switch (mReminderList.get(position).getDesc()){
+        switch (mReminderList.get(position).getDesc() != null ? mReminderList.get(position).getDesc() : "" ){
             case "Travel": holder.mLogo.setImageResource(R.drawable.suitcase);
                             break;
             case "Health": holder.mLogo.setImageResource(R.drawable.stethoscope);
@@ -147,10 +152,27 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     }
 
     public void setReminderList(List<Reminder> list){
+        Collections.sort(list, sortReminders());
         mReminderList = list;
         notifyDataSetChanged();
     }
 
+    private Comparator<Reminder> sortReminders() {
+        return new Comparator<Reminder>(){
+
+            @Override
+            public int compare(Reminder r1, Reminder r2)
+            {
+                DateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+                try {
+                    return (format.parse(r1.getDate() + " " + r1.getTime())).compareTo(format.parse(r2.getDate() + " " + r2.getTime()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return 0;
+                }
+            }
+        };
+    }
 
 
 }

@@ -15,6 +15,9 @@ import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.interfaces.CheckListItemClickListner;
 import com.nikhildagrawal.worktrack.models.Checklist;
 import com.nikhildagrawal.worktrack.repository.ChecklistRepository;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -155,6 +158,7 @@ public class ChecklistAdapter extends RecyclerView.Adapter<ChecklistAdapter.Chec
 
 
     public void setmChecklist(List<Checklist> list){
+        Collections.sort(list);
         mChecklist = list;
         notifyDataSetChanged();
     }

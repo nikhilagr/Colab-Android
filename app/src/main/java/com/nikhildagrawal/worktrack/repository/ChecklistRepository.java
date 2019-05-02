@@ -11,7 +11,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.models.Checklist;
+import com.nikhildagrawal.worktrack.utils.ObjectSorter;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +69,8 @@ public class ChecklistRepository {
                         list.add(checklist);
                     }
 
-
-                        mList.postValue(list);
+                    Collections.sort(list);
+                    mList.postValue(list);
 
 
                 }else{
