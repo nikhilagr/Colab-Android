@@ -1,6 +1,9 @@
 package com.nikhildagrawal.worktrack.models;
 
-public class Reminder {
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+public class Reminder implements Comparable<Reminder>{
 
     private String user_id;
     private String reminder_id;
@@ -88,5 +91,10 @@ public class Reminder {
                 ", date='" + date + '\'' +
                 ", time='" + time + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Reminder o) {
+        return 0;
     }
 }

@@ -1,6 +1,6 @@
 package com.nikhildagrawal.worktrack.models;
 
-public class Checklist {
+public class Checklist implements Comparable<Checklist>{
 
     private String user_id;
     private String checklist_id;
@@ -68,5 +68,11 @@ public class Checklist {
                 ", status='" + status + '\'' +
                 ", Title='" + Title + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Checklist checklist) {
+        return (this.getTitle().compareToIgnoreCase(checklist.getTitle()) < 0 ? -1 :
+                (this.getTitle().compareToIgnoreCase(checklist.getTitle()) == 0 ? 0 : 1));
     }
 }
