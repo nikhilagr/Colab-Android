@@ -99,6 +99,7 @@ public class AddReminderFragment extends Fragment implements OnItemSelectedListe
         calendar = Calendar.getInstance();
         mCalendar = Calendar.getInstance();
 
+
         String str = "";
         mPosition = -1;
 
@@ -141,6 +142,7 @@ public class AddReminderFragment extends Fragment implements OnItemSelectedListe
                 }
 
                 if(!curDesc.equals(reminders.get(mPosition).getDesc())){
+
                     map.put(Constants.REMINDER_DESC,curDesc);
                 }
 
@@ -153,6 +155,7 @@ public class AddReminderFragment extends Fragment implements OnItemSelectedListe
                 }
 
                 if(map.size()!=0){
+
                     ReminderRepository.getInstance().updateReminderFromFirestore(map,reminders.get(mPosition).getReminder_id());
                     setNotificationForReminder(getActivity());
                     Snackbar.make(v,"Changes saved successfully",Snackbar.LENGTH_LONG).show();
@@ -217,6 +220,9 @@ public class AddReminderFragment extends Fragment implements OnItemSelectedListe
 
                 setNotificationForReminder(getActivity());
 
+                if(mSpinnerSelection == null){
+                    mSpinnerSelection = "e.g. Travel";
+                }
                 ReminderRepository.getInstance().insertReminderInFireStore(mTitle.getText().toString(),mSpinnerSelection
                         ,mDate.getText().toString(),mTime.getText().toString());
                 getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

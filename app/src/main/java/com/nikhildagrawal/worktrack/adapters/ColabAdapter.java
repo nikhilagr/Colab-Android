@@ -77,7 +77,7 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ColabViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ColabViewHolder holder, final int position) {
 
         if(holder!=null && projectList!=null && projectList.get(position)!=null){
 
@@ -90,6 +90,8 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = task.getResult().toObject(User.class);
                         creatorName = "Owner: " + user.getFirtst_name()+ " "+user.getLast_name();
+                        holder.mOwner.setText(creatorName);
+
 
                 }
             });
@@ -98,7 +100,6 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
             holder.mDesc.setText(projectList.get(position).getDescription());
             holder.mDeadline.setText(projectList.get(position).getEnd_date());
 
-            holder.mOwner.setText(creatorName);
 
             if(projectList.get(position).getTasks()!=null){
                 holder.mTotalTasks.setText(String.valueOf(projectList.get(position).getTasks().size()) );
