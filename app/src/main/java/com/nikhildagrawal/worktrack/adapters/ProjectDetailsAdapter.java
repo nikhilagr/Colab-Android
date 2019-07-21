@@ -1,8 +1,6 @@
 package com.nikhildagrawal.worktrack.adapters;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,15 +9,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -33,14 +27,15 @@ import com.nikhildagrawal.worktrack.models.User;
 import com.nikhildagrawal.worktrack.repository.TaskRepository;
 import com.nikhildagrawal.worktrack.utils.Constants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static java.lang.Integer.parseInt;
@@ -85,7 +80,6 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
             List<String> assigneeList = mList.get(position).getAssigned_to();
 
             //TODO: grab name and create chip dynamically
-
             for (String assignee : assigneeList) {
 
                 DocumentReference ref = FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION).document(assignee);
@@ -93,20 +87,16 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
                 ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
-
                         User user = task.getResult().toObject(User.class);
                         Chip ch = new Chip(mContext);
-                        ch.setText(user.getFirtst_name());
+                        ch.setText(user.getFirst_name());
                         ch.setTextColor(mContext.getResources().getColor(R.color.colorwhite));
                         ch.setChipBackgroundColorResource(R.color.colorchip);
                         holder.mChipLayout.addView(ch);
                         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ch.getLayoutParams();
                         params.setMarginEnd(10);
-
-
                     }
                 });
-
             }
 
             NoOfEmp = new ArrayList();
@@ -136,16 +126,11 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
             holder.mPieChart.setCenterTextSize(20);
             holder.mPieChart.setCenterText(mList.get(position).getStatus()+ "%");
             holder.mPieChart.animateXY(500, 500);
-            holder.mPieChart.setHardwareAccelerationEnabled(false);
 
-
+            holder.mPieChart.getLegend().setEnabled(false);
             holder.mTitle.setText(mList.get(position).getName());
             holder.mEndDate.setText(mList.get(position).getEnd_date());
-
             holder.mSeekBar.setProgress(parseInt(mList.get(position).getStatus()));
-
-
-
             if(isAssignee(FirebaseAuth.getInstance().getCurrentUser().getUid(),assigneeList)){
 
                 holder.mSeekBar.setEnabled(true);
@@ -198,6 +183,26 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
             });
         }
 
+
+        String end_date = mList.get(position).getEnd_date();
+
+        Calendar calCurrent = Calendar.getInstance();
+        Calendar day = Calendar.getInstance();
+
+        try {
+            day.setTime(new SimpleDateFormat("EEE, MMM d, yyyy").parse(end_date));
+
+            if(day.after(calCurrent)){
+                int diff = day.get(Calendar.DAY_OF_MONTH) - calCurrent.get(Calendar.DAY_OF_MONTH);
+                //TODO: set in TV
+                holder.mDaysLeft.setText(String.valueOf(diff)+" "+ "days to complete the task!");
+
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -225,7 +230,7 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
 
     public class ProjectViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mTitle,mEndDate,mStatus,mMessage;
+        TextView mTitle,mEndDate,mStatus,mMessage,mDaysLeft;
         SeekBar mSeekBar;
         LinearLayout mChipLayout;
         ChipGroup mChipGroup;
@@ -240,6 +245,7 @@ public class ProjectDetailsAdapter extends RecyclerView.Adapter<ProjectDetailsAd
             mMessage = itemView.findViewById(R.id.progress_message);
             mChipLayout = itemView.findViewById(R.id.member_chip_layout);
             mPieChart = itemView.findViewById(R.id.pieChart);
+            mDaysLeft = itemView.findViewById(R.id.days_left);
 
         }
     }

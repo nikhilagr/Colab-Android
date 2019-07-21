@@ -41,10 +41,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MembersV
     public void onBindViewHolder(@NonNull MembersViewHolder holder, int position) {
 
 
-        String displayTitle = userList.get(position).getFirtst_name().substring(0,1).concat(userList.get(position).getLast_name().substring(0,1));
+        String displayTitle = userList.get(position).getFirst_name().substring(0,1).concat(userList.get(position).getLast_name().substring(0,1));
         holder.mDisplayTitle.setText(displayTitle);
 
-        holder.mFName.setText(userList.get(position).getFirtst_name());
+        holder.mFName.setText(userList.get(position).getFirst_name());
         holder.mLName.setText(userList.get(position).getLast_name());
 
     }

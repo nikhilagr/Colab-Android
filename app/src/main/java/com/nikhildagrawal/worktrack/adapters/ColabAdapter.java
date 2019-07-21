@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -89,7 +88,7 @@ public class ColabAdapter extends RecyclerView.Adapter<ColabAdapter.ColabViewHol
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         User user = task.getResult().toObject(User.class);
-                        creatorName = "Owner: " + user.getFirtst_name()+ " "+user.getLast_name();
+                        creatorName = "Owner: " + user.getFirst_name()+ " "+user.getLast_name();
                         holder.mOwner.setText(creatorName);
 
 

@@ -16,11 +16,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.adapters.ContactsAdapter;
-import com.nikhildagrawal.worktrack.adapters.TasksAdapter;
 import com.nikhildagrawal.worktrack.models.Contact;
-import com.nikhildagrawal.worktrack.models.Project;
 import com.nikhildagrawal.worktrack.models.User;
-import com.nikhildagrawal.worktrack.viewmodels.ColabViewModel;
 import com.nikhildagrawal.worktrack.viewmodels.ContactViewModel;
 
 
@@ -115,7 +112,7 @@ public class AddMembersFragment extends Fragment {
                                    User user  = sn.toObject(User.class);
 
                                    user.getUser_id();
-                                   Contact contact = new Contact(user.getFirtst_name() + " "+ user.getLast_name(),user.getEmail(),"",false,user.getUser_id());
+                                   Contact contact = new Contact(user.getFirst_name() + " "+ user.getLast_name(),user.getEmail(),"",false,user.getUser_id());
                                    mVContactViewModel.addContactToLiveData(contact);
                             }
                         }

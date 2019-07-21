@@ -1,5 +1,7 @@
 package com.nikhildagrawal.worktrack;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,16 +62,32 @@ public class TabActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mTextMessage =  findViewById(R.id.message);
+
         mNavController = Navigation.findNavController(this,R.id.fragment);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         NavigationUI.setupWithNavController(navigation,mNavController);
         NavigationUI.setupActionBarWithNavController(this,mNavController);
+
         mView = getWindow().getDecorView().findViewById(android.R.id.content);
         Snackbar.make(mView,"Signed in as "+FirebaseAuth.getInstance().getCurrentUser().getEmail(),Snackbar.LENGTH_SHORT).show();
         intiFCM();
+        createNotificationChannel();
 
     }
 
+
+    private void createNotificationChannel() {
+        final String CHANNEL_ID = "PROJECT_CHANNEL_ID";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "PROJECT_CHANNEL_NAME";
+            String description = "Sample";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
     private void intiFCM(){
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this,new OnSuccessListener<InstanceIdResult>() {

@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
 
     private String user_id;
-    private String firtst_name;
+    private String first_name;
     private String last_name;
     private String dob;
     private String email;
@@ -38,23 +38,23 @@ public class User {
 
     }
 
-    public User(String firtst_name, String last_name) {
-        this.firtst_name = firtst_name;
+    public User(String first_name, String last_name) {
+        this.first_name = first_name;
         this.last_name = last_name;
     }
 
-    public User(String user_id, String firtst_name, String last_name, String dob, String email, String profile_url) {
+    public User(String user_id, String first_name, String last_name, String dob, String email, String profile_url) {
         this.user_id = user_id;
-        this.firtst_name = firtst_name;
+        this.first_name = first_name;
         this.last_name = last_name;
         this.dob = dob;
         this.email = email;
         this.profile_url = profile_url;
     }
 
-    public User(String user_id, String firtst_name, String last_name, String dob, String email, String profile_url,  String fcm_instance_token, List<String> projects) {
+    public User(String user_id, String first_name, String last_name, String dob, String email, String profile_url, String fcm_instance_token, List<String> projects) {
         this.user_id = user_id;
-        this.firtst_name = firtst_name;
+        this.first_name = first_name;
         this.last_name = last_name;
         this.dob = dob;
         this.email = email;
@@ -71,12 +71,12 @@ public class User {
         this.user_id = user_id;
     }
 
-    public String getFirtst_name() {
-        return firtst_name;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirtst_name(String firtst_name) {
-        this.firtst_name = firtst_name;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getLast_name() {
@@ -117,7 +117,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "user_id='" + user_id + '\'' +
-                ", firtst_name='" + firtst_name + '\'' +
+                ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", dob='" + dob + '\'' +
                 ", email='" + email + '\'' +

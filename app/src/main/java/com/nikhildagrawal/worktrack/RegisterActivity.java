@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
@@ -22,7 +19,6 @@ import com.nikhildagrawal.worktrack.models.User;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
@@ -142,7 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             DocumentReference ref = db.collection("users").document(userAuthId);
                             User user = new User();
-                            user.setFirtst_name(mFirstName.getText().toString());
+                            user.setFirst_name(mFirstName.getText().toString());
                             user.setLast_name(mLastName.getText().toString());
                             user.setDob(mDob.getText().toString());
                             user.setEmail(mEmail.getText().toString());

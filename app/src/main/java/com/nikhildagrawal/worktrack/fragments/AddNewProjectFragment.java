@@ -24,7 +24,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.nikhildagrawal.worktrack.R;
-import com.nikhildagrawal.worktrack.adapters.ColabAdapter;
 import com.nikhildagrawal.worktrack.adapters.MembersAdapter;
 import com.nikhildagrawal.worktrack.adapters.TasksAdapter;
 import com.nikhildagrawal.worktrack.interfaces.FCM;
@@ -203,7 +202,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                                 members.add(user.getUser_id());
                                 memberTokenIds.add(user.getFcm_instance_token());
                                 mMembersAdapter.updateUserInMembersAdpater(user);
-                                Contact contact = new Contact(user.getFirtst_name()+" "+user.getLast_name(),user.getEmail(),
+                                Contact contact = new Contact(user.getFirst_name()+" "+user.getLast_name(),user.getEmail(),
                                         "",true,user.getUser_id());
                                 contactViewModel.addContactToLiveData(contact);
                             }
@@ -246,7 +245,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
 
                 User user = task.getResult().toObject(User.class);
 
-                currentUserName = user.getFirtst_name()+ " " +user.getLast_name();
+                currentUserName = user.getFirst_name()+ " " +user.getLast_name();
                 mMembersAdapter.updateUserInMembersAdpater(user);
             }
         });
@@ -382,6 +381,7 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
 
 
                     //TODO: Pass TokenIDS, title, message
+                    Log.d("***Notificati Test ***",memberTokenIds.toString());
 
                     notifyMembers(memberTokenIds,"Added To New Project","You have been added to new project: "+mETTitle.getText().toString() + " by "+currentUserName);
 
@@ -452,37 +452,6 @@ public class AddNewProjectFragment extends Fragment implements TaskClickListner 
                 getFragmentManager().popBackStackImmediate();
         }
         });
-//
-//        mButtonDeleteProject.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                mColabViewModel.clearProject();
-//                final ColabAdapter adapter = new ColabAdapter(getActivity(),null,null);
-//                adapter.removeProjectFromColabAdapter();
-//
-//
-//                mColabViewModel.getProjects(currentUserId).observe(getViewLifecycleOwner(), new Observer<List<Project>>() {
-//                    @Override
-//                    public void onChanged(List<Project> projectList) {
-//
-//                        for (Project pro: projectList) {
-//
-//                            if(pro.getProject_id().equals(projectId)){
-//                                int position = projectList.indexOf(pro);
-//                                adapter.notifyItemRemoved(position);
-//                            }
-//                        }
-//                    }
-//                });
-//
-//                mColabRepository.deleteProjectFromFirestoreDb(projectId);
-//
-//
-//                getFragmentManager().popBackStackImmediate();
-//
-//            }
-//        });
 
         return mView;
     }

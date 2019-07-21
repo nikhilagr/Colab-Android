@@ -154,7 +154,7 @@ public class AddNewTaskFragment extends Fragment {
 
                     User user = task.getResult().toObject(User.class);
 
-                    assignee = new Assignee(user.getFirtst_name()+" "+user.getLast_name(),user.getEmail(),selected,user.getUser_id());
+                    assignee = new Assignee(user.getFirst_name()+" "+user.getLast_name(),user.getEmail(),selected,user.getUser_id());
                 }
 
                 assigneeList.add(assignee);

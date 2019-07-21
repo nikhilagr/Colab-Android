@@ -13,6 +13,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.nikhildagrawal.worktrack.R;
 import com.nikhildagrawal.worktrack.TabActivity;
 
+import java.nio.channels.Channel;
+
 import androidx.core.app.NotificationCompat;
 
 public class CloudMessagingService extends FirebaseMessagingService {
@@ -51,14 +53,13 @@ public class CloudMessagingService extends FirebaseMessagingService {
     public void sendBroadCast(String title, String message){
 
         //Notification builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"default_notification_channel");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"PROJECT_CHANNEL_ID");
         Intent notifyIntent = new Intent(this, TabActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent notifyPendingIntent = PendingIntent.getActivity(this,0,notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         builder.setSmallIcon(R.drawable.ic_chat_accent_24dp)
-                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.sportcar))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(title)
                 .setContentText(message)
@@ -73,6 +74,8 @@ public class CloudMessagingService extends FirebaseMessagingService {
 
 
     }
+
+
 
 
 }
